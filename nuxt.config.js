@@ -11,17 +11,24 @@ export default {
     ]
   },
   css: [
-    'element-ui/lib/theme-chalk/index.css'
+    'element-ui/lib/theme-chalk/index.css',
+    '~theme/style.css'
   ],
   plugins: [
-    '@/plugins/element-ui'
+    '@/plugins/globals'
   ],
   components: true,
   buildModules: [
   ],
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/style-resources'
   ],
+  styleResources: {
+    scss: [
+      './assets/vars/*.scss'
+    ]
+  },
   serverMiddleware: {
     '/api': '~/server/app.js'
   },
