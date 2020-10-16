@@ -1,11 +1,10 @@
 <template>
-  <div class="wrap">
-    <div class="page-bar">
-      <h1>Каталог товарів</h1>
+  <PageContainer title="Каталог товарів">
+    <template v-slot:header>
       <el-button type="primary" @click="addNewProduct" size="medium">Додати товар</el-button>
-    </div>
-    <div class="container">
-      <el-table :data="products">
+    </template>
+    <template v-slot:content>
+      <el-table :data="products" :v-loading="loading">
         <el-table-column type="selection"/>
         <el-table-column label="Фото" width="80px">
           <template slot-scope="{row: {imageUrl}}">
@@ -27,13 +26,13 @@
               :type="active === true ? 'success' : 'warning'"
               disable-transitions
             >
-              {{active === true ? 'Активний' : 'Не активний'}}
+              {{ active === true ? 'Активний' : 'Не активний' }}
             </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="Дата">
           <template slot-scope="{row: {date}}">
-            {{new Date(date).toLocaleString()}}
+            {{ new Date(date).toLocaleString() }}
           </template>
         </el-table-column>
         <el-table-column
@@ -50,44 +49,55 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
-  </div>
+    </template>
+  </PageContainer>
 
 </template>
 
 <script>
-  export default {
-    middleware: ['admin-auth'],
-    head() {
-      return {
-        title: 'Каталог товарів'
-      }
+import PageContainer from "@/components/admin/PageContainer";
+
+export default {
+  layout: 'admin',
+  middleware: ['admin-auth'],
+  components: {PageContainer},
+  head() {
+    return {
+      title: 'Каталог товарів'
+    }
+  },
+  data() {
+    return {
+      products: null
+    }
+  },
+  async asyncData({store}) {
+    const products = await store.dispatch('product/fetchProducts')
+    return {products}
+  },
+  methods: {
+    addNewProduct() {
+      this.$router.push(`/catalog/products/create/`)
     },
-    async asyncData({store}) {
-      const products = await store.dispatch('product/fetchProducts')
-      return {products}
+    open(id) {
+      this.$router.push(`/catalog/products/${id}`)
     },
-    methods: {
-      addNewProduct() {
-        this.$router.push(`/catalog/products/create/`)
-      },
-      open(id) {
-        this.$router.push(`/catalog/products/${id}`)
-      },
-      async remove(id, name) {
-        try {
-          await this.$confirm(`Видалити ${name}?`, 'Увага!', {
-            confirmButtonText: 'Так',
-            cancelButtonText: 'Відмінити',
-            type: "warning"
-          })
-          await this.$store.dispatch('product/remove', id)
-          this.products = this.products.filter(p => p._id !== id)
-          this.$message.success(`${name} видалено`)
-        } catch (e) {}
+    async remove(id, name) {
+      try {
+        await this.$confirm(`Видалити ${name}?`, 'Увага!', {
+          confirmButtonText: 'Так',
+          cancelButtonText: 'Відмінити',
+          type: "warning"
+        })
+        await this.$store.dispatch('product/remove', id)
+        this.products = this.products.filter(p => p._id !== id)
+        this.$message.success(`${name} видалено`)
+      } catch (e) {
+        this.$message.warning(e)
       }
     }
   }
+}
 </script>
 
 <style scoped>

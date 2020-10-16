@@ -1,16 +1,13 @@
 <template>
   <el-container>
-    <el-header height="auto" class="basic-box-shadow" style="padding: 0">
-      <AppHeaderBar/>
-      <AppHeaderNav/>
-    </el-header>
-    <el-main style="padding: 0">
+    <Header/>
+    <el-main class="main">
       <AppPageBar/>
       <div class="container" style="padding: 3rem 0">
         <nuxt/>
       </div>
     </el-main>
-    <el-footer style="padding: 0">
+    <el-footer class="footer">
       <AppFooterFirstFlore/>
       <AppFooterSecondFlore/>
     </el-footer>
@@ -18,25 +15,31 @@
 </template>
 
 <script>
-  import AppHeaderBar from "../components/client/HeaderBar";
-  import AppHeaderNav from "../components/client/HeaderNav";
-  import AppPageBar from "../components/client/PageBar";
-  import AppFooterFirstFlore from "../components/client/FooterFirstFlore";
-  import AppFooterSecondFlore from "../components/client/FooterSecondFlore";
+import AppPageBar from "../components/client/PageBar";
+import AppFooterFirstFlore from "../components/client/FooterFirstFlore";
+import AppFooterSecondFlore from "../components/client/FooterSecondFlore";
+import Header from "@/components/client/Header/Header";
 
-  export default {
-    components: {
-      AppFooterSecondFlore,
-      AppFooterFirstFlore,
-      AppPageBar,
-      AppHeaderBar,
-      AppHeaderNav,
-    }
+export default {
+  components: {
+    Header,
+    AppFooterSecondFlore,
+    AppFooterFirstFlore,
+    AppPageBar
   }
+}
 </script>
 
 <style>
-  body {
-    margin: 0;
-  }
+body {
+  background-color: #ffffff !important;
+}
+
+.main {
+  padding: 0;
+}
+
+.footer {
+  padding: 0;
+}
 </style>

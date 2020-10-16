@@ -1,10 +1,7 @@
 <template>
-  <div class="wrap">
-    <div class="page-bar">
-      <h1>Список категорії</h1>
-    </div>
-    <div class="container">
-
+  <div>
+    <div>
+      Список категорій
     </div>
   </div>
 
@@ -12,6 +9,7 @@
 
 <script>
 export default {
+  layout: 'admin',
   middleware: ['admin-auth'],
   head() {
     return {

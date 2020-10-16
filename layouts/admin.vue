@@ -1,9 +1,13 @@
 <template>
-  <el-container :style="{height: '100%'}">
-    <Aside/>
-    <el-container style="width: 100%">
-      <el-main class="main">
+  <el-container class="admin">
+    <el-aside width="250px">
+      <Aside/>
+    </el-aside>
+    <el-container>
+      <el-header class="header">
         <Header/>
+      </el-header>
+      <el-main>
         <nuxt/>
       </el-main>
     </el-container>
@@ -11,8 +15,8 @@
 </template>
 
 <script>
-import Aside from "../components/admin/Aside";
-import Header from "../components/admin/Header";
+import Aside from "@/components/admin/Aside/Aside";
+import Header from "@/components/admin/Header/HeaderPanel";
 
 export default {
   components: {Header, Aside},
@@ -29,13 +33,14 @@ export default {
 }
 </script>
 
-<style>
-body {
-  background-color: #F2F3F8;
+<style lang="scss" scoped>
+.admin {
+  background-color: #E9F0F6;
 }
 
-.main {
-  padding: 0;
-  min-width: 768px;
+.header {
+  background-color: $white;
+  box-shadow: 0 0 40px 0 rgba(82, 63, 105, 0.1);
 }
+
 </style>

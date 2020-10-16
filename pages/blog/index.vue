@@ -15,8 +15,8 @@
 
 <script>
   import 'element-ui/lib/theme-chalk/display.css';
-  import AppBlogPostCart from "../../components/client/blog/BlogPostCart";
-  import AppBlogAside from "../../components/client/blog/BlogAside";
+  import AppBlogPostCart from "../../components/client/Blog/BlogPostCart";
+  import AppBlogAside from "../../components/client/Blog/BlogAside";
 
   export default {
     components: {

@@ -11,9 +11,10 @@
 </template>
 
 <script>
-    export default {
-        middleware: ['admin-auth']
-    }
+export default {
+  layout: 'admin',
+  middleware: ['admin-auth']
+}
 </script>
 
 <style>

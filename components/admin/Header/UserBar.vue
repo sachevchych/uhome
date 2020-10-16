@@ -48,7 +48,7 @@
         methods: {
             logout() {
                 this.$store.dispatch('auth/logout');
-                this.$router.push('/login?message=logout')
+                this.$router.push('/admin/login?message=logout')
             }
         }
     }

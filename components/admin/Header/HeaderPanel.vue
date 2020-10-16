@@ -1,7 +1,6 @@
 <template>
-  <el-header class="header">
-    <el-page-header title="Назад" @back="goBack"></el-page-header>
-    <BreadCrumb/>
+  <el-header class="header-panel">
+    <el-button type="primary" icon="el-icon-arrow-left" size="small" @click="goBack" plain round>Попередня сторінка</el-button>
     <UserBar/>
   </el-header>
 </template>
@@ -12,21 +11,19 @@ import BreadCrumb from "./BreadCrumb";
 
 export default {
   name: "Header",
-  components: {BreadCrumb, UserBar},
+  components: {UserBar},
   methods: {
     goBack() {
-      console.log('go back');
+      this.$router.back()
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.header {
-  width: 100%;
+.header-panel {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
 }
 </style>

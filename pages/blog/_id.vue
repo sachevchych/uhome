@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import AppBlogAside from "../../components/client/blog/BlogAside";
+  import AppBlogAside from "../../components/client/Blog/BlogAside";
 
   export default {
     components: {AppBlogAside},

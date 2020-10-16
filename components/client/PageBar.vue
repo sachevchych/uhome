@@ -10,7 +10,7 @@
             <el-breadcrumb-item :to="{ path: '/' }">
               Головна сторінка
             </el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/blog/' }">Блог</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/Blog/' }">Блог</el-breadcrumb-item>
             <el-breadcrumb-item>Елемент детально</el-breadcrumb-item>
           </el-breadcrumb>
         </el-col>

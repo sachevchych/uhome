@@ -11,7 +11,9 @@ export default {
     ]
   },
   css: [
+    'normalize.css/normalize.css',
     'element-ui/lib/theme-chalk/index.css',
+    'bootstrap/dist/css/bootstrap-grid.min.css',
     '~theme/style.css'
   ],
   plugins: [
@@ -35,5 +37,8 @@ export default {
   axios: {},
   build: {
     transpile: [/^element-ui/],
+  },
+  loading: {
+    color: '409EFF'
   }
 }

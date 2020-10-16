@@ -1,4 +1,4 @@
 module.exports = {
-  MONGO_URI: 'mongodb://sachevchych:sachevchych123$$$@ds125368.mlab.com:25368/keen',
+  MONGO_URI: 'mongodb+srv://admin:UB16nUoV3edkeyxd@uhome.wcfgb.mongodb.net/uHome?retryWrites=true&w=majority',
   JWT: 'dev-jwt-key'
 };

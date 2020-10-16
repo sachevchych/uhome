@@ -5,7 +5,7 @@ const ctr = require('../controllers/blog.controller')
 const router = Router()
 
 // Admin
-// /api/blog/admin
+// /api/Blog/admin
 router.post(
   '/admin/',
   passport.authenticate('jwt', {session: false}),
