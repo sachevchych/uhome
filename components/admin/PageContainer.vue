@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div class="page-container container">
     <div class="header">
       <h1>{{title}}</h1>
       <slot name="header"></slot>
@@ -39,11 +39,12 @@ export default {
 .content {
   background-color: #ffffff;
   border-radius: .5rem;
-  padding: .3rem 0 1rem 0;
+  padding: 1rem 2rem;
 }
 
 .header h1 {
   font-size: 18px;
   font-weight: 500;
 }
+
 </style>

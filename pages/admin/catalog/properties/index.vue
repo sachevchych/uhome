@@ -11,7 +11,12 @@
         style="width: 100%"
       >
         <el-table-column label="Назва" prop="name"></el-table-column>
-        <el-table-column label="Тип" prop="type"></el-table-column>
+        <el-table-column label="Тип" prop="type">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.type === 'string'" type="primary">Рядок</el-tag>
+            <el-tag v-else-if="scope.row.type === 'list'" type="warning">Список</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="Множинне" prop="multiple">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.multiple === true" type="primary">Так</el-tag>

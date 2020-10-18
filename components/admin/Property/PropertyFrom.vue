@@ -1,10 +1,14 @@
 <template>
-    <el-form ref="propertyForm" :model="property" :rules="rules" label-width="120px">
+  <div class="container">
+    <el-form ref="propertyForm" :model="property" :rules="rules" label-width="120px" v-loading="pageLoading">
+      <el-form-item v-if="propertyId !== 'create'" label="ID" prop='id' >
+        <el-input v-model="property._id" :disabled="true"></el-input>
+      </el-form-item>
       <el-form-item label="Назва" prop="name">
         <el-input v-model="property.name"></el-input>
       </el-form-item>
       <el-form-item label="Тип">
-        <el-select v-model="property.type" placeholder="please select your zone">
+        <el-select v-model="property.type" placeholder="Оберіть тип властивості">
           <el-option label="Рядок" value="string"></el-option>
           <el-option label="Список" value="list"></el-option>
         </el-select>
@@ -43,18 +47,25 @@
         </el-table>
         <el-button @click="handleAddValueInput" class="mt-2">Додати ще одну властивість</el-button>
       </div>
-      <el-divider></el-divider>
-      <el-button class="mt-2" v-if="propertyId === 'create'" type="primary" @click="handleCreate">Створити</el-button>
     </el-form>
+    <div class="mt-2 d-flex justify-content-end">
+      <el-button v-if="propertyId === 'create'" type="primary" @click="handleCreate" :loading="loading">Створити</el-button>
+      <el-button v-else type="primary" @click="handleUpdate" :loading="loading">Зберегти</el-button>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-  props: ['propertyId'],
+  props: {
+    propertyId: String
+  },
   data() {
     return {
       loading: false,
+      pageLoading: true,
       property: {
+        _id: '',
         name: '',
         type: 'string',
         multiple: false,
@@ -68,31 +79,56 @@ export default {
       }
     };
   },
+  mounted() {
+    if (this.propertyId !== 'create') {
+      this.fetchProperty(this.propertyId)
+    } else {
+      this.pageLoading = false
+    }
+  },
   methods: {
+    async fetchProperty(id) {
+      try {
+        this.pageLoading = true
+        this.property = await this.$store.dispatch('property/fetchById', id)
+      } catch (e) {
+        this.$message.error(e)
+      } finally {
+        this.pageLoading = false
+      }
+    },
     handleCreate() {
       this.$refs.propertyForm.validate(async valid => {
         if (valid) {
           this.loading = true
 
-          const formData = {
-            name: this.property.name,
-            type: this.property.type,
-            multiple: this.property.multiple,
-            values: this.property.type === 'list' ? this.property.values : null
-          }
-
-          console.log('formData', formData)
-
           try {
-            await this.$store.dispatch('property/create', formData)
-            this.$message.success('Товар створено')
+            await this.$store.dispatch('property/create', this.property)
+            this.$message.success('Властивість створено')
           } catch (e) {
             this.$message.error(e)
           } finally {
             this.loading = false
           }
         } else {
-          this.$message.warning("Ви не заповнили всі обов'язкові поля")
+          this.$message.warning("Ви не заповнили всі необхідні поля")
+        }
+      })
+    },
+    handleUpdate() {
+      this.$refs.propertyForm.validate(async valid => {
+        if (valid) {
+          try {
+            this.loading = true
+            await this.$store.dispatch('property/update', this.property)
+            this.$message.success('Властивість оновлено')
+          } catch (e) {
+            this.$message.error(e)
+          } finally {
+            this.loading = false
+          }
+        } else {
+          this.$message.warning("Ви не заповнили всі необхідні поля")
         }
       })
     },

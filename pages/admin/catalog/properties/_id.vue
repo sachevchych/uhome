@@ -1,5 +1,5 @@
 <template>
-  <PageContainer title="Нова властивість">
+  <PageContainer title="Редагування властивості">
     <template v-slot:header>
       Кнопка видалення властивості
     </template>

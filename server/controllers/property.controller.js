@@ -6,11 +6,11 @@ module.exports.create = async (req, res) => {
 
     property.name = req.body.name
     property.type = req.body.type
-    property.mutiple = req.body.multiple
+    property.multiple = req.body.multiple
     property.values = req.body.values
 
-    await property.save()
-    res.status(201)
+    const result = await property.save()
+    res.status(201).json(result)
   } catch (e) {
     res.status(500).json(e)
   }
@@ -27,9 +27,7 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.getById = async (req, res) => {
   try {
-    await Property.findById(req.params.id, (err, product) => {
-      res.json(product)
-    })
+    await Property.findById(req.params.id, (err, property) => res.status(201).json(property))
   } catch (e) {
     res.status(500).json(e)
   }
@@ -37,14 +35,14 @@ module.exports.getById = async (req, res) => {
 
 module.exports.update = async (req, res) => {
   try {
-    const $set = {}
+    const $set = {
+      name: req.body.name,
+      type: req.body.type,
+      multiple: req.body.multiple,
+      values: req.body.values,
+    }
 
-    $set.name = req.body.name
-    $set.type = req.body.type
-    $set.mutiple = req.body.multiple
-    $set.values = req.body.values
-
-    const property = await Property.findOneAndUpdate({_id: req.params.id}, $set, {new: true})
+    const property = await Property.findOneAndUpdate({_id: req.body._id}, $set, {new: true})
     res.json(property)
   } catch (e) {
     res.status(500).json(e)
@@ -53,7 +51,6 @@ module.exports.update = async (req, res) => {
 
 module.exports.remove = async (req, res) => {
   try {
-    console.log(req.params.id)
     await Property.deleteOne({_id: req.params.id})
     res.json({message: 'Властивість видалено'})
   } catch (e) {
