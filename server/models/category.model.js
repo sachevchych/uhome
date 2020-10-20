@@ -8,16 +8,12 @@ const categorySchema = new Schema({
     type: Boolean,
     default: true
   },
-  description: {
-    type: String
+  parent: {
+    type: String,
   },
-  date: {
-    type: Date,
-    default: Date.now
-  },
-  imageUrl: {
-    type: String
+  properties: {
+    type: Array
   }
 })
 
-module.exports = model('Category', categorySchema)
+module.exports = model('categories', categorySchema)
