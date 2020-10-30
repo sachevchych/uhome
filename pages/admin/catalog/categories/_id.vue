@@ -19,10 +19,10 @@
         <el-form-item label="Належить до" prop="parent">
           <el-select v-model="category.parent" placeholder="Оберіть батківську категорію">
             <el-option
-              v-for="item in categories"
-              :key="item._id"
-              :label="item.name"
-              :value="item._id"
+              v-for="category in categories"
+              :key="category._id"
+              :label="category.name"
+              :value="category._id"
             >
             </el-option>
           </el-select>
@@ -65,7 +65,18 @@
         </el-form-item>
       </el-form>
       <div class="d-flex justify-content-end">
-        <el-button type="primary" @click="handlerCreate(category)">Стоврити категорію</el-button>
+        <el-button v-if="$route.params.id === 'create'"
+                   type="primary"
+                   @click="handlerCreate(category)"
+                   :loading="loading.create">
+          Стоврити категорію
+        </el-button>
+        <el-button v-else
+                   type="primary"
+                   @click="handlerUpdate(category)"
+                   :loading="loading.update">
+          Зберегти
+        </el-button>
       </div>
     </template>
   </PageContainer>
@@ -81,9 +92,11 @@ export default {
   data() {
     return {
       loading: {
-
+        create: false,
+        update: false
       },
       category: {
+        _id: '',
         name: '',
         active: true,
         parent: 'root',
@@ -101,10 +114,40 @@ export default {
       }
     }
   },
+  async asyncData({store, params}) {
+    if (params.id !== 'create') {
+      const category = await store.dispatch('category/fetchById', params.id)
+      return {category}
+    }
+  },
   mounted() {
     this.fetchProperties()
+    this.fetchCategories()
   },
   methods: {
+    async fetchCategories() {
+      try {
+        const categories = await this.$store.dispatch('category/fetchCategoriesTree')
+
+        const List = []
+
+        categories.forEach(category => {
+          List.push({...category})
+          if (Array.isArray(category.children)) {
+
+            category.children.forEach(category2 => {
+              List.push({...category2, name: `- ${category2.name}`})
+            })
+
+          }
+        })
+
+
+        this.categories = this.categories.concat(List)
+      } catch (e) {
+        this.$message.error(`Не вдалося завантажити список категорій. Помилка: ${e}`)
+      }
+    },
     async fetchProperties() {
       try {
         this.properties = await this.$store.dispatch('property/fetchProperties')
@@ -137,7 +180,27 @@ export default {
       this.properties[index].disabled = false
     },
     async handlerCreate(category) {
-      console.log(category)
+      try {
+        this.loading.create = true
+        await this.$store.dispatch('category/create', category)
+        this.$message.success(`Категорія "${this.category.name}" успішно створена`)
+        await this.$router.push('/admin/catalog/categories/')
+      } catch (e) {
+        this.$message.error(`Не вдалося створити категорію. Помилка ${e}`)
+      } finally {
+        this.loading.create = false
+      }
+    },
+    async handlerUpdate(category) {
+      try {
+        this.loading.update = true
+        await this.$store.dispatch('category/update', category)
+        this.$message.success(`Категорія "${this.category.name}" успішно оновлена`)
+      } catch (e) {
+        this.$message.error(`Не вдалося оновити категорію. Помилка ${e}`)
+      } finally {
+        this.loading.create = false
+      }
     }
   }
 }

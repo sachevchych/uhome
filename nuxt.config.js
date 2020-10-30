@@ -34,7 +34,9 @@ export default {
   serverMiddleware: {
     '/api': '~/server/app.js'
   },
-  axios: {},
+  axios: {
+    baseURL: process.env.APP_API || 'http://localhost:3000'
+  },
   build: {
     transpile: [/^element-ui/],
   },

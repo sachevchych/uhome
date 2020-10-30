@@ -43,7 +43,9 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.getById = async (req, res) => {
   try {
-    await Category.findById(req.params.id, (err, category) => res.status(201).json(category))
+    await Category.findById(req.params.id, (err, category) => {
+      res.status(201).json(category)
+    })
   } catch (e) {
     res.status(500).json(e)
   }

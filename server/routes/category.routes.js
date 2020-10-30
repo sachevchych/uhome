@@ -3,7 +3,7 @@ const {Router} = require('express')
 const {create, getAll, getById, update, remove} = require('../controllers/category.controller')
 const router = Router()
 
-// /api/property
+// /api/category
 router.post(
   '/',
   // passport.authenticate('jwt', {session: false}),
