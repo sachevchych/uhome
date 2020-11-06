@@ -1,71 +1,80 @@
 <template>
-  <div class="wrap">
-    <div class="page-bar">
-      <h1 v-if="ifCreate">Створення нового товару</h1>
-      <h1 v-else>{{ product.name }}</h1>
-    </div>
-    <div class="container">
+  <PageContainer :title="ifCreate ? 'Створення нового товару' : this.product.name">
+    <template v-slot:header>
+
+    </template>
+    <template v-slot:content>
       <el-form
-        class="content"
-        ref="controls"
-        :model="controls"
+        ref="product"
+        :model="product"
         :rules="rules"
-        label-width="120px"
+        label-width="150px"
         enctype="multipart/form-data"
       >
-        <el-tabs tab-position="left">
-          <!-- Основні властивості -->
-          <el-tab-pane label="Основні">
+        <el-tabs tab-position="top">
+          <!-- MAIN TAB -->
+          <el-tab-pane label="Основні властивості">
             <el-form-item label="Назва товару" prop="name">
-              <el-input v-model="controls.name"></el-input>
+              <el-input v-model="product.name"></el-input>
             </el-form-item>
             <el-form-item label="Активний" prop="active">
-              <el-switch v-model="controls.active"></el-switch>
+              <el-switch v-model="product.active"></el-switch>
+            </el-form-item>
+            <el-form-item label="Категорія" prop="category">
+              <CategorySelect :active='product.category' @category="handlerOnCategoryChange"/>
             </el-form-item>
             <el-form-item label="Фотографія">
-              <el-upload
-                action="#"
-                drag
-                :file-list="fileList"
-                :on-change="handleImageChange"
-                :on-remove="handleImageRemove"
-                :auto-upload="false"
-                :limit="1"
-              >
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">Перетягніть фотографію сюди або <em>оберіть вручну</em></div>
-                <div class="el-upload__tip" slot="tip">jpg/png файли з розміром не більше 500 кб</div>
-              </el-upload>
+              <DragAndDropFile v-on:update="updateImages" :images-url="product.images"></DragAndDropFile>
             </el-form-item>
           </el-tab-pane>
-          <el-form-item>
-            <div v-if="ifCreate">
-              <el-button type="primary" native-type="submit" @click.native.prevent="create(true)">Створити товар
-              </el-button>
-            </div>
-            <div v-else>
-              <el-button type="primary" native-type="submit" @click.native.prevent="update">Зберегти</el-button>
-            </div>
-          </el-form-item>
+          <!-- PROPERTIES TAB -->
+          <el-tab-pane v-if="propertiesFields.length > 0" label="Характеристики">
+            <el-form-item v-for="property in propertiesFields" :label="property.name" :key="property._id">
+              <div v-if="property.type === 'list'">
+                <el-select v-model="property.value">
+                  <el-option
+                    v-for="option in property.values"
+                    :key="option.id"
+                    :label="option.name"
+                    :value="option.id"
+                  >
+                  </el-option>
+                </el-select>
+              </div>
+              <div v-else-if="property.type === 'string'">
+                <el-input v-model="property.value"></el-input>
+              </div>
+
+            </el-form-item>
+          </el-tab-pane>
         </el-tabs>
       </el-form>
-    </div>
-  </div>
+    </template>
+    <template v-slot:footer>
+      <div v-if="ifCreate">
+        <el-button @click="createProduct(true)" plain>Створити та продовжити</el-button>
+        <el-button type="primary" @click="createProduct(false)">Створити</el-button>
+      </div>
+      <div v-else>
+        <el-button @click="updateProduct(true)" plain>Зберегти та продовжити</el-button>
+        <el-button type="primary" @click="updateProduct(false)">Зберегти</el-button>
+      </div>
+    </template>
+  </PageContainer>
 </template>
 
 <script>
+import PageContainer from "@/components/admin/PageContainer";
+import CategorySelect from "@/components/admin/Products/CategorySelect";
+import DragAndDropFile from "@/components/admin/UI/DragAndDropFile";
+
 export default {
   layout: 'admin',
   middleware: ['admin-auth'],
+  components: {DragAndDropFile, CategorySelect, PageContainer},
   head() {
     return {
       title: this.ifCreate ? 'Створення нового товару' : this.product.name
-    }
-  },
-  async asyncData({store, params}) {
-    if (params.id !== 'create') {
-      const product = await store.dispatch('product/fetchById', params.id)
-      return {product}
     }
   },
   data() {
@@ -73,12 +82,15 @@ export default {
       ifCreate: this.$route.params.id === 'create',
       getImage: false,
       loading: false,
-      image: null,
       fileList: [],
-      controls: {
+      product: {
         name: '',
         active: true,
+        category: 'root',
+        properties: [],
+        images: []
       },
+      propertiesFields: [],
       rules: {
         name: [
           {required: true, message: 'Назва товару не можу бути пустою', trigger: 'blur'}
@@ -86,12 +98,21 @@ export default {
       }
     }
   },
+  async asyncData({store, params}) {
+    if (params.id !== 'create') {
+      const product = await store.dispatch('product/fetchById', params.id)
+      console.log(typeof product.properties[0])
+      return {product}
+    }
+  },
   mounted() {
-
     if (this.$route.params.id !== 'create') {
+
+      this.fetchPropertiesFields(this.product.category)
+
       for (let key in this.product) {
         if (key !== 'imageUrl') {
-          this.controls[key] = this.product[key]
+          this.product[key] = this.product[key]
         } else {
           this.fileList.push({name: this.product[key], url: this.product[key]})
         }
@@ -99,68 +120,90 @@ export default {
     }
   },
   methods: {
-    handleImageChange(file) {
-      this.image = file.raw
-      this.getImage = true
+    async fetchPropertiesFields(categoryId) {
+      if (categoryId !== 'root') {
+        this.propertiesFields = await this.$store.dispatch('category/fetchCategoryPropertiesById', categoryId)
+      }
     },
-    handleImageRemove() {
-      this.image = null
-      this.getImage = false
+    updateImages(fileList) {
+      fileList.forEach(file => {
+        this.product.images.push(file.image)
+      })
     },
-    create() {
-      this.$refs.controls.validate(async valid => {
+    handlerOnCategoryChange(categoryId) {
+      this.product.category = categoryId
+      this.fetchPropertiesFields(categoryId)
+    },
+    catchPropertiesFromFields() {
+      let propertiesValues = []
+
+      this.propertiesFields.forEach(prop => {
+        if (prop.hasOwnProperty('value')) {
+          const $set = {'_id': prop._id, 'value': prop.value}
+          propertiesValues.push($set)
+        }
+      })
+
+      return propertiesValues
+    },
+    createProduct(redirect) {
+      this.$refs.product.validate(async valid => {
         if (valid) {
-          this.loading = true
+          this.product.properties = this.catchPropertiesFromFields()
 
-          const formData = {}
-
-          for (let prop in this.controls) {
-            formData[prop] = this.controls[prop]
-          }
-
-          if (this.getImage) {
-            formData.image = this.image
+          const formData = {
+            name: this.product.name,
+            active: this.product.active,
+            category: this.product.category,
+            properties: this.product.properties,
+            images: this.product.images
           }
 
           try {
+            this.loading = true
             await this.$store.dispatch('product/create', formData)
             this.$message.success('Товар створено')
-            this.$router.push('/catalog/products/')
+
+            // if (redirect) {
+            //   this.$router.push('../')
+            // } else {
+            //   this.$router.push('../' + this.product._id)
+            // }
           } catch (e) {
             this.$message.error(e)
           } finally {
             this.loading = false
           }
         } else {
-          this.$message.warning("Ви не заповнили всі обов'язкові поля")
+          this.$message.warning("Ви не заповнили всі необхідні поля")
         }
       })
     },
-    update() {
-      this.$refs.controls.validate(async valid => {
+    updateProduct(redirect) {
+      this.$refs.product.validate(async valid => {
         if (valid) {
           this.loading = true
+          this.product.properties = this.catchPropertiesFromFields()
 
           const formData = {
-            id: this.product._id
+            id: this.product._id,
           }
 
-          for (let prop in this.controls) {
-            formData[prop] = this.controls[prop]
+          for (let prop in this.product) {
+            formData[prop] = this.product[prop]
           }
 
-          if (this.getImage) {
-            formData.image = this.image
-          }
+
+          console.log(this.product)
 
           try {
             await this.$store.dispatch('product/update', formData)
             this.$message.success('Товар оновлено')
             this.loading = false
+            if (redirect) this.$router.push('../')
           } catch (e) {
             this.loading = false
           }
-
         }
       })
     }
@@ -169,8 +212,4 @@ export default {
 </script>
 
 <style scoped>
-.content {
-  max-width: 800px;
-  margin: 0 auto;
-}
 </style>

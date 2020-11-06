@@ -7,10 +7,11 @@
 
     <div class="content">
       <slot name="content"></slot>
+      <div class="footer">
+        <slot name="footer"></slot>
+      </div>
     </div>
-    <div class="footer">
-      <slot name="footer"></slot>
-    </div>
+
   </div>
 </template>
 
@@ -26,7 +27,6 @@ export default {
 <style scoped>
 .page-container {
   padding: .5rem 1rem;
-
 }
 
 .header {
@@ -45,6 +45,14 @@ export default {
 .header h1 {
   font-size: 18px;
   font-weight: 500;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-top: 1px solid #EBEDF3;
+  padding: 1rem 0;
 }
 
 </style>

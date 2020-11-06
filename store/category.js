@@ -34,6 +34,26 @@ export const actions = {
       throw e
     }
   },
+  async fetchCategoryPropertiesById({dispatch, commit}, id) {
+    try {
+      const category = await this.$axios.$get(`/api/category/${id}`)
+      const propertiesList = []
+
+      category.properties.sort(function (a, b) {
+        return a.sort - b.sort
+      })
+
+      for (let property of category.properties) {
+        const fullProperty = await dispatch('property/fetchById', property._id, { root: true })
+        propertiesList.push({ ...property, ...fullProperty })
+      }
+
+      return propertiesList
+    } catch (e) {
+      commit('setError', e, {root: true})
+      throw e
+    }
+  },
   async fetchCategories({commit}) {
     try {
       return await this.$axios.$get('/api/category/')

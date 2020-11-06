@@ -1,7 +1,21 @@
 const Product = require('../models/product.model')
 
 module.exports.create = async (req, res) => {
-  const product = new Product(createQuery(req))
+  const $set = {
+    name: req.body.name,
+    active: req.body.active,
+    category: req.body.category,
+    properties: req.body.properties
+  }
+
+  if (req.files) {
+    $set.images = []
+    req.files.forEach(file => {
+      $set.images.push('/images/products/' + file.filename)
+    })
+  }
+
+  const product = new Product($set)
 
   try {
     await product.save()

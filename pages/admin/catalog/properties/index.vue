@@ -24,8 +24,7 @@
         </el-table-column>
         <el-table-column label="Дії">
           <template slot-scope="scope">
-            <el-button size="mini" round @click="edit(scope.row._id)">Редагувати
-            </el-button>
+            <el-button size="mini" @click="edit(scope.row._id)">Редагувати</el-button>
             <el-button
               size="mini"
               type="danger"

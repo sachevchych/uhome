@@ -7,6 +7,13 @@ const productSchema = new mongoose.Schema({
   active: {
     type: Boolean
   },
+  category: {
+    type: String,
+    default: 'root'
+  },
+  properties: {
+    type: Array
+  },
   price: {
     type: Number
   },
@@ -21,11 +28,10 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  imageUrl: {
-    type: String
+  images: {
+    type: Array
   }
 })
-
 
 module.exports = (mongoose.models && mongoose.models.Product ? mongoose.models.Product : mongoose.model('Product', productSchema));
 

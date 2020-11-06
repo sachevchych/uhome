@@ -4,7 +4,7 @@
       <el-button type="primary" @click="addNewProduct" size="medium">Додати товар</el-button>
     </template>
     <template v-slot:content>
-      <el-table :data="products" :v-loading="loading">
+      <el-table :data="products">
         <el-table-column type="selection"/>
         <el-table-column label="Фото" width="80px">
           <template slot-scope="{row: {imageUrl}}">
@@ -40,10 +40,10 @@
           label="Операції"
         >
           <template slot-scope="{row: {_id, name}}">
-            <el-button @click="open(_id)" type="primary" size="small" plain round>
+            <el-button @click="openProduct(_id)" type="primary" size="mini" plain>
               Редагувати
             </el-button>
-            <el-button @click="remove(_id, name)" type="danger" size="small" plain round>
+            <el-button @click="removeProduct(_id, name)" type="danger" size="mini" plain>
               Видалити
             </el-button>
           </template>
@@ -68,6 +68,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       products: null
     }
   },
@@ -77,12 +78,12 @@ export default {
   },
   methods: {
     addNewProduct() {
-      this.$router.push(`/catalog/products/create/`)
+      this.$router.push(`/admin/catalog/products/create/`)
     },
-    open(id) {
-      this.$router.push(`/catalog/products/${id}`)
+    openProduct(id) {
+      this.$router.push(`/admin/catalog/products/${id}`)
     },
-    async remove(id, name) {
+    async removeProduct(id, name) {
       try {
         await this.$confirm(`Видалити ${name}?`, 'Увага!', {
           confirmButtonText: 'Так',

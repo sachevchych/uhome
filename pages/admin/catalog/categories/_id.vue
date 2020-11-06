@@ -199,7 +199,7 @@ export default {
       } catch (e) {
         this.$message.error(`Не вдалося оновити категорію. Помилка ${e}`)
       } finally {
-        this.loading.create = false
+        this.loading.update = false
       }
     }
   }

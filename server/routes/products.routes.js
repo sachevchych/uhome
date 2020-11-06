@@ -8,33 +8,33 @@ const router = Router()
 // /api/products/..
 router.post(
   '/create',
-  passport.authenticate('jwt', {session: false}),
-  upload.single('image'),
+  // passport.authenticate('jwt', {session: false}),
+  upload.array('images'),
   ctr.create
 )
 
 router.get(
   '',
-  passport.authenticate('jwt', {session: false}),
+  // passport.authenticate('jwt', {session: false}),
   ctr.getAll
 )
 
 router.get(
   '/:id',
-  passport.authenticate('jwt', {session: false}),
+  // passport.authenticate('jwt', {session: false}),
   ctr.getById
 )
 
 router.put(
   '/:id',
-  passport.authenticate('jwt', {session: false}),
+  // passport.authenticate('jwt', {session: false}),
   upload.single('image'),
   ctr.update
 )
 
 router.delete(
   '/:id',
-  passport.authenticate('jwt', {session: false}),
+  // passport.authenticate('jwt', {session: false}),
   ctr.remove
 )
 // Client

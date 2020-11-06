@@ -17,7 +17,16 @@ export const actions = {
 
   },
   async create({commit}, data) {
-    const fd = formDataCreate(data)
+
+    const fd = new FormData()
+    fd.append('name', data.name )
+    fd.append('active', data.active )
+    fd.append('category', data.category )
+    fd.append('properties', data.properties )
+
+    data.images.forEach(file => {
+      fd.append('images', file, file.name)
+    })
 
     try {
       return await this.$axios.$post('/api/products/create', fd)
