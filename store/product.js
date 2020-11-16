@@ -52,6 +52,25 @@ export const actions = {
       commit('setError', e, {root: true})
       throw e
     }
+  },
+  async uploadImage({commit}, file) {
+    try {
+      const fd = new FormData()
+      fd.append('image', file, file.name)
+
+      return await this.$axios.$post('/api/products/image', fd)
+    } catch (e) {
+      commit('setError', e, {root: true})
+      throw e
+    }
+  },
+  async removeImage({commit}, imageUrl) {
+    try {
+      return await this.$axios.$delete('/api/products/image', imageUrl)
+    } catch (e) {
+      commit('setError', e, {root: true})
+      throw e
+    }
   }
 }
 

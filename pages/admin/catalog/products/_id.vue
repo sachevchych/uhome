@@ -101,7 +101,7 @@ export default {
   async asyncData({store, params}) {
     if (params.id !== 'create') {
       const product = await store.dispatch('product/fetchById', params.id)
-      console.log(typeof product.properties[0])
+      console.log(product)
       return {product}
     }
   },

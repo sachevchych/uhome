@@ -1,4 +1,5 @@
 const Product = require('../models/product.model')
+const fs = require('fs')
 
 module.exports.create = async (req, res) => {
   const $set = {
@@ -46,14 +47,14 @@ module.exports.getById = async (req, res) => {
 }
 
 module.exports.update = async (req, res) => {
-  const $set = createQuery(req)
-
-  try {
-    const product = await Product.findOneAndUpdate({_id: req.params.id}, $set, {new: true})
-    res.json(product)
-  } catch (e) {
-    res.status(500).json(e)
-  }
+  // const $set = createQuery(req)
+  //
+  // try {
+  //   const product = await Product.findOneAndUpdate({_id: req.params.id}, $set, {new: true})
+  //   res.json(product)
+  // } catch (e) {
+  //   res.status(500).json(e)
+  // }
 }
 
 module.exports.remove = async (req, res) => {
@@ -77,15 +78,29 @@ module.exports.addView = async (req, res) => {
   }
 }
 
-function createQuery(req) {
-  const $set = {}
-  for (let property in req.body) {
-    $set[property] = req.body[property]
-  }
-
+module.exports.uploadImage = (req, res) => {
   if (req.file) {
-    $set.imageUrl = '/products_images/' + req.file.filename
-  }
+    const fileData = {
+      name: req.file.filename,
+      size: req.file.size,
+      url: '/images/products/' + req.file.filename
+    }
 
-  return $set
+    res.status(201).json(fileData)
+  } else {
+    res.status(500).json('File not found')
+  }
+}
+
+module.exports.removeImage = (req, res) => {
+
+  res.status(201)
+  // try {
+  //   fs.unlink(req.body.url, function (e) {
+  //     if (e) throw e
+  //     res.json({message: 'Файл видалено'})
+  //   })
+  // } catch (e) {
+  //   res.status(500).json(e)
+  // }
 }

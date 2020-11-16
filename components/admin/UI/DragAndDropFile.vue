@@ -2,9 +2,9 @@
   <div class="uploader">
     <div class="uploader-header">
       <span class="uploader-header-label">Завантаження зображень</span>
-      <div v-show="fileList.length > 0">
-        <el-button v-show="display.dashboard" size="mini" plain round @click="displayDropZone">Додати</el-button>
-        <el-button v-show="display.uploadZone" size="mini" type="warning" plain round @click="hideDropZone">Закрити
+      <div v-show="images.length > 0">
+        <el-button v-show="display.dashboard" size="mini" plain round @click="displayDropZone(true)">Додати</el-button>
+        <el-button v-show="display.uploadZone" size="mini" type="warning" plain round @click="displayDropZone(false)">Закрити
         </el-button>
       </div>
     </div>
@@ -29,23 +29,23 @@
       </div>
     </div>
     <div class="dashboard" v-show="display.dashboard">
-      <draggable tag="ul" v-if="fileList.length" v-bind="dragOptions" v-model="fileList" handle=".preview-handle">
+      <draggable tag="ul" v-if="images.length" v-bind="dragOptions" v-model="images" handle=".preview-handle">
         <transition-group type="transition">
-          <li v-for="file in fileList" :key="file.id">
+          <li v-for="image in images" :key="image.name">
             <div class="preview">
               <div class="preview-handle">
                 <i class="el-icon-rank"></i>
               </div>
               <div class="img">
-                <el-image style="height: 100%; width: 100%" :src="file.url" fit="scale-down"></el-image>
+                <el-image style="height: 100%; width: 100%" :src="image.url" fit="scale-down"></el-image>
               </div>
               <div class="info">
-                <span>{{ file.image.name }}</span>
-                <small>{{ file.size }}</small>
+                <span>{{ image.name }}</span>
+                <small>{{ image.size }}</small>
               </div>
             </div>
             <div class="action">
-              <el-button @click="remove(file)" type="danger" size="mini" round plain>Видалити</el-button>
+              <el-button @click="remove(image)" type="danger" size="mini" round plain>Видалити</el-button>
             </div>
           </li>
         </transition-group>
@@ -71,57 +71,48 @@ export default {
         uploadZone: true,
         dashboard: false
       },
-      fileList: []
+      images: []
     }
   },
   methods: {
     onChange() {
       if (this.$refs.file.files.length > 0) {
-        if (this.typeValidation(this.$refs.file.files)) {
-          this.hideDropZone()
-          this.addToList(this.$refs.file.files)
-        } else {
-         this.$message.error('Файли повинні бути тільки у форматі jpg, jpeg, png')
-        }
-      }
-    },
-    typeValidation(files) {
-      for (const prop in files) {
-        if (files.hasOwnProperty(prop)) {
-          if (files[prop].type !== "image/jpeg") {
-            return false
+        this.displayDropZone(false)
+        const files = [...this.$refs.file.files]
+
+        for (const file of files) {
+          if (this.validateFileType(file)) {
+            this.upload(file)
+          } else {
+            this.$message.error(`Файл ${file.name} не відповідає вимогам. Розширення файлу повинно бути в форматі jpeg або png.`)
           }
         }
       }
-      return true
     },
-    addToList(files) {
-      const set = [...files]
-      for (const file of set) {
-        let id = this.getFileId()
-        this.fileList.push({
-          id: id,
-          image: file,
-          url: '',
-          size: this.getFileSize(file.size),
+    async upload(file) {
+      try {
+        const imageData = await this.$store.dispatch('product/uploadImage', file)
+
+        this.images.push({
+          ...imageData,
+          size: this.convertFileSize(imageData.size)
         })
-        this.getFileUrl(file, id)
+      } catch (e) {
+        this.$message.error(`Не вдалося завантажити файл ${file.name}.`)
+      }
+      console.log(this.images)
+    },
+    validateFileType(file) {
+      switch (file.type) {
+        case 'image/jpeg':
+          return true
+        case 'image/png':
+          return true
+        default:
+          return false
       }
     },
-    getFileId() {
-      if (this.fileList.length > 0) {
-        let maxID = 0
-        this.fileList.forEach(file => {
-          if (file.id > maxID) {
-            maxID = file.id
-          }
-        })
-        return maxID + 1
-      } else {
-        return 1
-      }
-    },
-    getFileSize(size) {
+    convertFileSize(size) {
       if (size > 1024 * 1024) {
         return (size / (1024 * 1024)).toFixed(0) + ' MB'
       } else if (size > 1024) {
@@ -130,22 +121,15 @@ export default {
         return size + ' B'
       }
     },
-    getFileUrl(file, id) {
-      let reader = new FileReader()
-      reader.onloadend = e => {
-        this.fileList.forEach(element => {
-          if (element.id === id) {
-            element.url = e.target.result
-          }
-        })
+    async remove(image) {
+      console.log(image)
+      await this.$store.dispatch('product/removeImage', image.url)
 
-      }
-      reader.readAsDataURL(file)
-    },
-    remove(fileObject) {
-      this.fileList = this.fileList.filter(file => file.image !== fileObject.image)
-      if (this.fileList.length === 0) {
-        this.displayDropZone()
+      // this.images = this.images.filter(image => image.name !== imageName)
+
+
+      if (this.images.length === 0) {
+        this.displayDropZone(true)
       }
     },
     dragover(event) {
@@ -169,14 +153,9 @@ export default {
       this.$refs.file.files = event.dataTransfer.files;
       this.onChange();
     },
-    displayDropZone() {
-      this.display.uploadZone = true
-      this.display.dashboard = false
-
-    },
-    hideDropZone() {
-      this.display.uploadZone = false
-      this.display.dashboard = true
+    displayDropZone(value) {
+      this.display.uploadZone = value
+      this.display.dashboard = !value
     }
   },
   computed: {

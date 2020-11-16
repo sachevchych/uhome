@@ -37,6 +37,21 @@ router.delete(
   // passport.authenticate('jwt', {session: false}),
   ctr.remove
 )
+
+// Images
+router.post(
+  '/image',
+  // passport.authenticate('jwt', {session: false}),
+  upload.single('image'),
+  ctr.uploadImage
+)
+
+router.delete(
+  '/image',
+  // passport.authenticate('jwt', {session: false}),
+  ctr.removeImage
+)
+
 // Client
 router.get('/', ctr.getAll)
 router.get('/:id', ctr.getById)
