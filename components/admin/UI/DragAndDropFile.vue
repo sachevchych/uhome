@@ -2,7 +2,7 @@
   <div class="uploader">
     <div class="uploader-header">
       <span class="uploader-header-label">Завантаження зображень</span>
-      <div v-show="images.length > 0">
+      <div v-show="!isImagesEmpty">
         <el-button v-show="display.dashboard" size="mini" plain round @click="displayDropZone(true)">Додати</el-button>
         <el-button v-show="display.uploadZone" size="mini" type="warning" plain round @click="displayDropZone(false)">Закрити
         </el-button>
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="dashboard" v-show="display.dashboard">
-      <draggable tag="ul" v-if="images.length" v-bind="dragOptions" v-model="images" handle=".preview-handle">
+      <draggable tag="ul" v-if="!isImagesEmpty" v-bind="dragOptions" v-model="images" handle=".preview-handle">
         <transition-group type="transition">
           <li v-for="image in images" :key="image.name">
             <div class="preview">
@@ -62,7 +62,7 @@ export default {
   components: {
     draggable,
   },
-  props: ['images-url'],
+  props: ['fileList'],
   data() {
     return {
       display: {
@@ -74,9 +74,15 @@ export default {
       images: []
     }
   },
+  mounted() {
+    this.images = this.fileList
+    if (!this.isImagesEmpty) {
+      this.displayDropZone(false)
+    }
+  },
   methods: {
     onChange() {
-      if (this.$refs.file.files.length > 0) {
+      if (this.$refs.file.files && this.$refs.file.files.length > 0) {
         this.displayDropZone(false)
         const files = [...this.$refs.file.files]
 
@@ -92,7 +98,6 @@ export default {
     async upload(file) {
       try {
         const imageData = await this.$store.dispatch('product/uploadImage', file)
-
         this.images.push({
           ...imageData,
           size: this.convertFileSize(imageData.size)
@@ -100,7 +105,18 @@ export default {
       } catch (e) {
         this.$message.error(`Не вдалося завантажити файл ${file.name}.`)
       }
-      console.log(this.images)
+    },
+    async remove(file) {
+      try {
+        await this.$store.dispatch('product/removeImage', file.name)
+        this.images = this.images.filter(image => image.name !== file.name)
+
+        if (this.isImagesEmpty) {
+          this.displayDropZone(true)
+        }
+      } catch (e) {
+        this.$message.error(`Не вдалося видалити файл. Помилка: ${e}`)
+      }
     },
     validateFileType(file) {
       switch (file.type) {
@@ -119,17 +135,6 @@ export default {
         return (size / 1024).toFixed(0) + ' KB'
       } else {
         return size + ' B'
-      }
-    },
-    async remove(image) {
-      console.log(image)
-      await this.$store.dispatch('product/removeImage', image.url)
-
-      // this.images = this.images.filter(image => image.name !== imageName)
-
-
-      if (this.images.length === 0) {
-        this.displayDropZone(true)
       }
     },
     dragover(event) {
@@ -158,6 +163,11 @@ export default {
       this.display.dashboard = !value
     }
   },
+  watch: {
+    images: function (data) {
+      this.$emit('dataChange', data)
+    }
+  },
   computed: {
     dragOptions() {
       return {
@@ -166,11 +176,9 @@ export default {
         disabled: false,
         ghostClass: "ghost"
       }
-    }
-  },
-  watch: {
-    fileList: function () {
-      this.$emit('update', this.fileList)
+    },
+    isImagesEmpty() {
+      return this.images.length <= 0;
     }
   }
 }

@@ -1,7 +1,7 @@
 export const actions = {
   async create({commit}, data) {
     try {
-      return await this.$axios.$post('/api/category/', {
+      return await this.$axios.$post('/api/category/admin', {
         name: data.name,
         active: data.active,
         parent: data.parent,
@@ -14,7 +14,7 @@ export const actions = {
   },
   async update({commit}, data) {
     try {
-      return await this.$axios.$put(`/api/category/${data.id}`, {
+      return await this.$axios.$put(`/api/category/admin/${data.id}`, {
         _id: data._id,
         name: data.name,
         active: data.active,
@@ -28,7 +28,7 @@ export const actions = {
   },
   async fetchById({commit}, id) {
     try {
-      return await this.$axios.$get(`/api/category/${id}`)
+      return await this.$axios.$get(`/api/category/admin/${id}`)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
@@ -36,7 +36,7 @@ export const actions = {
   },
   async fetchCategoryPropertiesById({dispatch, commit}, id) {
     try {
-      const category = await this.$axios.$get(`/api/category/${id}`)
+      const category = await this.$axios.$get(`/api/category/admin/${id}`)
       const propertiesList = []
 
       category.properties.sort(function (a, b) {
@@ -56,14 +56,14 @@ export const actions = {
   },
   async fetchCategories({commit}) {
     try {
-      return await this.$axios.$get('/api/category/')
+      return await this.$axios.$get('/api/category/admin')
     } catch (e) {
       commit('setError', e, {root: true})
     }
   },
   async fetchCategoriesTree({commit}) {
     try {
-      const categories = await this.$axios.$get('/api/category/')
+      const categories = await this.$axios.$get('/api/category/admin')
       return createCategoriesTree(categories)
     } catch (e) {
       commit('setError', e, {root: true})
@@ -71,10 +71,17 @@ export const actions = {
   },
   async remove({commit}, id) {
     try {
-      return await this.$axios.$delete(`/api/category/${id}`)
+      return await this.$axios.$delete(`/api/category/admin/${id}`)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
+    }
+  },
+  async fetchCategoriesForClient({commit}) {
+    try {
+      return await this.$axios.$get('/api/category')
+    } catch (e) {
+      commit('setError', e, {root: true})
     }
   }
 }

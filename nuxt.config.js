@@ -7,28 +7,36 @@ export default {
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap' }
     ]
   },
   css: [
     'normalize.css/normalize.css',
-    'element-ui/lib/theme-chalk/index.css',
-    'bootstrap/dist/css/bootstrap-grid.min.css',
-    '~theme/style.css'
+    'element-ui/lib/theme-chalk/index.css'
   ],
   plugins: [
     '@/plugins/globals'
   ],
   components: true,
   buildModules: [
+    '@nuxtjs/fontawesome'
   ],
+  fontawesome: {
+    icons: {
+      solid: ['faBars', 'faEllipsisV', 'faAngleRight'],
+      brands: true
+    }
+  },
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/style-resources'
   ],
   styleResources: {
     scss: [
-      './assets/vars/*.scss'
+      './assets/vars/*.scss',
+      '~theme/style.scss'
     ]
   },
   serverMiddleware: {

@@ -8,8 +8,8 @@
         ref="product"
         :model="product"
         :rules="rules"
-        label-width="150px"
-        enctype="multipart/form-data"
+        label-width="200px"
+        v-loading="loading.page"
       >
         <el-tabs tab-position="top">
           <!-- MAIN TAB -->
@@ -21,43 +21,47 @@
               <el-switch v-model="product.active"></el-switch>
             </el-form-item>
             <el-form-item label="Категорія" prop="category">
-              <CategorySelect :active='product.category' @category="handlerOnCategoryChange"/>
+              <CategorySelect :active='product.category' @category="onCategoryChange"/>
             </el-form-item>
             <el-form-item label="Фотографія">
-              <DragAndDropFile v-on:update="updateImages" :images-url="product.images"></DragAndDropFile>
+              <DragAndDropFile :file-list="product.images" v-on:dataChange="product.images = $event"></DragAndDropFile>
             </el-form-item>
           </el-tab-pane>
           <!-- PROPERTIES TAB -->
-          <el-tab-pane v-if="propertiesFields.length > 0" label="Характеристики">
-            <el-form-item v-for="property in propertiesFields" :label="property.name" :key="property._id">
-              <div v-if="property.type === 'list'">
-                <el-select v-model="property.value">
-                  <el-option
-                    v-for="option in property.values"
-                    :key="option.id"
-                    :label="option.name"
-                    :value="option.id"
-                  >
-                  </el-option>
-                </el-select>
+          <el-tab-pane v-if="propertiesModel.length > 0" label="Характеристики">
+            <div v-for="property in propertiesModel">
+              <div v-if="property.type === 'divider'" class="divider">
+                {{ property.name }}
               </div>
-              <div v-else-if="property.type === 'string'">
-                <el-input v-model="property.value"></el-input>
+              <div v-else>
+                <el-form-item :label="property.name" :key="property._id">
+                  <div v-if="property.type === 'list'">
+                    <el-select v-model="product.properties[property._id]" :multiple="property.multiple">
+                      <el-option
+                        v-for="option in property.options"
+                        :key="option.id"
+                        :label="option.name"
+                        :value="option.id"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                  <div v-else-if="property.type === 'string'">
+                    <el-input v-model="product.properties[property._id]"></el-input>
+                  </div>
+                </el-form-item>
               </div>
-
-            </el-form-item>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </el-form>
     </template>
     <template v-slot:footer>
       <div v-if="ifCreate">
-        <el-button @click="createProduct(true)" plain>Створити та продовжити</el-button>
-        <el-button type="primary" @click="createProduct(false)">Створити</el-button>
+        <el-button type="primary" @click="createProduct(false)" :loading="loading.action">Створити</el-button>
       </div>
       <div v-else>
-        <el-button @click="updateProduct(true)" plain>Зберегти та продовжити</el-button>
-        <el-button type="primary" @click="updateProduct(false)">Зберегти</el-button>
+        <el-button type="primary" @click="updateProduct(false)" :loading="loading.action">Зберегти</el-button>
       </div>
     </template>
   </PageContainer>
@@ -80,17 +84,18 @@ export default {
   data() {
     return {
       ifCreate: this.$route.params.id === 'create',
-      getImage: false,
-      loading: false,
-      fileList: [],
+      loading: {
+        page: false,
+        action: false
+      },
       product: {
         name: '',
         active: true,
         category: 'root',
-        properties: [],
+        properties: {},
         images: []
       },
-      propertiesFields: [],
+      propertiesModel: [],
       rules: {
         name: [
           {required: true, message: 'Назва товару не можу бути пустою', trigger: 'blur'}
@@ -98,111 +103,66 @@ export default {
       }
     }
   },
-  async asyncData({store, params}) {
-    if (params.id !== 'create') {
-      const product = await store.dispatch('product/fetchById', params.id)
-      console.log(product)
-      return {product}
-    }
-  },
-  mounted() {
-    if (this.$route.params.id !== 'create') {
-
-      this.fetchPropertiesFields(this.product.category)
-
-      for (let key in this.product) {
-        if (key !== 'imageUrl') {
-          this.product[key] = this.product[key]
-        } else {
-          this.fileList.push({name: this.product[key], url: this.product[key]})
-        }
+  async asyncData({store, route}) {
+    if (route.params.id !== 'create') {
+      const product = await store.dispatch('product/fetchById', route.params.id)
+      const propertiesModel = await store.dispatch('category/fetchCategoryPropertiesById', product.category)
+      return {product, propertiesModel}
+    } else {
+      return {
+        product: {
+          name: '',
+          active: true,
+          category: 'root',
+          properties: {},
+          images: []
+        },
+        propertiesModel: [],
       }
     }
   },
   methods: {
-    async fetchPropertiesFields(categoryId) {
+    async onCategoryChange(categoryId) {
+      this.product.category = categoryId
+      this.propertiesModel = await this.fetchCategoryProperties(categoryId)
+
+    },
+    async fetchCategoryProperties(categoryId) {
       if (categoryId !== 'root') {
-        this.propertiesFields = await this.$store.dispatch('category/fetchCategoryPropertiesById', categoryId)
+        return await this.$store.dispatch('category/fetchCategoryPropertiesById', categoryId)
+      } else {
+        return []
       }
     },
-    updateImages(fileList) {
-      fileList.forEach(file => {
-        this.product.images.push(file.image)
-      })
-    },
-    handlerOnCategoryChange(categoryId) {
-      this.product.category = categoryId
-      this.fetchPropertiesFields(categoryId)
-    },
-    catchPropertiesFromFields() {
-      let propertiesValues = []
-
-      this.propertiesFields.forEach(prop => {
-        if (prop.hasOwnProperty('value')) {
-          const $set = {'_id': prop._id, 'value': prop.value}
-          propertiesValues.push($set)
-        }
-      })
-
-      return propertiesValues
-    },
-    createProduct(redirect) {
+    createProduct() {
       this.$refs.product.validate(async valid => {
         if (valid) {
-          this.product.properties = this.catchPropertiesFromFields()
-
-          const formData = {
-            name: this.product.name,
-            active: this.product.active,
-            category: this.product.category,
-            properties: this.product.properties,
-            images: this.product.images
-          }
-
           try {
-            this.loading = true
-            await this.$store.dispatch('product/create', formData)
+            this.loading.action = true
+            const result = await this.$store.dispatch('product/create', this.product)
             this.$message.success('Товар створено')
-
-            // if (redirect) {
-            //   this.$router.push('../')
-            // } else {
-            //   this.$router.push('../' + this.product._id)
-            // }
+            await this.$router.push('../' + result._id)
           } catch (e) {
             this.$message.error(e)
           } finally {
-            this.loading = false
+            this.loading.action = false
           }
         } else {
           this.$message.warning("Ви не заповнили всі необхідні поля")
         }
       })
     },
-    updateProduct(redirect) {
+    updateProduct() {
       this.$refs.product.validate(async valid => {
         if (valid) {
-          this.loading = true
-          this.product.properties = this.catchPropertiesFromFields()
-
-          const formData = {
-            id: this.product._id,
-          }
-
-          for (let prop in this.product) {
-            formData[prop] = this.product[prop]
-          }
-
-
-          console.log(this.product)
-
           try {
-            await this.$store.dispatch('product/update', formData)
+            this.loading.action = true
+            await this.$store.dispatch('product/update', this.product)
             this.$message.success('Товар оновлено')
-            this.loading = false
-            if (redirect) this.$router.push('../')
           } catch (e) {
-            this.loading = false
+            this.$message.error(`Не вдалося зберегти товар. Помилка: ${e}`)
+          } finally {
+            this.loading.action = false
           }
         }
       })
@@ -211,5 +171,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.divider {
+  font-size: 14px;
+  color: #4c4c4c;
+  line-height: 40px;
+  border-bottom: 1px solid $main-color;
+  margin-bottom: 1rem;
+
+}
 </style>

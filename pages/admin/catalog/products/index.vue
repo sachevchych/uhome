@@ -7,19 +7,20 @@
       <el-table :data="products">
         <el-table-column type="selection"/>
         <el-table-column label="Фото" width="80px">
-          <template slot-scope="{row: {imageUrl}}">
+          <template slot-scope="{row: {images}}">
             <el-image
-              :src="imageUrl"
+              :src="images.length ? images[0].url : ''"
               fit="scale-down"
               style="width: 45px; height: 45px"
             >
             </el-image>
           </template>
         </el-table-column>
-        <el-table-column label="Назва товару" prop="name"/>
+        <el-table-column label="Назва товару" prop="name" min-width="200px"/>
         <el-table-column
           label="Статус"
           prop="active"
+          width="120px"
         >
           <template slot-scope="{row: {active}}">
             <el-tag
@@ -30,7 +31,7 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Дата">
+        <el-table-column label="Дата" width="180px">
           <template slot-scope="{row: {date}}">
             {{ new Date(date).toLocaleString() }}
           </template>
@@ -38,12 +39,13 @@
         <el-table-column
           fixed="right"
           label="Операції"
+          width="220px"
         >
           <template slot-scope="{row: {_id, name}}">
-            <el-button @click="openProduct(_id)" type="primary" size="mini" plain>
+            <el-button @click="openProduct(_id)" type="primary" size="mini" plain round>
               Редагувати
             </el-button>
-            <el-button @click="removeProduct(_id, name)" type="danger" size="mini" plain>
+            <el-button @click="removeProduct(_id, name)" type="danger" size="mini" plain round>
               Видалити
             </el-button>
           </template>

@@ -7,7 +7,6 @@
       <el-form
         :model="category"
         :rules="validation"
-        :default-sort="{prop: 'sort', order: 'descending'}"
         ref="category"
         label-width="120px">
         <el-form-item label="Назва" prop="name">
@@ -29,28 +28,27 @@
         </el-form-item>
         <el-form-item label="Властивості" prop="properties">
           <!-- Table of selected properties -->
-          <el-table :data="category.properties" size="small">
-            <el-table-column prop="sort" label="Сортування" sortable>
-              <template slot-scope="scope">
-                <el-input-number size="small" v-model="scope.row.sort" :min="1" :max="100"></el-input-number>
-              </template>
-            </el-table-column>
-            <el-table-column prop="name" label="Назва"></el-table-column>
-            <el-table-column>
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  type="danger"
-                  @click="deletePropertyFromList(scope.row)">Видалити
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+          <draggable tag="ul" :list="category.properties" handle=".property-handle" class="properties">
+            <li v-for="property in category.properties" :key="property._id" :class="property.type">
+              <div class="property-info">
+                <span class="property-handle">
+                  <font-awesome-icon :icon="['fas', 'ellipsis-v']"/>
+                </span>
+                <span v-if="property.type === 'property'" class="property-name">
+                  {{ property.name }}
+                </span>
+                <span v-else-if="property.type === 'divider'" class="property-name">
+                  <el-input size="small" v-model="property.name"></el-input>
+                </span>
+              </div>
+              <el-button size="mini" type="danger" plain @click="deletePropertyFromList(property)">Видалити</el-button>
+            </li>
+          </draggable>
           <!-- Add property to list block -->
           <div class="mt-2">
-            <el-select v-model="selectedProperty" filterable placeholder="Оберіть властивість">
+            <el-select v-model="selectedPropertyId" filterable placeholder="Оберіть властивість">
               <el-option
-                v-for="property in properties"
+                v-for="property in propertiesList"
                 :key="property.index"
                 :label="property.name"
                 :value="property._id"
@@ -58,43 +56,45 @@
               >
               </el-option>
             </el-select>
-            <el-button type="primary" @click="addPropertyToList(selectedProperty)" :loading="loading.addButton" plain>
+            <el-button type="primary" @click="addPropertyToList" plain>
               Додати властивість
+            </el-button>
+            <el-button type="success" @click="addDividerToList" plain>
+              Додати розділювач
             </el-button>
           </div>
         </el-form-item>
       </el-form>
-      <div class="d-flex justify-content-end">
-        <el-button v-if="$route.params.id === 'create'"
-                   type="primary"
-                   @click="handlerCreate(category)"
-                   :loading="loading.create">
-          Стоврити категорію
-        </el-button>
-        <el-button v-else
-                   type="primary"
-                   @click="handlerUpdate(category)"
-                   :loading="loading.update">
-          Зберегти
-        </el-button>
-      </div>
+    </template>
+    <template slot="footer">
+      <el-button v-if="$route.params.id === 'create'"
+                 type="primary"
+                 @click="handlerCreate(category)"
+                 :loading="loading">
+        Стоврити категорію
+      </el-button>
+      <el-button v-else
+                 type="primary"
+                 @click="handlerUpdate(category)"
+                 :loading="loading">
+        Зберегти
+      </el-button>
     </template>
   </PageContainer>
 </template>
 
 <script>
 import PageContainer from "@/components/admin/PageContainer";
+import draggable from "vuedraggable"
+import moment from "moment"
 
 export default {
   layout: 'admin',
   middleware: ['admin-auth'],
-  components: {PageContainer},
+  components: {PageContainer, draggable},
   data() {
     return {
-      loading: {
-        create: false,
-        update: false
-      },
+      loading: false,
       category: {
         _id: '',
         name: '',
@@ -105,8 +105,8 @@ export default {
       categories: [
         {_id: 'root', name: 'Корінева категорія'}
       ],
-      properties: [],
-      selectedProperty: '',
+      propertiesList: [],
+      selectedPropertyId: '',
       validation: {
         name: [
           {required: true, message: 'Назва категорії не може бути пустою', trigger: 'blur'}
@@ -117,11 +117,28 @@ export default {
   async asyncData({store, params}) {
     if (params.id !== 'create') {
       const category = await store.dispatch('category/fetchById', params.id)
-      return {category}
+      const propertiesList = await store.dispatch('property/fetchProperties')
+      return {category, propertiesList}
+    } else {
+      return {
+        category: {
+          _id: '',
+          name: '',
+          active: true,
+          parent: 'root',
+          properties: []
+        },
+        propertiesList: [],
+      }
     }
   },
   mounted() {
-    this.fetchProperties()
+    this.category.properties.forEach(property => {
+      if (property.type === 'property') {
+        const index = this.propertiesList.findIndex(prop => prop._id === property._id)
+        this.propertiesList[index].disabled = true
+      }
+    })
     this.fetchCategories()
   },
   methods: {
@@ -148,64 +165,116 @@ export default {
         this.$message.error(`Не вдалося завантажити список категорій. Помилка: ${e}`)
       }
     },
-    async fetchProperties() {
-      try {
-        this.properties = await this.$store.dispatch('property/fetchProperties')
-      } catch (e) {
-        this.$message.error(`Не вдалося завантажити властивості. Помилка: ${e}`)
-      }
-    },
-    addPropertyToList(id) {
-      if (this.selectedProperty !== '') {
+    addPropertyToList() {
+      if (this.selectedPropertyId !== '') {
 
-        const index = this.properties.findIndex(prop => prop._id === id)
-        const property = this.properties[index]
+        const index = this.propertiesList.findIndex(prop => prop._id === this.selectedPropertyId)
+        const property = this.propertiesList[index]
 
         this.category.properties.push({
-          sort: 50,
+          type: 'property',
           name: property.name,
           _id: property._id
         })
 
-        this.properties[index].disabled = true
-        this.selectedProperty = ''
+        this.propertiesList[index].disabled = true
+        this.selectedPropertyId = ''
       } else {
         this.$message.warning('Спершу потрібно обрати властивість')
       }
     },
+    addDividerToList() {
+      this.category.properties.push({
+        type: 'divider',
+        name: '',
+        _id: moment().format('DDMMYYYYHHmmssSSS')
+      })
+    },
     deletePropertyFromList(property) {
       this.category.properties = this.category.properties.filter(prop => prop !== property)
 
-      const index = this.properties.findIndex(prop => prop._id === property._id)
-      this.properties[index].disabled = false
+      if (property.type === 'property') {
+        const index = this.propertiesList.findIndex(prop => prop._id === property._id)
+        this.propertiesList[index].disabled = false
+      }
     },
     async handlerCreate(category) {
       try {
-        this.loading.create = true
+        this.loading = true
         await this.$store.dispatch('category/create', category)
         this.$message.success(`Категорія "${this.category.name}" успішно створена`)
         await this.$router.push('/admin/catalog/categories/')
       } catch (e) {
         this.$message.error(`Не вдалося створити категорію. Помилка ${e}`)
       } finally {
-        this.loading.create = false
+        this.loading = false
       }
     },
     async handlerUpdate(category) {
       try {
-        this.loading.update = true
+        this.loading = true
         await this.$store.dispatch('category/update', category)
         this.$message.success(`Категорія "${this.category.name}" успішно оновлена`)
       } catch (e) {
         this.$message.error(`Не вдалося оновити категорію. Помилка ${e}`)
       } finally {
-        this.loading.update = false
+        this.loading = false
       }
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.properties {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: #606266;
+}
+
+.property {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid $divider;
+  border-radius: 0.5rem;
+  padding: .2rem 1rem;
+  margin-bottom: .5rem;
+  margin-left: 1rem;
+
+  &:hover {
+    box-shadow: 0 0 10px 0px rgb(0 0 0 / 5%);;
+  }
+
+  &-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+  }
+
+  &-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.2rem;
+    width: 1.2rem;
+    cursor: grab;
+  }
+
+  &-name {
+    padding-left: .7rem;
+  }
+}
+
+.divider {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid $main-color;
+  padding: .2rem 1rem;
+  margin-bottom: .5rem;
+}
 
 </style>

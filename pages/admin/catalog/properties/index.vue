@@ -46,7 +46,6 @@ export default {
   components: {PageContainer},
   data() {
     return {
-      dialogVisible: false,
       properties: []
     }
   },

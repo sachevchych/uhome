@@ -44,7 +44,7 @@
 
 .aside {
   background-color: #242939;
-  height: 100vh;
+  height: 100%;
 }
 
 .aside-menu {

@@ -70,16 +70,13 @@
         </el-row>
       </el-col>
     </el-row>
-    <Navigation/>
   </div>
 </template>
 
 <script>
     import 'element-ui/lib/theme-chalk/display.css';
-    import Navigation from "@/components/client/Header/Navigation";
 
     export default {
-        components: {Navigation},
         data() {
             return {
                 activeIndex: '1',

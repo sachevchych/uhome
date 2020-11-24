@@ -1,37 +1,41 @@
 const passport = require('passport')
 const {Router} = require('express')
-const {create, getAll, getById, update, remove} = require('../controllers/category.controller')
+const ctr = require('../controllers/category.controller')
 const router = Router()
 
-// /api/category
+// /api/category/admin
 router.post(
-  '/',
-  // passport.authenticate('jwt', {session: false}),
-  create
+  '/admin',
+  passport.authenticate('jwt', {session: false}),
+  ctr.create
 )
 
 router.get(
-  '/',
-  // passport.authenticate('jwt', {session: false}),
-  getAll
+  '/admin',
+  passport.authenticate('jwt', {session: false}),
+  ctr.getAll
 )
 //
 router.get(
-  '/:id',
-  // passport.authenticate('jwt', {session: false}),
-  getById
+  '/admin/:id',
+  passport.authenticate('jwt', {session: false}),
+  ctr.getById
 )
 
 router.put(
-  '/:id',
-  // passport.authenticate('jwt', {session: false}),
-  update
+  '/admin/:id',
+  passport.authenticate('jwt', {session: false}),
+  ctr.update
 )
 
 router.delete(
-  '/:id',
-  // passport.authenticate('jwt', {session: false}),
-  remove
+  '/admin/:id',
+  passport.authenticate('jwt', {session: false}),
+  ctr.remove
 )
+
+// /api/category/
+router.get('/', ctr.getAllCategories)
+router.get('/parent/:id', ctr.getSubcategories)
 
 module.exports = router

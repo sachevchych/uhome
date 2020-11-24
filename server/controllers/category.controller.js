@@ -60,3 +60,20 @@ module.exports.remove = async (req, res) => {
   }
 }
 
+module.exports.getAllCategories = async (req, res) => {
+  try {
+    const categories = await Category.find()
+    res.status(201).json(categories)
+  } catch (e) {
+    res.status(500).json(e)
+  }
+}
+module.exports.getSubcategories = async (req, res) => {
+  try {
+    const categories = await Category.find({ parent: req.params.id })
+    res.status(201).json(categories)
+  } catch (e) {
+    res.status(500).json(e)
+  }
+}
+

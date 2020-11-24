@@ -4,7 +4,7 @@
       <Aside/>
     </el-aside>
     <el-container>
-      <el-header class="header">
+      <el-header class="admin-header">
         <Header/>
       </el-header>
       <el-main>
@@ -33,14 +33,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .admin {
   background-color: #E9F0F6;
-}
+  height: 100%;
+  font-family: "Trebuchet MS", sans-serif;
 
-.header {
-  background-color: $white;
-  box-shadow: 0 0 40px 0 rgba(82, 63, 105, 0.1);
+  &-header {
+    background-color: $white;
+    box-shadow: 0 0 40px 0 rgba(82, 63, 105, 0.1);
+  }
 }
-
 </style>

@@ -2,25 +2,34 @@ const Product = require('../models/product.model')
 const fs = require('fs')
 
 module.exports.create = async (req, res) => {
-  const $set = {
-    name: req.body.name,
+  try {
+    const product = new Product({
+      active: req.body.active,
+      category: req.body.category,
+      images: req.body.images,
+      name: req.body.name,
+      properties: req.body.properties
+    })
+
+    await product.save()
+    res.status(201).json(product)
+  } catch (e) {
+    res.status(500).json(e)
+  }
+}
+
+module.exports.update = async (req, res) => {
+  const $product = {
     active: req.body.active,
     category: req.body.category,
+    images: req.body.images,
+    name: req.body.name,
     properties: req.body.properties
   }
 
-  if (req.files) {
-    $set.images = []
-    req.files.forEach(file => {
-      $set.images.push('/images/products/' + file.filename)
-    })
-  }
-
-  const product = new Product($set)
-
   try {
-    await product.save()
-    res.status(201).json(product)
+    const product = await Product.findOneAndUpdate({_id: req.params.id}, $product, {new: true})
+    res.json(product)
   } catch (e) {
     res.status(500).json(e)
   }
@@ -44,17 +53,6 @@ module.exports.getById = async (req, res) => {
   } catch (e) {
     res.status(500).json(e)
   }
-}
-
-module.exports.update = async (req, res) => {
-  // const $set = createQuery(req)
-  //
-  // try {
-  //   const product = await Product.findOneAndUpdate({_id: req.params.id}, $set, {new: true})
-  //   res.json(product)
-  // } catch (e) {
-  //   res.status(500).json(e)
-  // }
 }
 
 module.exports.remove = async (req, res) => {
@@ -93,14 +91,11 @@ module.exports.uploadImage = (req, res) => {
 }
 
 module.exports.removeImage = (req, res) => {
-
-  res.status(201)
-  // try {
-  //   fs.unlink(req.body.url, function (e) {
-  //     if (e) throw e
-  //     res.json({message: 'Файл видалено'})
-  //   })
-  // } catch (e) {
-  //   res.status(500).json(e)
-  // }
+  const fileUrl = './static/images/products/' + req.params.fileName
+  try {
+    fs.unlinkSync(fileUrl)
+    res.json({message: 'File has been deleted'})
+  } catch (e) {
+    res.status(500).json(e)
+  }
 }

@@ -10,15 +10,11 @@
         :data="categories"
         v-loading="loading.data"
         row-key="_id">
-        <el-table-column
-          prop="name"
-          label="Назва"
-          sortable>
-        </el-table-column>
-        <el-table-column
-          prop="active"
-          label="Активність"
-          sortable>
+        <el-table-column prop="name" label="Назва" sortable></el-table-column>
+        <el-table-column prop="active" label="Активність">
+          <template slot-scope="scope">
+            <el-tag :type="scope.row.active ? '' : 'warning'">{{ scope.row.active ? 'Активний' : 'Не активний' }}</el-tag>
+          </template>
         </el-table-column>
         <el-table-column align="right">
           <template slot-scope="scope">

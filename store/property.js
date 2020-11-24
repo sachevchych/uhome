@@ -1,12 +1,7 @@
 export const actions = {
   async create({commit}, data) {
     try {
-      return await this.$axios.$post('/api/property/', {
-        name: data.name,
-        type: data.type,
-        multiple: data.multiple,
-        values: data.values
-      })
+      return await this.$axios.$post('/api/property/', data)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
@@ -14,13 +9,7 @@ export const actions = {
   },
   async update({commit}, data) {
     try {
-       return await this.$axios.$put(`/api/property/${data.id}`, {
-         _id: data._id,
-         name: data.name,
-         type: data.type,
-         multiple: data.multiple,
-         values: data.values
-       })
+       return await this.$axios.$put(`/api/property/${data.id}`, data)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e

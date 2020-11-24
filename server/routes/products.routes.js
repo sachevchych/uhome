@@ -9,7 +9,6 @@ const router = Router()
 router.post(
   '/create',
   // passport.authenticate('jwt', {session: false}),
-  upload.array('images'),
   ctr.create
 )
 
@@ -28,7 +27,6 @@ router.get(
 router.put(
   '/:id',
   // passport.authenticate('jwt', {session: false}),
-  upload.single('image'),
   ctr.update
 )
 
@@ -47,15 +45,15 @@ router.post(
 )
 
 router.delete(
-  '/image',
+  '/image/:fileName',
   // passport.authenticate('jwt', {session: false}),
   ctr.removeImage
 )
 
 // Client
-router.get('/', ctr.getAll)
-router.get('/:id', ctr.getById)
-router.put('/:id', ctr.addView)
+// router.get('/', ctr.getAll)
+// router.get('/:id', ctr.getById)
+// router.put('/:id', ctr.addView)
 
 
 module.exports = router
