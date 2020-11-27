@@ -14,7 +14,8 @@ export default {
   },
   css: [
     'normalize.css/normalize.css',
-    'element-ui/lib/theme-chalk/index.css'
+    'element-ui/lib/theme-chalk/index.css',
+    'bootstrap/dist/css/bootstrap-grid.min.css'
   ],
   plugins: [
     '@/plugins/globals'

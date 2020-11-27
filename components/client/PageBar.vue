@@ -1,76 +1,59 @@
 <template>
-  <div class="wrap">
-    <div class="container">
-      <el-row class="page-bar">
-        <el-col :md="24" :lg="12" class="title">
-          <h1>Заголовок сторінки</h1>
-        </el-col>
-        <el-col :md="24" :lg="12" class="breadcrumb">
-          <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/' }">
+  <div :class="theme">
+    <div class="container-xl pt-lg-3">
+      <div class="d-lg-flex justify-content-between align-items-center py-4 py-lg-3">
+        <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2 d-flex justify-content-center">
+          <el-breadcrumb separator-class="el-icon-arrow-right" >
+            <el-breadcrumb-item :to="{ path: '/' }" class="breadcrumb-item">
               Головна сторінка
             </el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/Blog/' }">Блог</el-breadcrumb-item>
-            <el-breadcrumb-item>Елемент детально</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/blog/' }" class="breadcrumb-item">Блог</el-breadcrumb-item>
+            <el-breadcrumb-item class="breadcrumb-item">{{ title }}</el-breadcrumb-item>
           </el-breadcrumb>
-        </el-col>
-      </el-row>
+        </div>
+        <div class="order-lg-1 pr-lg-4 text-center text-lg-left d-flex justify-content-center">
+          <h1 class="title">{{ title }}</h1>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-    export default {
-        name: "PageBar"
+export default {
+  name: "PageBar",
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    theme: {
+      type: String,
+      default: 'light'
     }
+  }
+}
 </script>
 
-<style scoped>
-  .wrap {
-    background-color: #f6f9fc;
+<style lang="scss" scoped>
+.title {
+  font-size: 1.70rem;
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.light {
+  background-color: #f6f9fc;
+  .title {
+    color: $dark-light;
   }
+}
 
-  .page-bar {
-    padding: 2rem 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.dark {
+  background-color: $dark-light;
+  .title {
+    color: $white;
   }
-
-  .breadcrumb {
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: flex-end;
-  }
-
-  @media screen and (max-width: 992px) {
-    .page-bar {
-      flex-direction: column;
-      text-align: center;
-      justify-content: flex-end;
-    }
-
-    .breadcrumb {
-      justify-content: center;
-      order: 1;
-      margin-bottom: 1rem;
-    }
-
-    .title {
-      order: 2;
-    }
-  }
-
-  .title h1 {
-    font-size: 1.75rem;
-    font-weight: 500;
-    line-height: 1.2;
-    color: #373f50;
-    margin: 0;
-  }
-
-  .breadcrumb span, a {
-    font-size: .8125rem;
-    line-height: 1.5;
-  }
+}
 </style>

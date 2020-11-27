@@ -1,12 +1,37 @@
+import ca from "element-ui/src/locale/lang/ca";
+
+export const state = () => ({
+  categories: []
+})
+
+export const mutations = {
+  setCategories(state, categories) {
+    state.categories = categories
+  },
+}
+
+export const getters = {
+  categoriesTree: state => {
+    return parseCategories(state.categories)
+
+    function parseCategories(categories, parentID = 'root') {
+      const tree = []
+      categories.forEach(category => {
+        if (category.parent === parentID) {
+          const parentCategory = {...category}
+          parentCategory.children = parseCategories(categories, parentCategory._id)
+          tree.push(parentCategory)
+        }
+      })
+      return tree
+    }
+  }
+}
+
 export const actions = {
   async create({commit}, data) {
     try {
-      return await this.$axios.$post('/api/category/admin', {
-        name: data.name,
-        active: data.active,
-        parent: data.parent,
-        properties: data.properties
-      })
+      return await this.$axios.$post('/api/category/admin', data)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
@@ -14,21 +39,38 @@ export const actions = {
   },
   async update({commit}, data) {
     try {
-      return await this.$axios.$put(`/api/category/admin/${data.id}`, {
-        _id: data._id,
-        name: data.name,
-        active: data.active,
-        parent: data.parent,
-        properties: data.properties
-      })
+      return await this.$axios.$put(`/api/category/admin/${data.id}`, data)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
     }
   },
+  async fetchCategories({commit}) {
+    try {
+      return await this.$axios.$get('/api/category/admin')
+    } catch (e) {
+      commit('setError', e, {root: true})
+    }
+  },
+  async publicFetchCategories({commit}) {
+    try {
+      const categories = await this.$axios.$get('/api/category/')
+      commit('setCategories', categories)
+    } catch (e) {
+      commit('setError', e, {root: true})
+    }
+  },
   async fetchById({commit}, id) {
     try {
       return await this.$axios.$get(`/api/category/admin/${id}`)
+    } catch (e) {
+      commit('setError', e, {root: true})
+      throw e
+    }
+  },
+  async publicFetchById({commit}, id) {
+    try {
+      return await this.$axios.$get(`/api/category/${id}`)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
@@ -44,21 +86,14 @@ export const actions = {
       })
 
       for (let property of category.properties) {
-        const fullProperty = await dispatch('property/fetchById', property._id, { root: true })
-        propertiesList.push({ ...property, ...fullProperty })
+        const fullProperty = await dispatch('property/fetchById', property._id, {root: true})
+        propertiesList.push({...property, ...fullProperty})
       }
 
       return propertiesList
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
-    }
-  },
-  async fetchCategories({commit}) {
-    try {
-      return await this.$axios.$get('/api/category/admin')
-    } catch (e) {
-      commit('setError', e, {root: true})
     }
   },
   async fetchCategoriesTree({commit}) {
@@ -76,13 +111,6 @@ export const actions = {
       commit('setError', e, {root: true})
       throw e
     }
-  },
-  async fetchCategoriesForClient({commit}) {
-    try {
-      return await this.$axios.$get('/api/category')
-    } catch (e) {
-      commit('setError', e, {root: true})
-    }
   }
 }
 
@@ -92,12 +120,12 @@ function createCategoriesTree(categories, root = 'root') {
 
   list.forEach(category1 => {
     if (category1.parent === 'root') {
-      const obj1 = { ...category1 }
+      const obj1 = {...category1}
       obj1.children = []
 
       list.forEach(category2 => {
         if (category2.parent === obj1._id) {
-          const obj2 = { ...category2}
+          const obj2 = {...category2}
           obj2.children = []
 
           list.forEach(category3 => {

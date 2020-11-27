@@ -8,9 +8,12 @@
         :model="category"
         :rules="validation"
         ref="category"
-        label-width="120px">
+        label-width="150px">
         <el-form-item label="Назва" prop="name">
           <el-input v-model="category.name"></el-input>
+        </el-form-item>
+        <el-form-item label="Символьний код" prop="url">
+          <el-input v-model="category.url"></el-input>
         </el-form-item>
         <el-form-item label="Активна" prop="active">
           <el-switch v-model="category.active"></el-switch>
@@ -110,6 +113,9 @@ export default {
       validation: {
         name: [
           {required: true, message: 'Назва категорії не може бути пустою', trigger: 'blur'}
+        ],
+        url: [
+          {required: true, message: 'Символьний код повинен бути заповнений', trigger: 'blur'}
         ],
       }
     }

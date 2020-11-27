@@ -14,8 +14,14 @@
         <el-tabs tab-position="top">
           <!-- MAIN TAB -->
           <el-tab-pane label="Основні властивості">
-            <el-form-item label="Назва товару" prop="name">
+            <el-form-item label="Назва" prop="name">
               <el-input v-model="product.name"></el-input>
+            </el-form-item>
+            <el-form-item label="Модель" prop="model">
+              <el-input v-model="product.model"></el-input>
+            </el-form-item>
+            <el-form-item label="Ціна" prop="price">
+              <el-input v-model="product.price"></el-input>
             </el-form-item>
             <el-form-item label="Активний" prop="active">
               <el-switch v-model="product.active"></el-switch>
@@ -90,6 +96,8 @@ export default {
       },
       product: {
         name: '',
+        model: '',
+        price: 0,
         active: true,
         category: 'root',
         properties: {},
@@ -99,6 +107,9 @@ export default {
       rules: {
         name: [
           {required: true, message: 'Назва товару не можу бути пустою', trigger: 'blur'}
+        ],
+        model: [
+          {required: true, message: 'Модель товару мусить бути заповнена', trigger: 'blur'}
         ]
       }
     }
@@ -112,6 +123,8 @@ export default {
       return {
         product: {
           name: '',
+          model: '',
+          price: 0,
           active: true,
           category: 'root',
           properties: {},

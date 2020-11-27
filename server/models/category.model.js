@@ -4,6 +4,11 @@ const categorySchema = new Schema({
   name: {
     type: String
   },
+  url: {
+    type: String,
+    required: true,
+    unique: true
+  },
   active: {
     type: Boolean,
     default: true

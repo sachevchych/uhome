@@ -1,7 +1,15 @@
 export const actions = {
   async fetchProducts({commit}) {
     try {
-      return await this.$axios.$get('/api/products')
+      return await this.$axios.$get('/api/products/admin')
+    } catch (e) {
+      commit('setError', e, {root: true})
+      throw e
+    }
+  },
+  async publicFetchProducts({commit}) {
+    try {
+      return await this.$axios.$get('/api/products/')
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
@@ -9,7 +17,7 @@ export const actions = {
   },
   async fetchById({commit}, id) {
     try {
-      return await this.$axios.$get(`/api/products/${id}`)
+      return await this.$axios.$get(`/api/products/admin/${id}`)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
@@ -18,7 +26,7 @@ export const actions = {
   },
   async create({commit}, data) {
     try {
-      return await this.$axios.$post('/api/products/create', data)
+      return await this.$axios.$post('/api/products/create/admin', data)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
@@ -26,7 +34,7 @@ export const actions = {
   },
   async update({commit}, data) {
     try {
-      return await this.$axios.$put(`/api/products/${data._id}`, data)
+      return await this.$axios.$put(`/api/products/admin/${data._id}`, data)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
@@ -34,7 +42,7 @@ export const actions = {
   },
   async remove({commit}, id) {
     try {
-      return await this.$axios.$delete(`/api/products/${id}`)
+      return await this.$axios.$delete(`/api/products/admin/${id}`)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e

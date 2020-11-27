@@ -8,7 +8,9 @@ module.exports.create = async (req, res) => {
       category: req.body.category,
       images: req.body.images,
       name: req.body.name,
-      properties: req.body.properties
+      model: req.body.model,
+      properties: req.body.properties,
+      price: req.body.price
     })
 
     await product.save()
@@ -24,7 +26,9 @@ module.exports.update = async (req, res) => {
     category: req.body.category,
     images: req.body.images,
     name: req.body.name,
-    properties: req.body.properties
+    model: req.body.model,
+    properties: req.body.properties,
+    price: req.body.price
   }
 
   try {

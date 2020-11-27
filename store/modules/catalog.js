@@ -14,7 +14,6 @@ export const actions = {
       return state.tree
     } else {
       const tree = await dispatch('createCategoriesTree')
-      console.log('tree', tree)
       commit('addTree', tree)
     }
   },

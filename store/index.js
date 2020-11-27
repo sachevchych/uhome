@@ -3,8 +3,9 @@ export const state = () => ({
 });
 
 export const actions = {
-  nuxtServerInit({dispatch}) {
+  async nuxtServerInit({dispatch}) {
     dispatch('auth/autoLogin')
+    await dispatch('category/publicFetchCategories')
   }
 }
 

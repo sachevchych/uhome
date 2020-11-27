@@ -4,6 +4,9 @@ const productSchema = new mongoose.Schema({
   name: {
     type: String
   },
+  model: {
+    type: String
+  },
   active: {
     type: Boolean
   },

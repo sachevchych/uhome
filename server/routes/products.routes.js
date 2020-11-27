@@ -4,34 +4,34 @@ const upload = require('../middleware/upload')
 const ctr = require('../controllers/products.controller')
 const router = Router()
 
-
-// /api/products/..
+// Admin
+// /api/products/admin/
 router.post(
-  '/create',
+  '/admin/create',
   // passport.authenticate('jwt', {session: false}),
   ctr.create
 )
 
 router.get(
-  '',
+  '/admin',
   // passport.authenticate('jwt', {session: false}),
   ctr.getAll
 )
 
 router.get(
-  '/:id',
+  '/admin/:id',
   // passport.authenticate('jwt', {session: false}),
   ctr.getById
 )
 
 router.put(
-  '/:id',
+  '/admin/:id',
   // passport.authenticate('jwt', {session: false}),
   ctr.update
 )
 
 router.delete(
-  '/:id',
+  '/admin/:id',
   // passport.authenticate('jwt', {session: false}),
   ctr.remove
 )
@@ -51,8 +51,9 @@ router.delete(
 )
 
 // Client
-// router.get('/', ctr.getAll)
-// router.get('/:id', ctr.getById)
+// /api/products/
+router.get('/', ctr.getAll)
+router.get('/:id', ctr.getById)
 // router.put('/:id', ctr.addView)
 
 

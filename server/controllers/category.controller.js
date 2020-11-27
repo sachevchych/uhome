@@ -4,6 +4,7 @@ module.exports.create = async (req, res) => {
   try {
     const category = new Category({
       name: req.body.name,
+      url: req.body.url,
       active: req.body.active,
       parent: req.body.parent,
       properties: req.body.properties
@@ -18,15 +19,22 @@ module.exports.create = async (req, res) => {
 
 module.exports.update = async (req, res) => {
   try {
-    const $set = {
-      name: req.body.name,
-      active: req.body.active,
-      parent: req.body.parent,
-      properties: req.body.properties
-    }
+    const category = await Category.findOne({ url: req.body.url }).exec();
 
-    const category = await Category.findOneAndUpdate({_id: req.body._id}, $set, {new: true})
-    res.json(category)
+    if (category && category._id === req.body._id) {
+      res.status(409).json({ message: 'Такий символьни код вже існує' });
+    } else {
+      const $set = {
+        name: req.body.name,
+        url: req.body.url,
+        active: req.body.active,
+        parent: req.body.parent,
+        properties: req.body.properties
+      }
+
+      const updatedCategory = await Category.findOneAndUpdate({_id: req.body._id}, $set, {new: true})
+      res.status(201).json(updatedCategory)
+    }
   } catch (e) {
     res.status(500).json(e)
   }
