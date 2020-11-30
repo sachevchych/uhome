@@ -28,6 +28,7 @@
         <el-menu-item index="/admin/catalog/products/">Список товарів</el-menu-item>
         <el-menu-item index="/admin/catalog/categories/">Категорії</el-menu-item>
         <el-menu-item index="/admin/catalog/properties/">Властивості товарів</el-menu-item>
+        <el-menu-item index="/admin/catalog/brands/">Бренди</el-menu-item>
       </el-submenu>
       <el-submenu index="/admin/settings" class="menu-link">
         <template slot="title">

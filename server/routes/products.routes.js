@@ -50,9 +50,9 @@ router.delete(
   ctr.removeImage
 )
 
-// Client
+// Public
 // /api/products/
-router.get('/', ctr.getAll)
+router.get('/', ctr.getProducts)
 router.get('/:id', ctr.getById)
 // router.put('/:id', ctr.addView)
 

@@ -5,18 +5,18 @@
     <div class="catalog">
       <ul class="catalog-list">
         <li v-for="category in categories" class="catalog-list-element">
-          <nuxt-link :to="`/catalog/${category._id}/`" class="catalog-list-link">
+          <nuxt-link :to="`/catalog/${category.url}/`" class="catalog-list-link">
             <span>{{ category.name }}</span>
             <font-awesome-icon :icon="['fas', 'angle-right']" class="catalog-list-icon"/>
           </nuxt-link>
-          <ul class="subcategories" v-if="category.children">
+          <ul class="subcategories" v-if="category.children.length > 0">
             <li class="subcategories-element" v-for="subcategory in category.children">
-              <nuxt-link :to="`/catalog/${category._id}/${subcategory._id}/`" class="subcategories-link subcategories-title">
+              <nuxt-link :to="`/catalog/${category.url}/${subcategory.url}/`" class="subcategories-link subcategories-title">
                 {{ subcategory.name }}
               </nuxt-link>
-              <ul class="subcategories-children" v-if="subcategory.children">
+              <ul class="subcategories-children" v-if="subcategory.children.length > 0">
                 <li class="subcategories-children-element" v-for="childCategory in subcategory.children">
-                  <nuxt-link :to="`/catalog/${category._id}/${subcategory._id}/${childCategory._id}/`" class="subcategories-link">
+                  <nuxt-link :to="`/catalog/${category.url}/${subcategory.url}/${childCategory.url}/`" class="subcategories-link">
                     {{ childCategory.name }}
                   </nuxt-link>
                 </li>
@@ -37,9 +37,6 @@ export default {
     return {
 
     }
-  },
-  mounted() {
-    this.$store.dispatch('modules/catalog/fetchCategoriesTree')
   },
   computed: {
     categories() {

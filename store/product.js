@@ -1,4 +1,5 @@
 export const actions = {
+  // Admin actions
   async fetchProducts({commit}) {
     try {
       return await this.$axios.$get('/api/products/admin')
@@ -22,11 +23,10 @@ export const actions = {
       commit('setError', e, {root: true})
       throw e
     }
-
   },
   async create({commit}, data) {
     try {
-      return await this.$axios.$post('/api/products/create/admin', data)
+      return await this.$axios.$post('/api/products/admin/create', data)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
@@ -62,6 +62,15 @@ export const actions = {
   async removeImage({commit}, fileName) {
     try {
       return await this.$axios.$delete(`/api/products/image/${fileName}`)
+    } catch (e) {
+      commit('setError', e, {root: true})
+      throw e
+    }
+  },
+  // Public actions
+  async publicFetchByCategory({commit}, categoryId) {
+    try {
+      return await this.$axios.$get(`/api/products/?category=${categoryId}`)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e

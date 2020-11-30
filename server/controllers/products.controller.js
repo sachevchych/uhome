@@ -14,6 +14,7 @@ module.exports.create = async (req, res) => {
     })
 
     await product.save()
+    console.log(product)
     res.status(201).json(product)
   } catch (e) {
     res.status(500).json(e)
@@ -46,7 +47,6 @@ module.exports.getAll = async (req, res) => {
   } catch (e) {
     res.status(500).json(e)
   }
-
 }
 
 module.exports.getById = async (req, res) => {
@@ -99,6 +99,15 @@ module.exports.removeImage = (req, res) => {
   try {
     fs.unlinkSync(fileUrl)
     res.json({message: 'File has been deleted'})
+  } catch (e) {
+    res.status(500).json(e)
+  }
+}
+
+module.exports.getProducts = async (req, res) => {
+  try {
+    const products = await Product.find(req.query)
+    res.json(products)
   } catch (e) {
     res.status(500).json(e)
   }

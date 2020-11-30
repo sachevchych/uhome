@@ -1,5 +1,3 @@
-import ca from "element-ui/src/locale/lang/ca";
-
 export const state = () => ({
   categories: []
 })
@@ -77,16 +75,15 @@ export const actions = {
     }
   },
   async fetchCategoryPropertiesById({dispatch, commit}, id) {
+    if (id === 'root') return []
+
     try {
       const category = await this.$axios.$get(`/api/category/admin/${id}`)
       const propertiesList = []
 
-      category.properties.sort(function (a, b) {
-        return a.sort - b.sort
-      })
-
       for (let property of category.properties) {
         const fullProperty = await dispatch('property/fetchById', property._id, {root: true})
+
         propertiesList.push({...property, ...fullProperty})
       }
 

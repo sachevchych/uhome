@@ -27,14 +27,16 @@
               <el-switch v-model="product.active"></el-switch>
             </el-form-item>
             <el-form-item label="Категорія" prop="category">
-              <CategorySelect :active='product.category' @category="onCategoryChange"/>
+              <el-select v-model="product.category" filterable @change="fetchCategoryModel" placeholder="Оберіть категорію">
+                <el-option v-for="category in categories" :key="category._id" :label="category.name" :value="category._id"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="Фотографія">
               <DragAndDropFile :file-list="product.images" v-on:dataChange="product.images = $event"></DragAndDropFile>
             </el-form-item>
           </el-tab-pane>
           <!-- PROPERTIES TAB -->
-          <el-tab-pane v-if="propertiesModel.length > 0" label="Характеристики">
+          <el-tab-pane v-if="propertiesModel.length" label="Характеристики">
             <div v-for="property in propertiesModel">
               <div v-if="property.type === 'divider'" class="divider">
                 {{ property.name }}
@@ -75,13 +77,12 @@
 
 <script>
 import PageContainer from "@/components/admin/PageContainer";
-import CategorySelect from "@/components/admin/Products/CategorySelect";
 import DragAndDropFile from "@/components/admin/UI/DragAndDropFile";
 
 export default {
   layout: 'admin',
   middleware: ['admin-auth'],
-  components: {DragAndDropFile, CategorySelect, PageContainer},
+  components: {DragAndDropFile, PageContainer},
   head() {
     return {
       title: this.ifCreate ? 'Створення нового товару' : this.product.name
@@ -117,6 +118,7 @@ export default {
   async asyncData({store, route}) {
     if (route.params.id !== 'create') {
       const product = await store.dispatch('product/fetchById', route.params.id)
+      if (!product.properties) product.properties = {}
       const propertiesModel = await store.dispatch('category/fetchCategoryPropertiesById', product.category)
       return {product, propertiesModel}
     } else {
@@ -134,27 +136,23 @@ export default {
       }
     }
   },
+  computed: {
+    categories() {
+      return [{_id: 'root', name: 'Корінева категорія'}, ...this.$store.state.category.categories]
+    }
+  },
   methods: {
-    async onCategoryChange(categoryId) {
-      this.product.category = categoryId
-      this.propertiesModel = await this.fetchCategoryProperties(categoryId)
-
-    },
-    async fetchCategoryProperties(categoryId) {
-      if (categoryId !== 'root') {
-        return await this.$store.dispatch('category/fetchCategoryPropertiesById', categoryId)
-      } else {
-        return []
-      }
+    async fetchCategoryModel(id) {
+      this.propertiesModel = await this.$store.dispatch('category/fetchCategoryPropertiesById', id)
     },
     createProduct() {
       this.$refs.product.validate(async valid => {
         if (valid) {
           try {
             this.loading.action = true
-            const result = await this.$store.dispatch('product/create', this.product)
+            const product = await this.$store.dispatch('product/create', this.product)
             this.$message.success('Товар створено')
-            await this.$router.push('../' + result._id)
+            await this.$router.push('../' + product._id)
           } catch (e) {
             this.$message.error(e)
           } finally {
@@ -191,6 +189,5 @@ export default {
   line-height: 40px;
   border-bottom: 1px solid $main-color;
   margin-bottom: 1rem;
-
 }
 </style>

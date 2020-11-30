@@ -9,6 +9,7 @@ const blogRoutes = require('./routes/blog.routs')
 const productsRoutes = require('./routes/products.routes')
 const propertyRoutes = require('./routes/property.routes')
 const categoryRoutes = require('./routes/category.routes')
+const brandRoutes = require('./routes/brand.routes')
 const keys = require('./keys/index')
 const app = express()
 
@@ -28,6 +29,7 @@ app.use('/blog', blogRoutes)
 app.use('/products', productsRoutes)
 app.use('/property', propertyRoutes)
 app.use('/category', categoryRoutes)
+app.use('/brand', brandRoutes)
 
 
 module.exports = app

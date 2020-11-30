@@ -20,6 +20,7 @@
     "consola": "^2.15.0",
     "cookie": "^0.4.1",
     "core-js": "^3.6.5",
+    "cyrillic-to-translit-js": "^3.1.0",
     "element-ui": "^2.13.2",
     "express": "^4.17.1",
     "js-cookie": "^2.2.1",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@nuxt/types": "~2.14.0",
     "fibers": "^5.0.0",
+    "jsonwebtoken": "^8.5.1",
     "sass": "^1.28.0"
   }
 }

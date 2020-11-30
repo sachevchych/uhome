@@ -10,10 +10,13 @@
         ref="category"
         label-width="150px">
         <el-form-item label="Назва" prop="name">
-          <el-input v-model="category.name"></el-input>
+          <el-input v-model="category.name" @input="handlerOnNameChange"></el-input>
         </el-form-item>
         <el-form-item label="Символьний код" prop="url">
-          <el-input v-model="category.url"></el-input>
+          <el-input v-model="category.url">
+            <i slot="suffix" v-if="isTranslitLock" @click="translitToggle" class="el-input__icon el-icon-lock input-lock"></i>
+            <i slot="suffix" v-else @click="translitToggle" class="el-input__icon el-icon-unlock input-unlock"></i>
+          </el-input>
         </el-form-item>
         <el-form-item label="Активна" prop="active">
           <el-switch v-model="category.active"></el-switch>
@@ -90,6 +93,7 @@
 import PageContainer from "@/components/admin/PageContainer";
 import draggable from "vuedraggable"
 import moment from "moment"
+import cyrillicToTranslit from "cyrillic-to-translit-js"
 
 export default {
   layout: 'admin',
@@ -101,6 +105,7 @@ export default {
       category: {
         _id: '',
         name: '',
+        url: '',
         active: true,
         parent: 'root',
         properties: []
@@ -110,6 +115,7 @@ export default {
       ],
       propertiesList: [],
       selectedPropertyId: '',
+      isTranslitLock: this.$route.params.id === 'create',
       validation: {
         name: [
           {required: true, message: 'Назва категорії не може бути пустою', trigger: 'blur'}
@@ -130,6 +136,7 @@ export default {
         category: {
           _id: '',
           name: '',
+          url: '',
           active: true,
           parent: 'root',
           properties: []
@@ -226,6 +233,15 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    handlerOnNameChange() {
+      if (this.isTranslitLock) {
+        this.category.url = cyrillicToTranslit({ preset: "uk" }).transform(this.category.name.toLocaleLowerCase(), '-')
+      }
+    },
+    translitToggle() {
+      this.isTranslitLock = !this.isTranslitLock
+      this.handlerOnNameChange()
     }
   }
 }
@@ -283,4 +299,12 @@ export default {
   margin-bottom: .5rem;
 }
 
+.input-lock {
+  cursor: pointer;
+  color: $main-color;
+}
+.input-unlock {
+  cursor: pointer;
+
+}
 </style>

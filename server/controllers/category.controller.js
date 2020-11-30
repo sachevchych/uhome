@@ -2,16 +2,23 @@ const Category = require('../models/category.model')
 
 module.exports.create = async (req, res) => {
   try {
-    const category = new Category({
-      name: req.body.name,
-      url: req.body.url,
-      active: req.body.active,
-      parent: req.body.parent,
-      properties: req.body.properties
-    })
+    const category = await Category.findOne({ url: req.body.url }).exec();
 
-    const result = await category.save()
-    res.status(201).json(result)
+    if (!category) {
+      const newCategory = new Category({
+        name: req.body.name,
+        url: req.body.url,
+        active: req.body.active,
+        parent: req.body.parent,
+        properties: req.body.properties
+      })
+
+      const result = await newCategory.save()
+      res.status(201).json(result)
+    } else {
+      res.status(409).json({ message: 'Такий символьни код вже існує' });
+    }
+
   } catch (e) {
     res.status(500).json(e)
   }
@@ -21,9 +28,7 @@ module.exports.update = async (req, res) => {
   try {
     const category = await Category.findOne({ url: req.body.url }).exec();
 
-    if (category && category._id === req.body._id) {
-      res.status(409).json({ message: 'Такий символьни код вже існує' });
-    } else {
+    if (!category || category._id.toString() === req.body._id) {
       const $set = {
         name: req.body.name,
         url: req.body.url,
@@ -34,6 +39,8 @@ module.exports.update = async (req, res) => {
 
       const updatedCategory = await Category.findOneAndUpdate({_id: req.body._id}, $set, {new: true})
       res.status(201).json(updatedCategory)
+    } else {
+      res.status(409).json({ message: 'Такий символьни код вже існує' });
     }
   } catch (e) {
     res.status(500).json(e)

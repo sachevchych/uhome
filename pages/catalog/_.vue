@@ -52,7 +52,7 @@ export default {
     function checkPath(categories, path, index = 0) {
       let valid = false
       categories.forEach(category => {
-        if (category._id === path[index]) {
+        if (category.url === path[index]) {
           if (path.length > index + 1) {
             valid = checkPath(category.children, path, index + 1)
           } else {
@@ -67,9 +67,11 @@ export default {
   },
   async asyncData({store, route}) {
     const path = route.params.pathMatch.split('/').filter(directory => directory !== '')
-    const category = await store.dispatch('category/publicFetchById', path[path.length-1])
-    const products = await store.dispatch('product/publicFetchProducts')
-    return {category, products}
+    const category = store.state.category.categories.find(category => category.url === path[path.length-1])
+    return {category}
+  },
+  async mounted() {
+    this.products = await this.$store.dispatch('product/publicFetchByCategory', this.category._id)
   }
 }
 </script>
