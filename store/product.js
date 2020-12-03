@@ -75,5 +75,13 @@ export const actions = {
       commit('setError', e, {root: true})
       throw e
     }
+  },
+  async publicFetchByUrl({commit}, url) {
+    try {
+      return await this.$axios.$get(`/api/products/url/${url}`)
+    } catch (e) {
+      commit('setError', e, {root: true})
+      throw e
+    }
   }
 }

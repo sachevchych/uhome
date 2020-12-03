@@ -1,3 +1,14 @@
+export const state = () => ({
+  brands: []
+})
+
+export const mutations = {
+  setBrands(state, brands) {
+    state.brands = brands
+  },
+}
+
+
 export const actions = {
   async create({commit}, data) {
     try {
@@ -21,6 +32,13 @@ export const actions = {
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
+    }
+  },
+  async initBrands({commit}) {
+    try {
+      commit('setBrands', await this.$axios.$get('/api/brand/'))
+    } catch (e) {
+      commit('setError', e, {root: true})
     }
   },
   async fetchBrands({commit}) {

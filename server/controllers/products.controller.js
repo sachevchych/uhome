@@ -1,40 +1,56 @@
+const mongoose = require('mongoose')
 const Product = require('../models/product.model')
 const fs = require('fs')
 
 module.exports.create = async (req, res) => {
   try {
-    const product = new Product({
-      active: req.body.active,
-      category: req.body.category,
-      images: req.body.images,
-      name: req.body.name,
-      model: req.body.model,
-      properties: req.body.properties,
-      price: req.body.price
-    })
+    const existProduct = await Product.findOne({url: req.body.url})
 
-    await product.save()
-    console.log(product)
-    res.status(201).json(product)
+    if (!existProduct) {
+      const product = new Product({
+        active: req.body.active,
+        category: req.body.category,
+        images: req.body.images,
+        name: req.body.name,
+        url: req.body.url,
+        brand: new mongoose.Types.ObjectId(req.body.brand),
+        model: req.body.model,
+        properties: req.body.properties,
+        price: req.body.price
+      })
+
+      await product.save()
+      res.status(201).json(product)
+    } else {
+      res.status(409).json({ message: 'Такий символьни код вже існує' });
+    }
   } catch (e) {
     res.status(500).json(e)
   }
 }
 
 module.exports.update = async (req, res) => {
-  const $product = {
-    active: req.body.active,
-    category: req.body.category,
-    images: req.body.images,
-    name: req.body.name,
-    model: req.body.model,
-    properties: req.body.properties,
-    price: req.body.price
-  }
-
   try {
-    const product = await Product.findOneAndUpdate({_id: req.params.id}, $product, {new: true})
-    res.json(product)
+    const existProduct = await Product.findOne({url: req.body.url})
+
+    if (!existProduct || existProduct._id.toString() === req.body._id) {
+      const $product = {
+        active: req.body.active,
+        category: req.body.category,
+        images: req.body.images,
+        name: req.body.name,
+        url: req.body.url,
+        brand: new mongoose.Types.ObjectId(req.body.brand),
+        model: req.body.model,
+        properties: req.body.properties,
+        price: req.body.price
+      }
+
+      const product = await Product.findOneAndUpdate({_id: req.params.id}, $product, {new: true})
+      res.json(product)
+    } else {
+      res.status(409).json({ message: 'Такий символьни код вже існує' });
+    }
   } catch (e) {
     res.status(500).json(e)
   }
@@ -51,9 +67,8 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.getById = async (req, res) => {
   try {
-    await Product.findById(req.params.id, (err, product) => {
-      res.json(product)
-    })
+    const product = await Product.findById(req.params.id)
+    res.json(product)
   } catch (e) {
     res.status(500).json(e)
   }
@@ -106,8 +121,16 @@ module.exports.removeImage = (req, res) => {
 
 module.exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find(req.query)
-    res.json(products)
+    res.json(await Product.find(req.query))
+  } catch (e) {
+    res.status(500).json(e)
+  }
+}
+
+module.exports.getProduct = async (req, res) => {
+  try {
+    const product = await Product.findOne({url: req.params.url}).populate('brand')
+    res.json(product)
   } catch (e) {
     res.status(500).json(e)
   }

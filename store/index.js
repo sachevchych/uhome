@@ -6,6 +6,7 @@ export const actions = {
   async nuxtServerInit({dispatch}) {
     dispatch('auth/autoLogin')
     await dispatch('category/publicFetchCategories')
+    await dispatch('brand/initBrands')
   }
 }
 

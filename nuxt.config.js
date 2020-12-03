@@ -26,7 +26,8 @@ export default {
   ],
   fontawesome: {
     icons: {
-      solid: ['faBars', 'faEllipsisV', 'faAngleRight'],
+      solid: ['faBars', 'faEllipsisV', 'faAngleRight', 'faStar', 'faStarHalfAlt', 'faCheck'],
+      regular: ['faStar'],
       brands: true
     }
   },

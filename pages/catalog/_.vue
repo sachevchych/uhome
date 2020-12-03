@@ -78,7 +78,7 @@ export default {
 
 <style lang="scss" scoped>
 .page-bar {
-  padding-bottom: 90px;
+  padding-bottom: 100px;
 }
 
 .main {

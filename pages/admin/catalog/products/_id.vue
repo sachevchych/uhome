@@ -15,10 +15,23 @@
           <!-- MAIN TAB -->
           <el-tab-pane label="Основні властивості">
             <el-form-item label="Назва" prop="name">
-              <el-input v-model="product.name"></el-input>
+              <el-input v-model="product.name" placeholder="Опис товару" @input="handlerOnNameChange"></el-input>
+            </el-form-item>
+            <el-form-item label="Бренд" prop="brand">
+              <el-select v-model="product.brand" filterable placeholder="Бренд" @change="handlerOnNameChange">
+                <el-option v-for="brand in brands" :key="brand._id" :label="brand.name" :value="brand._id"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="Модель" prop="model">
-              <el-input v-model="product.model"></el-input>
+              <el-input v-model="product.model" placeholder="Модель" @input="handlerOnNameChange"></el-input>
+            </el-form-item>
+            <el-form-item label="Символьний код" prop="url">
+              <el-input v-model="product.url" @input="translitToggle(false)">
+                <i slot="suffix" v-if="isTranslitLock" @click="translitToggle(false)"
+                   class="el-input__icon el-icon-lock input-lock"></i>
+                <i slot="suffix" v-else @click="translitToggle(true)"
+                   class="el-input__icon el-icon-unlock input-unlock"></i>
+              </el-input>
             </el-form-item>
             <el-form-item label="Ціна" prop="price">
               <el-input v-model="product.price"></el-input>
@@ -27,8 +40,10 @@
               <el-switch v-model="product.active"></el-switch>
             </el-form-item>
             <el-form-item label="Категорія" prop="category">
-              <el-select v-model="product.category" filterable @change="fetchCategoryModel" placeholder="Оберіть категорію">
-                <el-option v-for="category in categories" :key="category._id" :label="category.name" :value="category._id"></el-option>
+              <el-select v-model="product.category" filterable @change="fetchCategoryModel"
+                         placeholder="Оберіть категорію">
+                <el-option v-for="category in categories" :key="category._id" :label="category.name"
+                           :value="category._id"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="Фотографія">
@@ -78,6 +93,7 @@
 <script>
 import PageContainer from "@/components/admin/PageContainer";
 import DragAndDropFile from "@/components/admin/UI/DragAndDropFile";
+import cyrillicToTranslit from "cyrillic-to-translit-js";
 
 export default {
   layout: 'admin',
@@ -85,7 +101,7 @@ export default {
   components: {DragAndDropFile, PageContainer},
   head() {
     return {
-      title: this.ifCreate ? 'Створення нового товару' : this.product.name
+      title: this.ifCreate ? 'Створення нового товару' : `Редагування товару ${this.product.model}`
     }
   },
   data() {
@@ -97,7 +113,9 @@ export default {
       },
       product: {
         name: '',
+        brand: '',
         model: '',
+        url: '',
         price: 0,
         active: true,
         category: 'root',
@@ -105,13 +123,23 @@ export default {
         images: []
       },
       propertiesModel: [],
+      isTranslitLock: this.$route.params.id === 'create',
       rules: {
-        name: [
-          {required: true, message: 'Назва товару не можу бути пустою', trigger: 'blur'}
-        ],
-        model: [
-          {required: true, message: 'Модель товару мусить бути заповнена', trigger: 'blur'}
-        ]
+        name: {required: true, message: 'Назва товару не можу бути пустою', trigger: 'blur'},
+        brand: {required: true, message: 'Потрібно обрати бренд товару', trigger: 'blur'},
+        model: {required: true, message: 'Модель товару мусить бути заповнена', trigger: 'blur'},
+        url: {
+          validator: (rule, value, callback) => {
+            if (!this.product.url) {
+              callback(new Error('Символьний код повинен бути заповнений'))
+            } else {
+              callback()
+            }
+          },
+          required: true,
+          trigger: 'change'
+        }
+
       }
     }
   },
@@ -125,7 +153,9 @@ export default {
       return {
         product: {
           name: '',
+          brand: '',
           model: '',
+          url: '',
           price: 0,
           active: true,
           category: 'root',
@@ -139,6 +169,9 @@ export default {
   computed: {
     categories() {
       return [{_id: 'root', name: 'Корінева категорія'}, ...this.$store.state.category.categories]
+    },
+    brands() {
+      return this.$store.state.brand.brands
     }
   },
   methods: {
@@ -175,8 +208,27 @@ export default {
           } finally {
             this.loading.action = false
           }
+        } else {
+          this.$message.warning("Ви не заповнили всі необхідні поля")
         }
       })
+    },
+    handlerOnNameChange() {
+      if (this.isTranslitLock) {
+        let name = this.product.name.toLocaleLowerCase().trim()
+        let model = this.product.model.toLocaleLowerCase().trim()
+        let brand = ''
+
+        if (this.product.brand) {
+          brand = this.brands.find(brand => brand._id === this.product.brand).name.toLowerCase().trim()
+        }
+
+        this.product.url = cyrillicToTranslit({preset: "uk"}).transform(`${name} ${brand} ${model}`, '-')
+      }
+    },
+    translitToggle(state) {
+      this.isTranslitLock = state
+      if (state) this.handlerOnNameChange()
     }
   }
 }
@@ -189,5 +241,14 @@ export default {
   line-height: 40px;
   border-bottom: 1px solid $main-color;
   margin-bottom: 1rem;
+}
+
+.input-lock {
+  cursor: pointer;
+  color: $main-color;
+}
+
+.input-unlock {
+  cursor: pointer;
 }
 </style>

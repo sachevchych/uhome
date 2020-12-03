@@ -1,13 +1,13 @@
 <template>
   <div class="card">
     <div class="card-img px-3 pt-3">
-      <nuxt-link to="#">
+      <nuxt-link :to="`/product/${product.url}/`">
         <img :src="product.images[0].url" :alt="product.model">
       </nuxt-link>
     </div>
     <div class="card-body px-3 py-2">
       <small class="card-body-meta pb-1">{{ product.name }}</small>
-      <nuxt-link to="#" class="card-body-title">
+      <nuxt-link :to="`/product/${product.url}/`" class="card-body-title">
         <h3>{{ product.model }}</h3>
       </nuxt-link>
       <div class="card-body-info">
