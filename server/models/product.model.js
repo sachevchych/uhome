@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
-const { Types } = mongoose.Schema
+const Schema = mongoose.Schema
 
 const productSchema = new mongoose.Schema({
   name: {
     type: String
   },
   brand: {
-    type: Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Brand'
   },
   model: {
@@ -15,7 +15,9 @@ const productSchema = new mongoose.Schema({
   url: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    lowercase: true,
+    trim: true
   },
   active: {
     type: Boolean
@@ -24,9 +26,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     default: 'root'
   },
-  properties: {
-    type: Object
-  },
+  properties: Object,
   price: {
     type: Number
   },

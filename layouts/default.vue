@@ -35,15 +35,10 @@ export default {
 }
 </script>
 
-<style lang="scss">
-html, body, #__nuxt, #__layout {
-  height: 100%;
-}
+<style lang="scss" scoped>
 
 .client {
   background-color: #ffffff;
-  font-family: 'Rubik', sans-serif !important;
-
 
   &-header {
     padding: 0;

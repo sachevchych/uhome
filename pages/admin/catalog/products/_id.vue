@@ -237,8 +237,9 @@ export default {
 <style lang="scss" scoped>
 .divider {
   font-size: 14px;
-  color: #4c4c4c;
-  line-height: 40px;
+  font-weight: 500;
+  color: #606266;
+  line-height: 2rem;
   border-bottom: 1px solid $main-color;
   margin-bottom: 1rem;
 }

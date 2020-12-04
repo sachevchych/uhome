@@ -18,4 +18,4 @@ const propertySchema = new Schema({
   }
 })
 
-module.exports = model('properties', propertySchema)
+module.exports = model('Property', propertySchema)

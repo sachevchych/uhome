@@ -1,7 +1,7 @@
 const passport = require('passport')
 const {Router} = require('express')
 const upload = require('../middleware/upload')
-const ctr = require('../controllers/products.controller')
+const ctr = require('../controllers/product.controller')
 const router = Router()
 
 // Admin

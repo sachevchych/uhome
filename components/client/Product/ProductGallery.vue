@@ -1,11 +1,11 @@
 <template>
-  <div class="product-gallery d-flex flex-column">
-    <div class="preview">
+  <div class="product-gallery d-flex flex-column flex-sm-row-reverse mb-3">
+    <div class="preview p-1 ml-sm-2">
       <div :class="active === index ? 'active-true' : 'active-false'" v-for="(image, index) in images">
         <img :src="image.url" :alt="image.name">
       </div>
     </div>
-    <div class="gallery-list">
+    <div class="gallery-list d-flex flex-wrap justify-content-center align-items-center flex-sm-nowrap flex-sm-column justify-content-sm-start">
       <div
         v-for="(image, index) in images"
         @click="handleThumbnailClick(index)"
@@ -45,10 +45,6 @@ export default {
 }
 
 .gallery-list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-start;
 
   .thumbnail {
     float: left;
@@ -84,7 +80,6 @@ export default {
 .preview {
   height: auto;
   width: 100%;
-  padding: 1rem;
   position: relative;
 
   .active-false {

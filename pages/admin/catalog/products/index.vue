@@ -5,7 +5,6 @@
     </template>
     <template v-slot:content>
       <el-table :data="products">
-        <el-table-column type="selection"/>
         <el-table-column label="Фото" width="80px">
           <template slot-scope="{row: {images}}">
             <el-image
@@ -16,17 +15,10 @@
             </el-image>
           </template>
         </el-table-column>
-        <el-table-column label="Назва товару" prop="name" min-width="200px"/>
-        <el-table-column
-          label="Статус"
-          prop="active"
-          width="120px"
-        >
+        <el-table-column label="Модель" prop="model" min-width="150px"/>
+        <el-table-column label="Статус" prop="active" width="120px">
           <template slot-scope="{row: {active}}">
-            <el-tag
-              :type="active === true ? 'success' : 'warning'"
-              disable-transitions
-            >
+            <el-tag :type="active === true ? 'success' : 'warning'" disable-transitions>
               {{ active === true ? 'Активний' : 'Не активний' }}
             </el-tag>
           </template>
@@ -36,16 +28,12 @@
             {{ new Date(date).toLocaleString() }}
           </template>
         </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="Операції"
-          width="220px"
-        >
-          <template slot-scope="{row: {_id, name}}">
-            <el-button @click="openProduct(_id)" type="primary" size="mini" plain round>
+        <el-table-column fixed="right" label="Операції" width="150px">
+          <template slot-scope="{row: {_id, model}}">
+            <el-button @click="openProduct(_id)" type="primary" size="mini" icon="el-icon-edit" plain round class="mb-1">
               Редагувати
             </el-button>
-            <el-button @click="removeProduct(_id, name)" type="danger" size="mini" plain round>
+            <el-button @click="removeProduct(_id, model)" type="danger" size="mini" icon="el-icon-delete" plain round>
               Видалити
             </el-button>
           </template>
@@ -53,7 +41,6 @@
       </el-table>
     </template>
   </PageContainer>
-
 </template>
 
 <script>

@@ -2,18 +2,18 @@ export default {
   head: {
     title: 'uhome',
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      {charset: 'utf-8'},
+      {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+      {hid: 'description', name: 'description', content: ''}
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap' }
+      {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
+      {rel: 'preconnect', href: 'https://fonts.gstatic.com'},
+      {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap'}
     ]
   },
   css: [
-    'normalize.css/normalize.css',
+    '~/assets/global.css',
     'element-ui/lib/theme-chalk/index.css',
     'bootstrap/dist/css/bootstrap-grid.min.css'
   ],
@@ -24,22 +24,21 @@ export default {
   buildModules: [
     '@nuxtjs/fontawesome'
   ],
-  fontawesome: {
-    icons: {
-      solid: ['faBars', 'faEllipsisV', 'faAngleRight', 'faStar', 'faStarHalfAlt', 'faCheck'],
-      regular: ['faStar'],
-      brands: true
-    }
-  },
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/style-resources'
   ],
   styleResources: {
     scss: [
-      './assets/vars/*.scss',
-      '~theme/style.scss'
+      '~/assets/vars/*.scss'
     ]
+  },
+  fontawesome: {
+    icons: {
+      solid: ['faBars', 'faEllipsisV', 'faAngleRight', 'faStar', 'faStarHalfAlt', 'faCheck'],
+      regular: ['faStar'],
+      brands: true
+    }
   },
   serverMiddleware: {
     '/api': '~/server/app.js'
@@ -51,6 +50,7 @@ export default {
     transpile: [/^element-ui/],
   },
   loading: {
-    color: '409EFF'
+    color: '$main-color',
+    height: '4px'
   }
 }

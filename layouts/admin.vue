@@ -33,11 +33,10 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .admin {
   background-color: #E9F0F6;
   height: 100%;
-  font-family: "Trebuchet MS", sans-serif;
 
   &-header {
     background-color: $white;

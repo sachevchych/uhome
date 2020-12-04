@@ -5,12 +5,13 @@
       <div class="main container-xl mb-4">
         <!-- General Start -->
         <div class="row px-3 py-4">
-          <div class="col-lg-7 col-md-6">
+          <div class="col-lg-7">
             <product-gallery :images="product.images"/>
           </div>
-          <div class="col-lg-5 col-md-6">
+          <div class="col-lg-5">
             <product-rating/>
             <product-details :product="product" class="mt-3"/>
+            <product-brief-tech-specs/>
           </div>
         </div>
         <!-- General End -->
@@ -29,9 +30,10 @@ import PageBar from "@/components/client/PageBar";
 import ProductGallery from "@/components/client/Product/ProductGallery";
 import ProductDetails from "@/components/client/Product/ProductDetails";
 import ProductRating from "@/components/client/Product/ProductRating";
+import ProductBriefTechSpecs from "@/components/client/Product/ProductBriefTechSpecs";
 
 export default {
-  components: {ProductRating, ProductDetails, ProductGallery, PageBar},
+  components: {ProductBriefTechSpecs, ProductRating, ProductDetails, ProductGallery, PageBar},
   data() {
     return {
       product: {}
