@@ -40,7 +40,7 @@
               <el-switch v-model="product.active"></el-switch>
             </el-form-item>
             <el-form-item label="Категорія" prop="category">
-              <el-select v-model="product.category" filterable @change="fetchCategoryModel"
+              <el-select v-model="product.category" filterable clearable @change="fetchCategoryModel"
                          placeholder="Оберіть категорію">
                 <el-option v-for="category in categories" :key="category._id" :label="category.name"
                            :value="category._id"></el-option>
@@ -118,7 +118,7 @@ export default {
         url: '',
         price: 0,
         active: true,
-        category: 'root',
+        category: '',
         properties: {},
         images: []
       },
@@ -158,7 +158,7 @@ export default {
           url: '',
           price: 0,
           active: true,
-          category: 'root',
+          category: '',
           properties: {},
           images: []
         },
@@ -168,7 +168,7 @@ export default {
   },
   computed: {
     categories() {
-      return [{_id: 'root', name: 'Корінева категорія'}, ...this.$store.state.category.categories]
+      return this.$store.state.category.categories
     },
     brands() {
       return this.$store.state.brand.brands

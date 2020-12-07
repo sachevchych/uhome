@@ -9,7 +9,6 @@ module.exports.create = async (req, res) => {
     if (!existProduct) {
       const product = new Product({
         active: req.body.active,
-        category: req.body.category,
         images: req.body.images,
         name: req.body.name,
         url: req.body.url,
@@ -19,10 +18,25 @@ module.exports.create = async (req, res) => {
         price: req.body.price
       })
 
+      if (req.body.category) product.category = new mongoose.Types.ObjectId(req.body.category)
+
+      if (req.body.properties) {
+        const $setSpecs = []
+
+        for (let prop in req.body.properties) {
+          $setSpecs.push({
+            property: new mongoose.Types.ObjectId(prop),
+            value: Array.isArray(req.body.properties[prop]) ? [...req.body.properties[prop]] : [req.body.properties[prop]]
+          })
+        }
+
+        product.specs = $setSpecs
+      }
+
       await product.save()
       res.status(201).json(product)
     } else {
-      res.status(409).json({ message: 'Такий символьни код вже існує' });
+      res.status(409).json({message: 'Такий символьни код вже існує'});
     }
   } catch (e) {
     res.status(500).json(e)
@@ -36,7 +50,6 @@ module.exports.update = async (req, res) => {
     if (!existProduct || existProduct._id.toString() === req.body._id) {
       const $product = {
         active: req.body.active,
-        category: req.body.category,
         images: req.body.images,
         name: req.body.name,
         url: req.body.url,
@@ -46,10 +59,25 @@ module.exports.update = async (req, res) => {
         price: req.body.price
       }
 
+      if (req.body.category) $product.category = new mongoose.Types.ObjectId(req.body.category)
+
+      if (req.body.properties) {
+        const $setSpecs = []
+
+        for (let prop in req.body.properties) {
+          $setSpecs.push({
+            property: new mongoose.Types.ObjectId(prop),
+            value: Array.isArray(req.body.properties[prop]) ? [...req.body.properties[prop]] : [req.body.properties[prop]]
+          })
+        }
+
+        $product.specs = $setSpecs
+      }
+
       const product = await Product.findOneAndUpdate({_id: req.params.id}, $product, {new: true})
       res.json(product)
     } else {
-      res.status(409).json({ message: 'Такий символьни код вже існує' });
+      res.status(409).json({message: 'Такий символьни код вже існує'});
     }
   } catch (e) {
     res.status(500).json(e)
@@ -127,9 +155,9 @@ module.exports.getProducts = async (req, res) => {
   }
 }
 
-module.exports.getProduct = async (req, res) => {
+module.exports.getProductDetailed = async (req, res) => {
   try {
-    const product = await Product.findOne({url: req.params.url}).populate('brand')
+    const product = await Product.findOne({url: req.params.url}).populate('category').populate('brand').populate('specs.property')
     res.json(product)
   } catch (e) {
     res.status(500).json(e)

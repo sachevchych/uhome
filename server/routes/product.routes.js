@@ -54,7 +54,7 @@ router.delete(
 // /api/products/
 router.get('/', ctr.getProducts)
 router.get('/:id', ctr.getById)
-router.get('/url/:url', ctr.getProduct)
+router.get('/url/:url', ctr.getProductDetailed)
 // router.put('/:id', ctr.addView)
 
 

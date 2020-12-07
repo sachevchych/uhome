@@ -75,22 +75,24 @@ export const actions = {
     }
   },
   async fetchCategoryPropertiesById({dispatch, commit}, id) {
-    if (id === 'root') return []
+    if (!id) {
+      return []
+    } else {
+      try {
+        const category = await this.$axios.$get(`/api/category/admin/${id}`)
+        const propertiesList = []
 
-    try {
-      const category = await this.$axios.$get(`/api/category/admin/${id}`)
-      const propertiesList = []
+        for (let property of category.properties) {
+          const fullProperty = await dispatch('property/fetchById', property._id, {root: true})
 
-      for (let property of category.properties) {
-        const fullProperty = await dispatch('property/fetchById', property._id, {root: true})
+          propertiesList.push({...property, ...fullProperty})
+        }
 
-        propertiesList.push({...property, ...fullProperty})
+        return propertiesList
+      } catch (e) {
+        commit('setError', e, {root: true})
+        throw e
       }
-
-      return propertiesList
-    } catch (e) {
-      commit('setError', e, {root: true})
-      throw e
     }
   },
   async fetchCategoriesTree({commit}) {

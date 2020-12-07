@@ -11,15 +11,17 @@
           <div class="col-lg-5">
             <product-rating/>
             <product-details :product="product" class="mt-3"/>
-            <product-brief-tech-specs/>
+            <product-brief-tech-specs :product="product" type="briefly"/>
           </div>
         </div>
         <!-- General End -->
-<!--        <el-tabs class="py-2" value="general">-->
-<!--          <el-tab-pane label="Все про товар" name="general"></el-tab-pane>-->
-<!--          <el-tab-pane label="Характеристики" name="properties">Характеристики</el-tab-pane>-->
-<!--          <el-tab-pane label="Відгуки" name="reviews">Відгуки</el-tab-pane>-->
-<!--        </el-tabs>-->
+        <el-tabs class="py-2" value="properties">
+          <el-tab-pane label="Опис" name="general">Опис</el-tab-pane>
+          <el-tab-pane label="Характеристики" name="properties">
+            <product-brief-tech-specs :product="product" type="full"/>
+          </el-tab-pane>
+          <el-tab-pane label="Відгуки" name="reviews">Відгуки</el-tab-pane>
+        </el-tabs>
       </div>
     </div>
   </div>

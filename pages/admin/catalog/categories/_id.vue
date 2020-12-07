@@ -22,12 +22,13 @@
           <el-switch v-model="category.active"></el-switch>
         </el-form-item>
         <el-form-item label="Належить до" prop="parent">
-          <el-select v-model="category.parent" placeholder="Оберіть батківську категорію">
+          <el-select v-model="category.parent" filterable placeholder="Корінева категорія">
             <el-option
               v-for="category in categories"
               :key="category._id"
               :label="category.name"
               :value="category._id"
+              :disabled="category.disabled"
             >
             </el-option>
           </el-select>
@@ -47,7 +48,12 @@
                   <el-input size="small" v-model="property.name"></el-input>
                 </span>
               </div>
-              <el-button size="mini" type="danger" plain @click="deletePropertyFromList(property)">Видалити</el-button>
+              <div>
+                <el-checkbox v-if="property.type === 'property'" v-model="property.main" size="mini" border>
+                  Показувати у списку
+                </el-checkbox>
+                <el-button size="mini" type="danger" plain @click="deletePropertyFromList(property)">Видалити</el-button>
+              </div>
             </li>
           </draggable>
           <!-- Add property to list block -->
@@ -110,9 +116,6 @@ export default {
         parent: 'root',
         properties: []
       },
-      categories: [
-        {_id: 'root', name: 'Корінева категорія'}
-      ],
       propertiesList: [],
       selectedPropertyId: '',
       isTranslitLock: this.$route.params.id === 'create',
@@ -145,6 +148,13 @@ export default {
       }
     }
   },
+  computed: {
+    categories() {
+      const categories = this.$store.state.category.categories
+      categories.find(category => category._id === this.category._id).disabled = true
+      return [{name: 'Корінева категорія', _id: 'root'}, ...categories]
+    },
+  },
   mounted() {
     this.category.properties.forEach(property => {
       if (property.type === 'property') {
@@ -152,32 +162,8 @@ export default {
         this.propertiesList[index].disabled = true
       }
     })
-    this.fetchCategories()
   },
   methods: {
-    async fetchCategories() {
-      try {
-        const categories = await this.$store.dispatch('category/fetchCategoriesTree')
-
-        const List = []
-
-        categories.forEach(category => {
-          List.push({...category})
-          if (Array.isArray(category.children)) {
-
-            category.children.forEach(category2 => {
-              List.push({...category2, name: `- ${category2.name}`})
-            })
-
-          }
-        })
-
-
-        this.categories = this.categories.concat(List)
-      } catch (e) {
-        this.$message.error(`Не вдалося завантажити список категорій. Помилка: ${e}`)
-      }
-    },
     addPropertyToList() {
       if (this.selectedPropertyId !== '') {
 

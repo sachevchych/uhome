@@ -10,17 +10,21 @@ export const mutations = {
 
 
 export const actions = {
-  async create({commit}, data) {
+  async create({commit, dispatch}, data) {
     try {
-      return await this.$axios.$post('/api/brand/', data)
+      const brand = await this.$axios.$post('/api/brand/', data)
+      dispatch('initBrands')
+      return brand
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
     }
   },
-  async update({commit}, data) {
+  async update({commit, dispatch}, data) {
     try {
-      return await this.$axios.$put(`/api/brand/${data.id}`, data)
+      const brand = await this.$axios.$put(`/api/brand/${data.id}`, data)
+      dispatch('initBrands')
+      return brand
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
@@ -48,9 +52,11 @@ export const actions = {
       commit('setError', e, {root: true})
     }
   },
-  async remove({commit}, id) {
+  async remove({commit, dispatch}, id) {
     try {
-      return await this.$axios.$delete(`/api/brand/${id}`)
+      const result = await this.$axios.$delete(`/api/brand/${id}`)
+      dispatch('initBrands')
+      return result
     } catch (e) {
       commit('setError', e, {root: true})
       throw e

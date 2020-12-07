@@ -15,10 +15,11 @@ const categorySchema = new Schema({
   },
   parent: {
     type: String,
+    default: 'root'
   },
   properties: {
     type: Array
   }
 })
 
-module.exports = model('categories', categorySchema)
+module.exports = model('Category', categorySchema)
