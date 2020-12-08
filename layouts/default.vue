@@ -1,11 +1,7 @@
 <template>
   <div class="client">
     <header class="client-header">
-      <HeaderBar/>
-      <HeaderNav/>
-      <div class="container-lg">
-        <Navigation/>
-      </div>
+      <Header/>
     </header>
     <main class="client-main">
       <nuxt/>
@@ -18,17 +14,13 @@
 </template>
 
 <script>
+import Header from "@/components/client/Header/Header";
 import AppFooterFirstFlore from "../components/client/FooterFirstFlore";
 import AppFooterSecondFlore from "../components/client/FooterSecondFlore";
-import HeaderBar from "@/components/client/Header/HeaderBar";
-import HeaderNav from "@/components/client/Header/HeaderNav";
-import Navigation from "@/components/client/Header/Navigation";
 
 export default {
   components: {
-    HeaderBar,
-    HeaderNav,
-    Navigation,
+    Header,
     AppFooterSecondFlore,
     AppFooterFirstFlore
   }
@@ -36,7 +28,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .client {
   background-color: #ffffff;
 

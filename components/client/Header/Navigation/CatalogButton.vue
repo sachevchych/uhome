@@ -11,12 +11,14 @@
           </nuxt-link>
           <ul class="subcategories" v-if="category.children.length > 0">
             <li class="subcategories-element" v-for="subcategory in category.children">
-              <nuxt-link :to="`/catalog/${category.url}/${subcategory.url}/`" class="subcategories-link subcategories-title">
+              <nuxt-link :to="`/catalog/${category.url}/${subcategory.url}/`"
+                         class="subcategories-link subcategories-title">
                 {{ subcategory.name }}
               </nuxt-link>
               <ul class="subcategories-children" v-if="subcategory.children.length > 0">
                 <li class="subcategories-children-element" v-for="childCategory in subcategory.children">
-                  <nuxt-link :to="`/catalog/${category.url}/${subcategory.url}/${childCategory.url}/`" class="subcategories-link">
+                  <nuxt-link :to="`/catalog/${category.url}/${subcategory.url}/${childCategory.url}/`"
+                             class="subcategories-link">
                     {{ childCategory.name }}
                   </nuxt-link>
                 </li>
@@ -26,43 +28,40 @@
         </li>
       </ul>
     </div>
-
   </div>
 </template>
 
 <script>
 export default {
-  name: "NavCatalogButton",
-  data() {
-    return {
-
-    }
-  },
   computed: {
     categories() {
       return this.$store.getters["category/categoriesTree"]
     }
-  },
-  methods: {
-
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .catalog-btn {
-  padding-right: 1.125rem;
-  padding-top: 1.125rem;
-  padding-bottom: 1.125rem;
-  transition: color 0.25s ease-in-out;
+  background-color: $main-color;
+  margin: 0 .5rem;
+  padding: .625rem 1.375rem;
+  transition: all 0.25s ease-in-out;
   cursor: pointer;
+  box-shadow: 0 0.5rem 1.125rem -0.5rem rgba(64, 158, 255, 0.9);
+  font-size: .9rem;
+  line-height: 1.5;
+  color: #ffffff;
+  border-radius: .3125rem;
+
 
   &:hover {
-    color: $main-color;
+    box-shadow: 0 0.5rem 1.125rem -0.5rem rgba(64, 158, 255, 0.5);
 
     .catalog {
       visibility: visible;
-      margin-top: 1rem;
+      margin-top: 0.7rem;
+      margin-left: -1.375rem;
     }
   }
 
@@ -70,6 +69,7 @@ export default {
     margin-right: .3rem;
     font-size: .9rem;
   }
+
 }
 
 .catalog {
@@ -79,7 +79,7 @@ export default {
   margin-top: 1.5rem;
   background-color: #ffffff;
   transition: margin-top .2s ease-in-out;
-  box-shadow: 0 0.25rem 0.5625rem -0.0625rem rgba(0,0,0,0.03), 0 0.275rem 1.25rem -0.0625rem rgba(0,0,0,0.05);
+  box-shadow: 0 0.25rem 0.5625rem -0.0625rem rgba(0, 0, 0, 0.03), 0 0.275rem 1.25rem -0.0625rem rgba(0, 0, 0, 0.05);
   min-width: 12.5rem;
   border-radius: .25rem;
 
@@ -140,7 +140,7 @@ export default {
   list-style: none;
   background-color: #ffffff;
   border-radius: .3125rem;
-  box-shadow: 0 0.25rem 0.5625rem -0.0625rem rgba(0,0,0,0.03), 0 0.275rem 1.25rem -0.0625rem rgba(0,0,0,0.05);
+  box-shadow: 0 0.25rem 0.5625rem -0.0625rem rgba(0, 0, 0, 0.03), 0 0.275rem 1.25rem -0.0625rem rgba(0, 0, 0, 0.05);
 
   &-element {
     color: #6c7293;

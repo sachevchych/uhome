@@ -1,12 +1,12 @@
 <template>
-  <div class="navigation">
-    <NavCatalogButton/>
+  <div class="navigation d-none d-md-flex">
+    <catalog-button/>
     <nav class="nav">
       <ul class="nav-list">
         <li class="nav-element" v-for="element in links">
-          <NuxtLink :to="element.link" class="nav-link">
+          <nuxt-link :to="element.link" class="nav-link">
             {{ element.label }}
-          </NuxtLink>
+          </nuxt-link>
         </li>
       </ul>
     </nav>
@@ -14,20 +14,12 @@
 </template>
 
 <script>
-import NavCatalogButton from "@/components/client/Header/NavCatalogButton";
+import CatalogButton from "@/components/client/Header/Navigation/CatalogButton";
+
 export default {
-  name: "Navigation",
-  components: {NavCatalogButton},
-  data() {
-    return {
-      links: [
-        {label: 'Головна сторінка', link: '#'},
-        {label: 'Блог', link: '/blog'},
-        {label: 'Новини', link: '#'},
-        {label: 'Про нас', link: '#'},
-        {label: 'Доставка та оплата', link: '#'}
-      ]
-    }
+  components: {CatalogButton},
+  props: {
+    links: Array
   }
 }
 </script>
@@ -38,12 +30,12 @@ export default {
   align-items: center;
   justify-content: flex-start;
   color: #4b566b;
-  font-size: 1rem;
-  padding: .5rem 0;
+  font-size: 0.975rem;
+  padding-bottom: 1rem;
+  padding-top: 0.2rem;
 }
 
 .nav {
-  border-left: 1px solid #e3e9ef;
   height: 2rem;
   display: flex;
   align-items: center;
