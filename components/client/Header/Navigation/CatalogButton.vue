@@ -134,7 +134,6 @@ export default {
   right: auto;
   width: auto;
   min-height: 100%;
-  columns: 2;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -144,7 +143,6 @@ export default {
 
   &-element {
     color: #6c7293;
-    width: 15rem;
     padding: 1rem 1.5rem;
     display: inline-block;
     line-height: 1.3;

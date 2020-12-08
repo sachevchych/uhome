@@ -1,28 +1,25 @@
 <template>
   <div class="client">
     <header class="client-header">
-      <Header/>
+      <header-public/>
     </header>
     <main class="client-main">
       <nuxt/>
     </main>
     <footer class="client-footer">
-      <AppFooterFirstFlore/>
-      <AppFooterSecondFlore/>
+      <footer-public/>
     </footer>
   </div>
 </template>
 
 <script>
-import Header from "@/components/client/Header/Header";
-import AppFooterFirstFlore from "../components/client/FooterFirstFlore";
-import AppFooterSecondFlore from "../components/client/FooterSecondFlore";
+import HeaderPublic from "@/components/client/Header/Header";
+import FooterPublic from "@/components/client/Footer/Footer";
 
 export default {
   components: {
-    Header,
-    AppFooterSecondFlore,
-    AppFooterFirstFlore
+    HeaderPublic,
+    FooterPublic
   }
 }
 </script>

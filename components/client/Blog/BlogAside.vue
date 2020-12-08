@@ -1,5 +1,5 @@
 <template>
-  <aside class="aside">
+  <aside class="aside pl-md-4">
     <app-blog-categories/>
     <app-blog-trending-posts/>
     <app-blog-popular-tags/>
@@ -20,6 +20,5 @@
 <style scoped>
   .aside {
     border-left: 1px solid #e3e9ef;
-    padding: 0 1.5rem;
   }
 </style>

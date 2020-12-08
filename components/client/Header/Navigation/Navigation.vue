@@ -3,7 +3,7 @@
     <div class="header">
       <div class="d-flex align-items-center justify-content-between">
         <nuxt-link to="/" class="logo">
-          <img src="~/assets/images/uhome.svg" alt="logo">
+          <img src="~/assets/images/logo_light.svg" alt="logo">
         </nuxt-link>
         <div class="mobile-menu d-md-none">
           <el-dropdown trigger="click">
@@ -11,7 +11,7 @@
               <font-awesome-icon :icon="['fas', 'bars']" class="mobile-menu-icon"/> Меню
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-for="link in links" class="mobile-menu-item">
+              <el-dropdown-item v-for="link in links" :key="link.link" class="mobile-menu-item">
                 <nuxt-link :to="link.link" class="mobile-menu-link">
                   {{ link.label }}
                 </nuxt-link>
