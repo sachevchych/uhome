@@ -13,6 +13,10 @@ const propertySchema = new Schema({
     type: Boolean,
     default: false
   },
+  main: {
+    type: Boolean,
+    default: false
+  },
   options: {
     type: Array
   }

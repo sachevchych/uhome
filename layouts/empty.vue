@@ -1,11 +1,6 @@
 <template>
-  <div>
-    <div class="header">
-      <img src="/img/logo.png" alt="logo">
-    </div>
-    <div class="content">
+  <div class="d-flex h-100 align-items-center justify-content-center">
       <nuxt/>
-    </div>
   </div>
 </template>
 

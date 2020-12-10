@@ -38,7 +38,7 @@ export default {
   color: #fff;
   position: absolute;
   top: 0;
-  right: -2.72rem;
+  right: -1.5rem;
   padding: .7rem 1.2rem .7rem 0.7rem;
   border-radius: .3125rem 0 0 .3125rem;
   font-size: .8rem;

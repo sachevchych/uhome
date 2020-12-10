@@ -49,9 +49,6 @@
                 </span>
               </div>
               <div>
-                <el-checkbox v-if="property.type === 'property'" v-model="property.main" size="mini" border>
-                  Показувати у списку
-                </el-checkbox>
                 <el-button size="mini" type="danger" plain @click="deletePropertyFromList(property)">Видалити</el-button>
               </div>
             </li>

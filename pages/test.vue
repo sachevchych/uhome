@@ -1,17 +1,21 @@
 <template>
-  <div>
-    <DragAndDropFile></DragAndDropFile>
+  <div class="test">
+
   </div>
 </template>
 
 <script>
-import DragAndDropFile from "@/components/admin/UI/DragAndDropFile";
+
 export default {
-name: "test",
-  components: {DragAndDropFile}
+  name: "test",
+  layout: 'empty',
 }
 </script>
 
 <style scoped>
-
+.test {
+  width: 100%;
+  height: 50px;
+  background-color: #959cb6;
+}
 </style>

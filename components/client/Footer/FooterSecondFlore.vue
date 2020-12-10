@@ -1,6 +1,6 @@
 <template>
   <div class="wrap">
-    <div class="container-xl media-group">
+    <div class="container-xxl media-group">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4">
         <div class="col">
           <div class="media">
@@ -48,12 +48,12 @@
         </div>
       </div>
     </div>
-    <div class="container-xl copyright-group">
+    <div class="container-xxl copyright-group">
       <div>
         <nuxt-link to="/" class="logo">
-          <img src="~/assets/images/logo_dark.svg" alt="logo">
+            <img src="~/assets/images/logo_dark.svg" alt="logo">
         </nuxt-link>
-        <span>© Всі права захищено. Розроблено студією дизайну SmartInteger.</span>
+        <span>© uHome, 2020. Всі права захищено.</span>
       </div>
       <div class="payments">
 

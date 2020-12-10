@@ -1,6 +1,6 @@
 <template>
   <div class="wrap">
-    <div class="container-xl">
+    <div class="container-xxl">
       <div class="row">
         <div class="col-12 col-sm-6 col-lg-3">
           <div class="widget">

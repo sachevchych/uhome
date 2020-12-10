@@ -145,9 +145,9 @@ export default {
   },
   async asyncData({store, route}) {
     if (route.params.id !== 'create') {
-      const product = await store.dispatch('product/fetchById', route.params.id)
+      const product = await store.dispatch('admin/product/fetchById', route.params.id)
       if (!product.properties) product.properties = {}
-      const propertiesModel = await store.dispatch('category/fetchCategoryPropertiesById', product.category)
+      const propertiesModel = await store.dispatch('admin/category/fetchCategoryPropertiesById', product.category)
       return {product, propertiesModel}
     } else {
       return {
@@ -176,14 +176,14 @@ export default {
   },
   methods: {
     async fetchCategoryModel(id) {
-      this.propertiesModel = await this.$store.dispatch('category/fetchCategoryPropertiesById', id)
+      this.propertiesModel = await this.$store.dispatch('admin/category/fetchCategoryPropertiesById', id)
     },
     createProduct() {
       this.$refs.product.validate(async valid => {
         if (valid) {
           try {
             this.loading.action = true
-            const product = await this.$store.dispatch('product/create', this.product)
+            const product = await this.$store.dispatch('admin/product/create', this.product)
             this.$message.success('Товар створено')
             await this.$router.push('../' + product._id)
           } catch (e) {
@@ -201,7 +201,7 @@ export default {
         if (valid) {
           try {
             this.loading.action = true
-            await this.$store.dispatch('product/update', this.product)
+            await this.$store.dispatch('admin/product/update', this.product)
             this.$message.success('Товар оновлено')
           } catch (e) {
             this.$message.error(`Не вдалося зберегти товар. Помилка: ${e}`)

@@ -1,6 +1,6 @@
 <template>
   <div :class="theme">
-    <div class="container-xl pt-lg-3">
+    <div class="container-xxl pt-lg-3">
       <div class="d-lg-flex justify-content-between align-items-center py-4 py-lg-3">
         <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2 d-flex justify-content-center">
           <el-breadcrumb separator-class="el-icon-arrow-right" >

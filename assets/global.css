@@ -2,6 +2,11 @@ html, body, #__nuxt, #__layout {
   font-family: 'Rubik', 'Trebuchet MS', sans-serif !important;
   margin: 0 !important;
   height: 100% !important;
+  box-sizing: border-box;
+}
+
+*, ::after, ::before {
+  box-sizing: border-box;
 }
 
 button, input {

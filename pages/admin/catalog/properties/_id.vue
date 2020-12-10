@@ -4,7 +4,7 @@
       <!-- TODO some actions -->
     </template>
     <template v-slot:content>
-      <el-form ref="propertyForm" :model="property" :rules="rules" label-width="150px" v-loading="loading.page">
+      <el-form ref="propertyForm" :model="property" :rules="rules" label-width="180px" v-loading="loading.page">
         <el-form-item label="Назва" prop="name">
           <el-input v-model="property.name"></el-input>
         </el-form-item>
@@ -17,11 +17,11 @@
         <el-form-item label="Множинне">
           <el-switch v-model="property.multiple"></el-switch>
         </el-form-item>
+        <el-form-item label="Головна властивість">
+          <el-switch v-model="property.main"></el-switch>
+        </el-form-item>
         <el-form-item label="Значення" v-if="property.type === 'list'">
-          <draggable tag="ul" class="value-list" :list="property.options" handle=".handle" v-bind="dragOptions"
-                     @start="isDragging = true"
-                     @end="isDragging = false">
-            <span v-if="!property.options.length" class="value-empty">Додайте до списку перше значення</span>
+          <draggable tag="ul" class="value-list" :list="property.options" handle=".handle" v-bind="dragOptions">
             <transition-group type="transition" name="flip-list">
               <li v-for="option in property.options" :key="option.id" class="value-item">
                 <span class="handle">
@@ -65,6 +65,7 @@ export default {
         name: '',
         type: 'string',
         multiple: false,
+        main: false,
         options: []
       },
       rules: {

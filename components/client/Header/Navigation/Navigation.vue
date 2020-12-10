@@ -1,5 +1,5 @@
 <template>
-  <div class="container-xl">
+  <div class="container-xxl">
     <div class="header">
       <div class="d-flex align-items-center justify-content-between">
         <nuxt-link to="/" class="logo">

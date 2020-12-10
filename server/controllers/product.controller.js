@@ -24,10 +24,12 @@ module.exports.create = async (req, res) => {
         const $setSpecs = []
 
         for (let prop in req.body.properties) {
-          $setSpecs.push({
-            property: new mongoose.Types.ObjectId(prop),
-            value: Array.isArray(req.body.properties[prop]) ? [...req.body.properties[prop]] : [req.body.properties[prop]]
-          })
+          if (req.body.properties[prop].length) {
+            $setSpecs.push({
+              property: new mongoose.Types.ObjectId(prop),
+              value: Array.isArray(req.body.properties[prop]) ? [...req.body.properties[prop]] : [req.body.properties[prop]]
+            })
+          }
         }
 
         product.specs = $setSpecs
@@ -65,10 +67,12 @@ module.exports.update = async (req, res) => {
         const $setSpecs = []
 
         for (let prop in req.body.properties) {
-          $setSpecs.push({
-            property: new mongoose.Types.ObjectId(prop),
-            value: Array.isArray(req.body.properties[prop]) ? [...req.body.properties[prop]] : [req.body.properties[prop]]
-          })
+          if (req.body.properties[prop].length) {
+            $setSpecs.push({
+              property: new mongoose.Types.ObjectId(prop),
+              value: Array.isArray(req.body.properties[prop]) ? [...req.body.properties[prop]] : [req.body.properties[prop]]
+            })
+          }
         }
 
         $product.specs = $setSpecs

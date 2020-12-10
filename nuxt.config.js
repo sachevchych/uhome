@@ -15,7 +15,8 @@ export default {
   css: [
     '~/assets/global.css',
     'element-ui/lib/theme-chalk/index.css',
-    'bootstrap/dist/css/bootstrap-grid.min.css'
+    'bootstrap/dist/css/bootstrap-grid.min.css',
+    'bootstrap/dist/css/bootstrap-utilities.min.css'
   ],
   plugins: [
     '@/plugins/globals'

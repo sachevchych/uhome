@@ -7,6 +7,7 @@ module.exports.create = async (req, res) => {
     property.name = req.body.name
     property.type = req.body.type
     property.multiple = req.body.multiple
+    property.main = req.body.main
     property.options = req.body.options
 
     const result = await property.save()
@@ -23,6 +24,7 @@ module.exports.update = async (req, res) => {
       name: req.body.name,
       type: req.body.type,
       multiple: req.body.multiple,
+      main: req.body.main,
       options: req.body.options,
     }
 
@@ -44,7 +46,8 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.getById = async (req, res) => {
   try {
-    await Property.findById(req.params.id, (err, property) => res.status(201).json(property))
+    const property = await Property.findById(req.params.id)
+    res.status(201).json(property)
   } catch (e) {
     res.status(500).json(e)
   }

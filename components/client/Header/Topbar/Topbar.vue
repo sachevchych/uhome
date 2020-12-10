@@ -1,6 +1,6 @@
 <template>
   <div class="bar-wrap">
-    <div class="container-xl">
+    <div class="container-xxl">
       <div class="header-bar d-flex justify-content-between align-items-center">
         <div class="header-dark-bar-el">
           <el-dropdown>
