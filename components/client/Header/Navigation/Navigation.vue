@@ -3,7 +3,7 @@
     <div class="header">
       <div class="d-flex align-items-center justify-content-between">
         <nuxt-link to="/" class="logo">
-          <img src="~/assets/images/logo_light.svg" alt="logo">
+          <img src="~/assets/images/logo_dark.svg" alt="logo">
         </nuxt-link>
         <div class="mobile-menu d-md-none">
           <el-dropdown trigger="click">
@@ -88,9 +88,9 @@ export default {
   display: block;
 
   img {
-    height: 60px;
-    width: 150px;
-    object-fit: cover;
+    margin-top: .5rem;
+    height: 70px;
+    width: auto;
   }
 }
 
@@ -99,11 +99,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: $main-color;
+    background-color: $primary;
     padding: .625rem 1.375rem;
     transition: all 0.25s ease-in-out;
     cursor: pointer;
-    box-shadow: 0 0.5rem 1.125rem -0.5rem rgba(64, 158, 255, 0.9);
+    box-shadow: 0 0.5rem 1.125rem -0.5rem rgba($primary, 0.9);
     font-size: .9rem;
     line-height: 1.5;
     color: #ffffff;
@@ -124,7 +124,7 @@ export default {
   &-item {
     &:hover {
       .mobile-menu-link {
-        color: $main-color;
+        color: $primary;
       }
     }
   }

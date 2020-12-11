@@ -31,7 +31,7 @@ export default {
   ],
   styleResources: {
     scss: [
-      '~/assets/vars/*.scss'
+      '~/assets/vars/_colors.scss'
     ]
   },
   fontawesome: {

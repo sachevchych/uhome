@@ -76,6 +76,16 @@
               </div>
             </div>
           </el-tab-pane>
+          <!-- DESCRIPTION TAB -->
+          <el-tab-pane label="Опис товару">
+            <el-form-item label="Короткий опис:" prop="description">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 10, maxRows: 30}"
+                v-model="product.description">
+              </el-input>
+            </el-form-item>
+          </el-tab-pane>
         </el-tabs>
       </el-form>
     </template>
@@ -120,7 +130,8 @@ export default {
         active: true,
         category: '',
         properties: {},
-        images: []
+        images: [],
+        description: ''
       },
       propertiesModel: [],
       isTranslitLock: this.$route.params.id === 'create',
@@ -160,7 +171,8 @@ export default {
           active: true,
           category: '',
           properties: {},
-          images: []
+          images: [],
+          description: ''
         },
         propertiesModel: [],
       }

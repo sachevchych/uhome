@@ -59,6 +59,7 @@ export default {
     align-items: center;
     background-color: #ffffff;
     padding: 0.2rem;
+    cursor: pointer;
 
     &:hover {
       opacity: 1;
@@ -94,7 +95,7 @@ export default {
   .active-true {
     position: relative;
     opacity: 1;
-    z-index: 10;
+    z-index: 2;
     height: 100%;
     width: 100%;
     top: 0;

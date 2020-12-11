@@ -1,5 +1,4 @@
 export const actions = {
-  // Admin actions
   async fetchProducts({commit}) {
     try {
       return await this.$axios.$get('/api/products/admin')

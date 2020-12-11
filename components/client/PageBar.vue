@@ -3,13 +3,7 @@
     <div class="container-xxl pt-lg-3">
       <div class="d-lg-flex justify-content-between align-items-center py-4 py-lg-3">
         <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2 d-flex justify-content-center">
-          <el-breadcrumb separator-class="el-icon-arrow-right" >
-            <el-breadcrumb-item :to="{ path: '/' }" class="breadcrumb-item">
-              Головна сторінка
-            </el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/blog/' }" class="breadcrumb-item">Блог</el-breadcrumb-item>
-            <el-breadcrumb-item class="breadcrumb-item">{{ title }}</el-breadcrumb-item>
-          </el-breadcrumb>
+          <breadcrumb :data="breadcrumbs"/>
         </div>
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left d-flex justify-content-center">
           <h1 class="title">{{ title }}</h1>
@@ -20,8 +14,11 @@
 </template>
 
 <script>
+import Breadcrumb from "@/components/client/Pages/Breadcrumb";
+
 export default {
   name: "PageBar",
+  components: {Breadcrumb},
   props: {
     title: {
       type: String,
@@ -30,8 +27,11 @@ export default {
     theme: {
       type: String,
       default: 'light'
+    },
+    breadcrumbs: {
+      type: Array
     }
-  }
+  },
 }
 </script>
 
@@ -45,15 +45,27 @@ export default {
 
 .light {
   background-color: #f6f9fc;
+
   .title {
-    color: $dark-light;
+    color: $gray-dark;
   }
 }
 
 .dark {
-  background-color: $dark-light;
+  background-color: $gray-dark;
+
   .title {
     color: $white;
+  }
+}
+
+.breadcrumb {
+  &-link{
+    color: #ffffff !important;
+  }
+
+  &-active {
+
   }
 }
 </style>

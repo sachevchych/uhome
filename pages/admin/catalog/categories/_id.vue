@@ -242,7 +242,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid $divider;
+  border: 1px solid $gray;
   border-radius: 0.5rem;
   padding: .2rem 1rem;
   margin-bottom: .5rem;

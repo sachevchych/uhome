@@ -1,27 +1,26 @@
 <template>
-  <div>
-    <PageBar :title="category.name" theme="dark" class="page-bar"/>
-    <div class="container-xl main pb-5">
+  <div class="category">
+    <PageBar :title="category.name" theme="dark" class="page-bar" :breadcrumbs="breadcrumbs"/>
+    <div class="category container-xl main pb-5">
       <div class="row">
-        <aside class="col d-none d-md-block">
-          <div class="sidebar mr-3 mr-md-0">
+<!--        <aside class="col d-none d-md-block">-->
+<!--          <div class="sidebar mr-3 mr-md-0">-->
 
-          </div>
-        </aside>
-        <section class="content col-lg-8 col-md-7 col-sm-12">
-
-          <div class="toolbar d-flex align-items-center mb-5 mt-2">
-            <div class="sorting d-flex align-items-center">
-              <label class="mr-2">Сортування:</label>
-              <el-select v-model="sorting" placeholder="оберіть сортування" id="sorting">
-                <el-option label="за популярністю" value="popularity"></el-option>
-                <el-option label="за ціною" value="price"></el-option>
-                <el-option label="новинки спочатку" value="new"></el-option>
-              </el-select>
-            </div>
-          </div>
+<!--          </div>-->
+<!--        </aside>-->
+        <section class="content col-12">
+<!--          <div class="toolbar d-flex align-items-center mb-5 mt-2">-->
+<!--            <div class="sorting d-flex align-items-center">-->
+<!--              <label class="mr-2">Сортування:</label>-->
+<!--              <el-select v-model="sorting" placeholder="оберіть сортування" id="sorting">-->
+<!--                <el-option label="за популярністю" value="popularity"></el-option>-->
+<!--                <el-option label="за ціною" value="price"></el-option>-->
+<!--                <el-option label="новинки спочатку" value="new"></el-option>-->
+<!--              </el-select>-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="product-grid">
-            <div class="row row-cols-lg-3 row-cols-2">
+            <div class="row row-cols-lg-4 row-cols-2">
               <div class="col px-2 mb-4" v-for="product in products">
                 <ProductCard :product="product"/>
               </div>
@@ -44,6 +43,15 @@ export default {
       category: {},
       products: [],
       sorting: 'popularity',
+      loading: true,
+    }
+  },
+  computed: {
+    breadcrumbs() {
+      return [
+        {label: 'Каталог товарів', url: '/catalog/'},
+        {label: this.category.name, url: ''}
+      ]
     }
   },
   validate({params, store}) {
@@ -77,6 +85,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.category {
+  min-height: 250px;
+}
+
 .page-bar {
   padding-bottom: 100px;
 }

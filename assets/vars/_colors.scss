@@ -1,10 +1,5 @@
-$main-color: #409eff;
-$orange: #b03618;
-$dark: #242939;
-$dark-light: #373F50;
-$gray: #646464;
-$divider: #EBEDF3;
-$white: #ffffff;
+$main-color: #fe696a;
+$main-color-darker: #007bff;
 
 $blue: #007bff;
 $indigo: #6610f2;
@@ -19,6 +14,7 @@ $cyan: #17a2b8;
 $white: #fff;
 $gray: #7d879c;
 $gray-dark: #373f50;
+
 $primary: #fe696a;
 $secondary: #f3f5f9;
 $success: #42d697;
@@ -28,3 +24,23 @@ $danger: #f34770;
 $light: #fff;
 $dark: #373f50;
 $accent: #4e54c8;
+
+$primary-light-1: mix($white, $primary, 10%) !default;
+$primary-light-2: mix($white, $primary, 20%) !default;
+$primary-light-3: mix($white, $primary, 30%) !default;
+$primary-light-4: mix($white, $primary, 40%) !default;
+$primary-light-5: mix($white, $primary, 50%) !default;
+$primary-light-6: mix($white, $primary, 60%) !default;
+$primary-light-7: mix($white, $primary, 70%) !default;
+$primary-light-8: mix($white, $primary, 80%) !default;
+$primary-light-9: mix($white, $primary, 90%) !default;
+
+$primary-dark-1: mix($dark, $primary, 10%) !default;
+$primary-dark-2: mix($dark, $primary, 20%) !default;
+$primary-dark-3: mix($dark, $primary, 30%) !default;
+$primary-dark-4: mix($dark, $primary, 40%) !default;
+$primary-dark-5: mix($dark, $primary, 50%) !default;
+$primary-dark-6: mix($dark, $primary, 60%) !default;
+$primary-dark-7: mix($dark, $primary, 70%) !default;
+$primary-dark-8: mix($dark, $primary, 80%) !default;
+$primary-dark-9: mix($dark, $primary, 90%) !default;

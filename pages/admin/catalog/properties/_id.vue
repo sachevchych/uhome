@@ -167,7 +167,7 @@ export default {
   list-style: none;
   margin: 0;
   padding: 0;
-  border: 1px solid $divider;
+  border: 1px solid $gray;
   border-radius: .5rem;
   max-width: 500px;
 
@@ -176,7 +176,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: .5rem;
-    border-bottom: 1px solid $divider;
+    border-bottom: 1px solid $gray;
 
     &:last-child {
       border-bottom: none;

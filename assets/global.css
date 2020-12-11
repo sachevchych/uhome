@@ -9,6 +9,6 @@ html, body, #__nuxt, #__layout {
   box-sizing: border-box;
 }
 
-button, input {
+button, input, textarea {
   font-family: 'Rubik', 'Trebuchet MS', sans-serif !important;
 }

@@ -15,7 +15,8 @@ module.exports.create = async (req, res) => {
         brand: new mongoose.Types.ObjectId(req.body.brand),
         model: req.body.model,
         properties: req.body.properties,
-        price: req.body.price
+        price: req.body.price,
+        description: req.body.description
       })
 
       if (req.body.category) product.category = new mongoose.Types.ObjectId(req.body.category)
@@ -58,7 +59,8 @@ module.exports.update = async (req, res) => {
         brand: new mongoose.Types.ObjectId(req.body.brand),
         model: req.body.model,
         properties: req.body.properties,
-        price: req.body.price
+        price: req.body.price,
+        description: req.body.description
       }
 
       if (req.body.category) $product.category = new mongoose.Types.ObjectId(req.body.category)

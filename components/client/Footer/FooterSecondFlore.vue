@@ -49,9 +49,9 @@
       </div>
     </div>
     <div class="container-xxl copyright-group">
-      <div>
+      <div class="d-flex align-items-end">
         <nuxt-link to="/" class="logo">
-            <img src="~/assets/images/logo_dark.svg" alt="logo">
+            <img src="~/assets/images/logo_light.svg" alt="logo">
         </nuxt-link>
         <span>© uHome, 2020. Всі права захищено.</span>
       </div>
@@ -123,7 +123,7 @@ export default {}
 
 .logo {
   display: block;
-  opacity: .7;
+  opacity: .8;
   transition: all 0.25s ease-in-out;
 
   &:hover {
@@ -131,9 +131,8 @@ export default {}
   }
 
   img {
-    height: 60px;
-    width: 150px;
-    object-fit: cover;
+    height: 50px;
+    width: auto;
   }
 }
 

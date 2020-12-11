@@ -6,26 +6,8 @@
           <div class="widget">
             <h3 class="widget-title">Каталог товарів</h3>
             <ul class="widget-list">
-              <li class="widget-list-item">
-                <el-link href="#" :underline="false" class="widget-list-link">Велика побутова техніка</el-link>
-              </li>
-              <li class="widget-list-item">
-                <el-link href="#" :underline="false" class="widget-list-link">Мала побутова техніка</el-link>
-              </li>
-              <li class="widget-list-item">
-                <el-link href="#" :underline="false" class="widget-list-link">Техніка для дому</el-link>
-              </li>
-              <li class="widget-list-item">
-                <el-link href="#" :underline="false" class="widget-list-link">Техніка для кухні</el-link>
-              </li>
-              <li class="widget-list-item">
-                <el-link href="#" :underline="false" class="widget-list-link">Сантехніка</el-link>
-              </li>
-              <li class="widget-list-item">
-                <el-link href="#" :underline="false" class="widget-list-link">Дизайн та декор</el-link>
-              </li>
-              <li class="widget-list-item">
-                <el-link href="#" :underline="false" class="widget-list-link">Мода та стиль</el-link>
+              <li class="widget-list-item" v-for="category in categories">
+                <el-link :href="`/catalog/${category.url}/`" :underline="false" class="widget-list-link">{{ category.name }}</el-link>
               </li>
             </ul>
           </div>
@@ -110,6 +92,11 @@ export default {
     return {
       subscribe: '',
     }
+  },
+  computed: {
+    categories() {
+      return this.$store.getters["category/categoriesTree"]
+    }
   }
 }
 </script>
@@ -145,7 +132,7 @@ export default {
 }
 
 .widget-list-link {
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.65) !important;
   display: block;
   line-height: 1.5;
   transition: color 0.25s ease-in-out;
@@ -154,7 +141,7 @@ export default {
 }
 
 .widget-list-link:hover {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .subscribe-text {

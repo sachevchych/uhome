@@ -43,12 +43,12 @@ export default {
 
 <style lang="scss" scoped>
 .catalog-btn {
-  background-color: $main-color;
+  background-color: $primary;
   margin: 0 .5rem;
   padding: .625rem 1.375rem;
   transition: all 0.25s ease-in-out;
   cursor: pointer;
-  box-shadow: 0 0.5rem 1.125rem -0.5rem rgba(64, 158, 255, 0.9);
+  box-shadow: 0 0.5rem 1.125rem -0.5rem rgba($primary, 0.9);
   font-size: .9rem;
   line-height: 1.5;
   color: #ffffff;
@@ -56,7 +56,8 @@ export default {
 
 
   &:hover {
-    box-shadow: 0 0.5rem 1.125rem -0.5rem rgba(64, 158, 255, 0.5);
+    box-shadow: 0 0.5rem 1.125rem -0.5rem rgba($primary, 0.2);
+    background-color: $primary-light-1;
 
     .catalog {
       visibility: visible;
@@ -75,7 +76,7 @@ export default {
 .catalog {
   visibility: hidden;
   position: absolute;
-  z-index: 1;
+  z-index: 4;
   margin-top: 1.5rem;
   background-color: #ffffff;
   transition: margin-top .2s ease-in-out;

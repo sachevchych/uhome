@@ -22,11 +22,9 @@
 
 <script>
 export default {
-  name: "ProductCard",
   props: {
     'product': Object
   }
-
 }
 </script>
 
