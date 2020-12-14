@@ -33,7 +33,7 @@
             <product-full-tech-specs :product="product"/>
           </el-tab-pane>
           <el-tab-pane label="Відгуки" name="reviews">
-            <reviews/>
+            <reviews :productId="product._id" :reviews="product.reviews"/>
           </el-tab-pane>
         </el-tabs>
       </div>

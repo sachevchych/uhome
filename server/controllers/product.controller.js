@@ -163,7 +163,7 @@ module.exports.getProducts = async (req, res) => {
 
 module.exports.getProductDetailed = async (req, res) => {
   try {
-    const product = await Product.findOne({url: req.params.url}).populate('category').populate('brand').populate('specs.property')
+    const product = await Product.findOne({url: req.params.url}).populate('category').populate('brand').populate('specs.property').populate('reviews')
     res.json(product)
   } catch (e) {
     res.status(500).json(e)

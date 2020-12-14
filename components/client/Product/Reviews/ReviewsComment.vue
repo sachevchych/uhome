@@ -2,19 +2,18 @@
   <div class="review">
     <div class="review-header">
       <div>
-        <h6 class="review-header-name">Rafael Marquez</h6>
+        <h6 class="review-header-name">{{ review.author }}</h6>
         <span class="review-header-date">24.11.2020</span>
       </div>
       <div class="mx-4">
-        <span class="review-header-date">Оцінка:</span>
-        <product-rating/>
+        <span class="review-header-date">Оцінка: {{review.rating}} з 5</span>
+        <product-rating :rating="review.rating"/>
       </div>
     </div>
     <div class="review-body">
-      <p class="review-body-text">Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat
-        facere possimus, omnis voluptas assumenda est...</p>
-      <p><span>Сподобалося: </span>Consequuntur magni, voluptatem sequi, tempora</p>
-      <p><span>Не сподобалося: </span>Architecto beatae, quis autem</p>
+      <p class="review-body-text">{{ review.text }}</p>
+      <p v-if="review.pros"><span>Сподобалося: </span>{{ review.pros }}</p>
+      <p v-if="review.cons"><span>Не сподобалося: </span>{{ review.cons }}</p>
     </div>
   </div>
 </template>
@@ -23,8 +22,9 @@
 import ProductRating from "@/components/client/Product/Reviews/ProductRating";
 export default {
   components: {ProductRating},
-  data() {
-    return {}
+  props: {
+    review: Object,
+    required: true
   }
 }
 </script>

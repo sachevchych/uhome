@@ -10,6 +10,7 @@ const productsRoutes = require('./routes/product.routes')
 const propertyRoutes = require('./routes/property.routes')
 const categoryRoutes = require('./routes/category.routes')
 const brandRoutes = require('./routes/brand.routes')
+const reviewRoutes = require('./routes/review.routes')
 const keys = require('./keys/index')
 const app = express()
 
@@ -30,6 +31,7 @@ app.use('/products', productsRoutes)
 app.use('/property', propertyRoutes)
 app.use('/category', categoryRoutes)
 app.use('/brand', brandRoutes)
+app.use('/review', reviewRoutes)
 
 
 module.exports = app

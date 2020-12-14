@@ -7,10 +7,10 @@
           <font-awesome-icon :icon="['fas', 'star']" class="rating-icon"></font-awesome-icon>
         </div>
         <div class="w-100 mx-2">
-          <el-progress :percentage="80" color="#20c997" :show-text="false"></el-progress>
+          <el-progress :percentage="rating5" color="#20c997" :show-text="false"></el-progress>
         </div>
         <div class="rating-label-right">
-          <span>42</span>
+          <span>{{ rating[5] }}</span>
         </div>
       </div>
     </div>
@@ -21,10 +21,10 @@
           <font-awesome-icon :icon="['fas', 'star']" class="rating-icon"></font-awesome-icon>
         </div>
         <div class="w-100 mx-2">
-          <el-progress :percentage="60" color="#28a745" :show-text="false"></el-progress>
+          <el-progress :percentage="rating4" color="#28a745" :show-text="false"></el-progress>
         </div>
         <div class="rating-label-right">
-          <span>16</span>
+          <span>{{ rating[4] }}</span>
         </div>
       </div>
     </div>
@@ -35,10 +35,10 @@
           <font-awesome-icon :icon="['fas', 'star']" class="rating-icon"></font-awesome-icon>
         </div>
         <div class="w-100 mx-2">
-          <el-progress :percentage="45" color="#ffc107" :show-text="false"></el-progress>
+          <el-progress :percentage="rating3" color="#ffc107" :show-text="false"></el-progress>
         </div>
         <div class="rating-label-right">
-          <span>9</span>
+          <span>{{ rating[3] }}</span>
         </div>
       </div>
     </div>
@@ -49,10 +49,10 @@
           <font-awesome-icon :icon="['fas', 'star']" class="rating-icon"></font-awesome-icon>
         </div>
         <div class="w-100 mx-2">
-          <el-progress :percentage="23" color="#fd7e14" :show-text="false"></el-progress>
+          <el-progress :percentage="rating2" color="#fd7e14" :show-text="false"></el-progress>
         </div>
         <div class="rating-label-right">
-          <span>4</span>
+          <span>{{ rating[2] }}</span>
         </div>
       </div>
     </div>
@@ -63,10 +63,10 @@
           <font-awesome-icon :icon="['fas', 'star']" class="rating-icon"></font-awesome-icon>
         </div>
         <div class="w-100 mx-2">
-          <el-progress :percentage="10" color="#dc3545" :show-text="false"></el-progress>
+          <el-progress :percentage="rating1" color="#dc3545" :show-text="false"></el-progress>
         </div>
         <div class="rating-label-right">
-          <span>2</span>
+          <span>{{ rating[1] }}</span>
         </div>
       </div>
     </div>
@@ -74,7 +74,31 @@
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    rating: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    rating5() {
+      return (this.rating[5] / this.rating.amount) * 100
+    },
+    rating4() {
+      return (this.rating[4] / this.rating.amount) * 100
+    },
+    rating3() {
+      return (this.rating[3] / this.rating.amount) * 100
+    },
+    rating2() {
+      return (this.rating[2] / this.rating.amount) * 100
+    },
+    rating1() {
+      return (this.rating[1] / this.rating.amount) * 100
+    },
+  }
+}
 </script>
 
 <style lang="scss" scoped>

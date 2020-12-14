@@ -1,8 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const propertySchema = new mongoose.Schema({})
-
 const productSchema = new mongoose.Schema({
   name: {
     type: String
@@ -51,7 +49,8 @@ const productSchema = new mongoose.Schema({
   },
   images: {
     type: Array
-  }
+  },
+  reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}]
 })
 
 module.exports = (mongoose.models && mongoose.models.Product ? mongoose.models.Product : mongoose.model('Product', productSchema));

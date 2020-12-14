@@ -2,8 +2,8 @@
   <div class="form">
     <h3 class="title mt-0">Написати відгук</h3>
     <el-form :model="review" :rules="rules" ref="reviewForm" label-position="left" :inline="false">
-      <el-form-item label="Ваше ім'я" prop="name">
-        <el-input v-model="review.name"></el-input>
+      <el-form-item label="Ваше ім'я" prop="author">
+        <el-input v-model="review.author"></el-input>
       </el-form-item>
       <el-form-item label="Оцінка" prop="rating">
         <el-select v-model="review.rating" placeholder="Оберіть оцінку" class="w-100">
@@ -47,17 +47,24 @@
 
 <script>
 export default {
+  props: {
+    productId: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       review: {
-        name: '',
+        author: '',
         rating: '',
         text: '',
         pros: '',
-        cons: ''
+        cons: '',
+        product: this.productId
       },
       rules: {
-        name: [
+        author: [
           { required: true, message: "Будь ласка, введіть ваше ім'я", trigger: 'blur' }
         ],
         rating: [
@@ -76,6 +83,9 @@ export default {
       this.$refs['reviewForm'].validate((valid) => {
         if (valid) {
           this.loading = true
+          this.$store.dispatch('public/review/create', this.review)
+          this.loading = false
+          this.$refs['reviewForm'].resetFields();
           this.$message.success('Ваш відгук успішно опубліковано!')
         } else {
           this.$message.warning('Заповнніть, будь ласка, усі необхідні поля.')

@@ -1,16 +1,50 @@
 <template>
   <div class="product-rating">
-      <font-awesome-icon :icon="['fas', 'star']" class="icon"></font-awesome-icon>
-      <font-awesome-icon :icon="['fas', 'star']" class="icon"></font-awesome-icon>
-      <font-awesome-icon :icon="['fas', 'star']" class="icon"></font-awesome-icon>
-      <font-awesome-icon :icon="['fas', 'star-half-alt']" class="icon"></font-awesome-icon>
-      <font-awesome-icon :icon="['far', 'star']" class="icon"></font-awesome-icon>
+    <template v-for="(star, index) in this.stars">
+      <font-awesome-icon :icon="star" class="icon" :key="index"></font-awesome-icon>
+    </template>
   </div>
 </template>
 
 <script>
 export default {
-  name: "ProductRating"
+  props: {
+    rating: {
+      type: Number
+    }
+  },
+  computed: {
+    stars() {
+      if (this.rating !== false) {
+        const stars = []
+        let i = 1
+
+        do {
+          if (i <= this.rating) {
+            stars.push(['fas', 'star'])
+          } else if (i > this.rating && i + 0.5 < this.rating) {
+            stars.push(['fas', 'star-half-alt'])
+          } else if (i + 0.5 > this.rating && i + 1 < this.rating) {
+            stars.push(['fas', 'star-half-alt'])
+          } else {
+            stars.push(['far', 'star'])
+          }
+          i++
+        } while (i <= 5)
+
+        return stars
+      } else {
+        return [
+          ['fas', 'star-half-alt'],
+          ['fas', 'star-half-alt'],
+          ['fas', 'star-half-alt'],
+          ['fas', 'star-half-alt'],
+          ['fas', 'star-half-alt']
+        ]
+      }
+
+    }
+  }
 }
 </script>
 
