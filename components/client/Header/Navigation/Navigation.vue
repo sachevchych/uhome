@@ -36,21 +36,7 @@
             </el-col>
           </el-tooltip>
           <!-- Cart -->
-          <el-popover placement="bottom" width="280" trigger="hover" :close-delay="300">
-            <div>
-              CART CONTENT
-            </div>
-            <el-col class="nav-cart" slot="reference">
-              <div class="nav-cart-icon">
-                <el-badge :max="99" :value="2" class="cart-counter" type="primary"/>
-                <i class="el-icon-shopping-cart-2"></i>
-              </div>
-              <span>
-                <small>Моя коризна</small>
-                <br>15 299₴
-              </span>
-            </el-col>
-          </el-popover>
+          <cart-button/>
         </div>
       </div>
     </div>
@@ -62,9 +48,10 @@
 <script>
 import DesktopNav from "@/components/client/Header/Navigation/DesktopNav";
 import MobileNav from "@/components/client/Header/Navigation/MobileNav";
+import CartButton from "@/components/client/Cart/CartButton";
 
 export default {
-  components: {MobileNav, DesktopNav},
+  components: {CartButton, MobileNav, DesktopNav},
   data() {
     return {
       search: '',
@@ -163,32 +150,5 @@ export default {
   cursor: pointer;
 }
 
-.nav-cart {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  min-width: 140px;
-  cursor: pointer;
-}
 
-.nav-cart-icon {
-  background-color: #f3f5f9;
-  border-radius: 50%;
-  width: 46px;
-  height: 46px;
-  display: block;
-  text-align: center;
-  position: relative;
-}
-
-.nav-cart-icon i {
-  margin: 0.76rem 0 0 0;
-}
-
-.cart-counter {
-  position: absolute;
-  left: 1.8rem;
-  top: -0.3rem;
-  font-weight: 500;
-}
 </style>

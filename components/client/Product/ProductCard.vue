@@ -15,13 +15,15 @@
       </div>
     </div>
     <div class="card-actions px-3 pb-2">
-      <el-button type="primary" size="small" class="card-actions-buy">Додати в кошик</el-button>
+      <add-to-cart-button :product-id="product._id" type="small"/>
     </div>
   </div>
 </template>
 
 <script>
+import AddToCartButton from "@/components/client/Product/AddToCartButton";
 export default {
+  components: {AddToCartButton},
   props: {
     'product': Object
   }

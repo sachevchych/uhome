@@ -9,7 +9,6 @@ export const actions = {
   },
   async fetchOne({commit}, id) {
     try {
-      console.log(id)
       return await this.$axios.$get(`/api/review/${id}`)
     } catch (e) {
       commit('setError', e, {root: true})

@@ -36,7 +36,7 @@ export default {
   },
   fontawesome: {
     icons: {
-      solid: ['faBars', 'faEllipsisV', 'faAngleRight', 'faStar', 'faStarHalfAlt', 'faCheck'],
+      solid: ['faBars', 'faEllipsisV', 'faAngleRight', 'faStar', 'faStarHalfAlt', 'faCheck', 'faShoppingCart', 'faTimes'],
       regular: ['faStar'],
       brands: ['faInstagram', 'faFacebookSquare']
     }

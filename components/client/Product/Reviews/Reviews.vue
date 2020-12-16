@@ -40,24 +40,8 @@ export default {
   },
   computed: {
     rating() {
-      const rating = {
-        1: 0,
-        2: 0,
-        3: 0,
-        4: 0,
-        5: 0,
-        total: 0,
-        amount: 0
-      }
-
-      this.reviews.forEach(review => {
-        rating.total = rating.total + review.rating
-        rating.amount = ++rating.amount
-        rating[review.rating] = ++rating[review.rating]
-      })
-
-      return rating
-    }
+      return this.$store.getters["public/product/rating"]
+    },
   }
 }
 </script>

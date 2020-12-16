@@ -14,18 +14,18 @@
             <product-gallery :images="product.images"/>
           </div>
           <div class="col-lg-5">
-            <product-rating/>
+            <product-rating :rating="rating.total / rating.amount"/>
             <product-details :product="product" class="mt-3"/>
             <div class="mt-3 row">
               <div class="col-12 col-sm-8 col-md-6 col-lg-8">
-                <add-to-cart-button/>
+                <add-to-cart-button :product-id="product._id"/>
               </div>
             </div>
             <product-brief-tech-specs :properties="product.specs"/>
           </div>
         </div>
         <!-- General End -->
-        <el-tabs class="py-2" value="properties">
+        <el-tabs class="py-2" value="general">
           <el-tab-pane label="Опис" name="general" v-if="product.description">
             <p class="description">{{ product.description }}</p>
           </el-tab-pane>
@@ -57,27 +57,19 @@ export default {
     AddToCartButton,
     ProductFullTechSpecs, ProductBriefTechSpecs, ProductRating, ProductDetails, ProductGallery, PageBar
   },
-  data() {
-    return {
-      product: {}
-    }
-  },
   async validate({store, params}) {
-    const product = await store.dispatch('product/publicFetchByUrl', params.url)
-    if (product) {
-      this.product = product
-      return true
-    } else {
-      return false
-    }
-  },
-  async asyncData({store, params}) {
-    const product = await store.dispatch('product/publicFetchByUrl', params.url)
-    return {product}
+    await store.dispatch('public/product/fetchOne', params.url)
+    return !!store.state.public.product.product;
   },
   computed: {
+    product() {
+       return this.$store.state.public.product.product
+    },
+    rating() {
+      return this.$store.getters["public/product/rating"]
+    },
     title() {
-      return `${this.product.name} ${this.product.brand.name} ${this.product.model}`
+      return `${this.product.name} ${this.product.name} ${this.product.model}`
     },
     breadcrumbs() {
       return [
@@ -86,7 +78,7 @@ export default {
         {label: `${this.product.brand.name} ${this.product.model}`, url: ''},
       ]
     }
-  },
+  }
 }
 </script>
 

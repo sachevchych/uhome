@@ -80,10 +80,11 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$refs['reviewForm'].validate((valid) => {
+      this.$refs['reviewForm'].validate(async (valid) => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('public/review/create', this.review)
+          const review = await this.$store.dispatch('public/review/create', this.review)
+          await this.$store.dispatch('public/product/pushReview', review)
           this.loading = false
           this.$refs['reviewForm'].resetFields();
           this.$message.success('Ваш відгук успішно опубліковано!')

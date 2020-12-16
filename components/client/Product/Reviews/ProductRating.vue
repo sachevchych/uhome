@@ -18,13 +18,12 @@ export default {
       if (this.rating !== false) {
         const stars = []
         let i = 1
-
         do {
+          let y = i + 1
+          // TODO рейтинг повинен враховувати половину зірки
           if (i <= this.rating) {
             stars.push(['fas', 'star'])
-          } else if (i > this.rating && i + 0.5 < this.rating) {
-            stars.push(['fas', 'star-half-alt'])
-          } else if (i + 0.5 > this.rating && i + 1 < this.rating) {
+          } else if (i < this.rating && y > this.rating) {
             stars.push(['fas', 'star-half-alt'])
           } else {
             stars.push(['far', 'star'])

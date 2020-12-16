@@ -50,7 +50,11 @@ const productSchema = new mongoose.Schema({
   images: {
     type: Array
   },
-  reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}]
+  reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}],
+  rating: {
+    type: Number,
+    default: 0
+  }
 })
 
 module.exports = (mongoose.models && mongoose.models.Product ? mongoose.models.Product : mongoose.model('Product', productSchema));

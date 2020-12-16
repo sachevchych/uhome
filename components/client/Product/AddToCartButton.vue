@@ -1,11 +1,28 @@
 <template>
-  <button class="btn" type="button">
+  <button :class="['btn', type].join(' ')" type="button" @click="onSubmit">
+    <font-awesome-icon :icon="['fa', 'shopping-cart']"/>
     Додати в кошик
   </button>
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    productId: {
+      type: String,
+      required: true
+    },
+    type: {
+      type: String
+    }
+  },
+  methods: {
+    onSubmit() {
+      this.$store.dispatch('cart/add', {productId: this.productId, amount: 1})
+      this.$message.success('Товар додано в кошик')
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -27,5 +44,12 @@ export default {}
     background-color: $primary-light-1;
     box-shadow: 0 0.5rem 1.125rem -0.5rem rgba($primary, 0.2);
   }
+}
+
+.small {
+  padding: .425rem 1rem;
+  font-size: .8125rem;
+  line-height: 1.5;
+  border-radius: .1875rem;
 }
 </style>
