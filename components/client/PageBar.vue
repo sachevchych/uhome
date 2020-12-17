@@ -1,12 +1,14 @@
 <template>
-  <div :class="theme">
-    <div class="container-xxl pt-lg-3">
-      <div class="d-lg-flex justify-content-between align-items-center py-4 py-lg-3">
-        <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2 d-flex justify-content-center">
-          <breadcrumb :data="breadcrumbs"/>
-        </div>
-        <div class="order-lg-1 pr-lg-4 text-center text-lg-left d-flex justify-content-center">
-          <h1 class="title">{{ title }}</h1>
+  <div :class="`theme-${theme}`">
+    <div class="container-xxl">
+      <div :class="`size-${size}`">
+        <div class="d-lg-flex justify-content-between align-items-center h-100">
+          <div class="order-lg-2 d-flex justify-content-center">
+            <breadcrumb :data="breadcrumbs"/>
+          </div>
+          <div class="order-lg-1 pr-lg-4 text-center text-lg-left d-flex justify-content-center">
+            <h1 class="title">{{ title }}</h1>
+          </div>
         </div>
       </div>
     </div>
@@ -17,7 +19,6 @@
 import Breadcrumb from "@/components/client/Pages/Breadcrumb";
 
 export default {
-  name: "PageBar",
   components: {Breadcrumb},
   props: {
     title: {
@@ -28,10 +29,14 @@ export default {
       type: String,
       default: 'light'
     },
+    size: {
+      type: String,
+      default: 'medium'
+    },
     breadcrumbs: {
       type: Array
     }
-  },
+  }
 }
 </script>
 
@@ -43,29 +48,25 @@ export default {
   margin: 0;
 }
 
-.light {
-  background-color: #f6f9fc;
-
-  .title {
+.theme {
+  &-light {
+    background-color: #f6f9fc;
     color: $gray-dark;
   }
-}
 
-.dark {
-  background-color: $gray-dark;
-
-  .title {
+  &-dark {
+    background-color: $gray-dark;
     color: $white;
   }
 }
 
-.breadcrumb {
-  &-link{
-    color: #ffffff !important;
+.size {
+  &-medium {
+    padding: 2rem 0;
   }
 
-  &-active {
-
+  &-large {
+    padding: 2rem 0 6rem 0;
   }
 }
 </style>
