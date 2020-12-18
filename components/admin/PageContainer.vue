@@ -19,7 +19,8 @@
 export default {
   name: "PageContainer",
   props: {
-    title: String
+    title: String,
+    default: 'Заголовок не вказано'
   }
 }
 </script>
