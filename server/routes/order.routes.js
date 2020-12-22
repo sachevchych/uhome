@@ -9,8 +9,6 @@ router.post(
 )
 
 
-
-
 // Admin routes - /api/order
 router.get(
   '/',
@@ -25,7 +23,7 @@ router.get(
 )
 
 router.put(
-  '/:id',
+  '/admin/:id',
   // passport.authenticate('jwt', {session: false}),
   ctr.update
 )

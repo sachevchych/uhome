@@ -52,7 +52,7 @@ export default {
     transpile: [/^element-ui/],
   },
   loading: {
-    color: '$main-color',
-    height: '4px'
+    color: '#fe696a',
+    height: '2px'
   }
 }

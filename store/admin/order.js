@@ -1,12 +1,12 @@
 export const state = () => ({
-  order: []
+  statuses: [
+    {label: 'Нове замовлення', type: 'primary', value: 0},
+    {label: 'В обробці', type: 'info', value: 1},
+    {label: 'Готується до відправки', type: 'warning', value: 2},
+    {label: 'Відправлено', type: 'danger', value: 3},
+    {label: 'Отримано', type: 'success', value: 4},
+  ]
 })
-
-export const mutations = {
-  setOrder(store, order) {
-    store.order = order
-  }
-}
 
 export const actions = {
   async fetchAll({commit}) {
@@ -19,8 +19,15 @@ export const actions = {
   },
   async fetchOne({commit}, id) {
     try {
-      const order = await this.$axios.$get(`/api/order/admin/${id}`)
-      commit('setOrder', order)
+      return await this.$axios.$get(`/api/order/admin/${id}`)
+    } catch (e) {
+      commit('setError', e, {root: true})
+      throw e
+    }
+  },
+  async update({commit, state}, order) {
+    try {
+      return await this.$axios.$put(`/api/order/admin/${order._id}`, order)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e

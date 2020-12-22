@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     order() {
-      this.$router.push('/personal/cart/')
+      this.$router.push('/personal/order/')
     }
   }
 }

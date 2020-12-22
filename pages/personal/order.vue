@@ -171,8 +171,7 @@ export default {
         {label: 'Кошик', url: '/personal/cart/'},
       ]
     }
-  }
-  ,
+  },
   methods: {
     nextStep(value) {
       this.$refs['contacts'].validate((valid) => {
@@ -187,6 +186,7 @@ export default {
     async makeOrder() {
       this.$refs['contacts'].validate(async (valid) => {
         if (valid) {
+          this.order.cart = this.$store.state.cart.list
           await this.$store.dispatch('public/order/create', this.order)
         } else {
           this.$message.error("Для оформлення замовлення потрібно принаймні вказати ім'я та номер телефону")

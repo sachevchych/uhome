@@ -18,7 +18,6 @@
           <span slot="title">Магазин</span>
         </template>
         <el-menu-item index="/admin/sale/order/">Замовленя</el-menu-item>
-        <el-menu-item index="2-2">Список клієнтів</el-menu-item>
       </el-submenu>
       <el-submenu index="/admin/catalog" class="menu-link">
         <template slot="title">

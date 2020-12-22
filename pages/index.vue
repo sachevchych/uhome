@@ -1,11 +1,17 @@
 <template>
-
+  <div class="container-xxl">
+    <slider/>
+  </div>
 </template>
 
 <script>
-  export default {}
+import Slider from "@/components/ui/Slider";
+
+export default {
+  components: {Slider},
+}
 </script>
 
-<style>
+<style lang="scss">
 
 </style>

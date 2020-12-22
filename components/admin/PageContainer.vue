@@ -1,17 +1,17 @@
 <template>
-  <div class="page-container container">
+  <div class="container-xxl">
     <div class="header">
       <h1>{{title}}</h1>
       <slot name="header"></slot>
     </div>
 
-    <div class="content">
+    <div :class="background ? 'content' : ''">
       <slot name="content"></slot>
-      <div class="footer">
-        <slot name="footer"></slot>
-      </div>
     </div>
 
+    <div v-if="footer" class="footer">
+      <slot name="footer"></slot>
+    </div>
   </div>
 </template>
 
@@ -19,41 +19,48 @@
 export default {
   name: "PageContainer",
   props: {
-    title: String,
-    default: 'Заголовок не вказано'
+    title: {
+      type: String,
+      default: 'Заголовок не вказано'
+    },
+    background: {
+      type: Boolean,
+      default: true
+    },
+    footer: {
+      type: Boolean,
+      default: true
+    }
   }
 }
 </script>
 
-<style scoped>
-.page-container {
-  padding: .5rem 1rem;
-}
-
+<style lang="scss" scoped>
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: .5rem;
+
+  h1 {
+    font-size: 18px;
+    font-weight: 500;
+  }
 }
 
 .content {
-  background-color: #ffffff;
   border-radius: .5rem;
   padding: 1rem 2rem;
-}
-
-.header h1 {
-  font-size: 18px;
-  font-weight: 500;
+  background-color: #ffffff;
 }
 
 .footer {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  border-top: 1px solid #EBEDF3;
-  padding: 1rem 0;
+  border-radius: .5rem;
+  background-color: #ffffff;
+  margin-top: 1rem;
+  padding: 1rem 2rem;
 }
-
 </style>
