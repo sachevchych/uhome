@@ -1,6 +1,9 @@
 <template>
-  <div class="container-xxl">
-    <slider/>
+  <div class="slider-wrap">
+    <div class="container-xxl">
+
+      <slider/>
+    </div>
   </div>
 </template>
 
@@ -13,5 +16,8 @@ export default {
 </script>
 
 <style lang="scss">
-
+.slider-wrap {
+  background-color: #F6F9FC;
+  padding: 3rem 0;
+}
 </style>
