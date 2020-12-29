@@ -27,7 +27,6 @@ export default {
 <style lang="scss" scoped>
 .client {
   background-color: #ffffff;
-  min-width: 400px;
 
   &-header {
     padding: 0;

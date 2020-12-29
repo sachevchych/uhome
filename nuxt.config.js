@@ -1,3 +1,5 @@
+import redirectSSL from 'redirect-ssl'
+
 export default {
   head: {
     title: 'uhome',
@@ -42,9 +44,12 @@ export default {
       brands: ['faInstagram', 'faFacebookSquare']
     }
   },
-  serverMiddleware: {
-    '/api': '~/server/app.js'
-  },
+  serverMiddleware: [
+    redirectSSL.create({
+      enabled: process.env.NODE_ENV === 'production'
+    }),
+    {path: '/api', handler: '~/server/app.js'}
+  ],
   axios: {
     baseURL: process.env.APP_API || 'http://localhost:3000'
   },
