@@ -148,7 +148,9 @@ export default {
   computed: {
     categories() {
       const categories = this.$store.state.category.categories
-      categories.find(category => category._id === this.category._id).disabled = true
+      if (this.$route.params.id !== 'create') {
+        categories.find(category => category._id === this.category._id).disabled = true
+      }
       return [{name: 'Корінева категорія', _id: 'root'}, ...categories]
     },
   },

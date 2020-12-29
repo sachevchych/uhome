@@ -2,7 +2,11 @@
   <div class="product-gallery d-flex flex-column flex-sm-row-reverse mb-3">
     <div class="preview p-1 ml-sm-2">
       <div :class="active === index ? 'active-true' : 'active-false'" v-for="(image, index) in images">
-        <img :src="image.url" :alt="image.name">
+        <picture>
+          <source :srcset="image.webp" type="image/webp">
+          <source :srcset="image.url" type="image/jpeg">
+          <img :src="image.url" :alt="image.name">
+        </picture>
       </div>
     </div>
     <div class="gallery-list d-flex flex-wrap justify-content-center align-items-center flex-sm-nowrap flex-sm-column justify-content-sm-start">
@@ -11,7 +15,11 @@
         @click="handleThumbnailClick(index)"
         :class="active === index ? 'thumbnail thumbnail-active m-1' : 'thumbnail m-1'"
       >
-        <img :src="image.url" :alt="image.name"/>
+        <picture>
+          <source :srcset="image.webp" type="image/webp">
+          <source :srcset="image.url" type="image/jpeg">
+          <img :src="image.url" :alt="image.name">
+        </picture>
       </div>
     </div>
   </div>
@@ -70,10 +78,11 @@ export default {
       opacity: 1;
     }
 
-    img {
-      max-height: 100%;
-      max-width: 100%;
-      object-fit: scale-down;
+    picture, source, img {
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
     }
   }
 }

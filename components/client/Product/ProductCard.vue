@@ -2,7 +2,11 @@
   <div class="card">
     <div class="card-img px-3 pt-3">
       <nuxt-link :to="`/product/${product.url}/`">
-        <img :src="product.images[0].url" :alt="product.model">
+        <picture>
+          <source :srcset="product.images[0].webp" type="image/webp">
+          <source :srcset="product.images[0].url" type="image/jpeg">
+          <img :src="product.images[0].url" :alt="product.model">
+        </picture>
       </nuxt-link>
     </div>
     <div class="card-body px-3 py-2">
