@@ -29,6 +29,7 @@ export default {
   ],
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/cloudinary',
     '@nuxtjs/style-resources'
   ],
   styleResources: {
@@ -39,7 +40,10 @@ export default {
   },
   fontawesome: {
     icons: {
-      solid: ['faBars', 'faEllipsisV', 'faAngleRight', 'faStar', 'faStarHalfAlt', 'faCheck', 'faShoppingCart', 'faTimes'],
+      solid: [
+        'faBars', 'faEllipsisV', 'faAngleRight', 'faStar', 'faStarHalfAlt', 'faCheck', 'faShoppingCart', 'faTimes',
+        'faSpinner'
+      ],
       regular: ['faStar'],
       brands: ['faInstagram', 'faFacebookSquare']
     }
@@ -52,6 +56,12 @@ export default {
   ],
   axios: {
     baseURL: process.env.APP_API || 'http://localhost:3000'
+  },
+  cloudinary: {
+    cloudName: process.env.CLOUDNAME,
+    apiKey: process.env.API_KEY,
+    apiSecret: process.env.API_SECRET,
+    useComponent: true
   },
   build: {
     transpile: [/^element-ui/],

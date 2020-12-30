@@ -7,6 +7,7 @@ module.exports.create = async (req, res) => {
     if (!category) {
       const newCategory = new Category({
         name: req.body.name,
+        image: req.body.image,
         url: req.body.url,
         active: req.body.active,
         parent: req.body.parent,
@@ -31,6 +32,7 @@ module.exports.update = async (req, res) => {
     if (!category || category._id.toString() === req.body._id) {
       const $set = {
         name: req.body.name,
+        image: req.body.image,
         url: req.body.url,
         active: req.body.active,
         parent: req.body.parent,

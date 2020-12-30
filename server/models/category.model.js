@@ -4,6 +4,9 @@ const categorySchema = new Schema({
   name: {
     type: String
   },
+  image: {
+    type: String
+  },
   url: {
     type: String,
     required: true,

@@ -1,8 +1,9 @@
 <template>
-  <div class="slider-wrap">
-    <div class="container-xxl">
-
-      <slider/>
+  <div>
+    <div class="slider-wrap">
+      <div class="container-xxl">
+        <slider/>
+      </div>
     </div>
   </div>
 </template>

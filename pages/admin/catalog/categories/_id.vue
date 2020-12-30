@@ -4,75 +4,80 @@
 
     </template>
     <template slot="content">
-      <el-form
-        :model="category"
-        :rules="validation"
-        ref="category"
-        label-width="150px">
-        <el-form-item label="Назва" prop="name">
-          <el-input v-model="category.name" @input="handlerOnNameChange"></el-input>
-        </el-form-item>
-        <el-form-item label="Символьний код" prop="url">
-          <el-input v-model="category.url">
-            <i slot="suffix" v-if="isTranslitLock" @click="translitToggle" class="el-input__icon el-icon-lock input-lock"></i>
-            <i slot="suffix" v-else @click="translitToggle" class="el-input__icon el-icon-unlock input-unlock"></i>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="Активна" prop="active">
-          <el-switch v-model="category.active"></el-switch>
-        </el-form-item>
-        <el-form-item label="Належить до" prop="parent">
-          <el-select v-model="category.parent" filterable placeholder="Корінева категорія">
-            <el-option
-              v-for="category in categories"
-              :key="category._id"
-              :label="category.name"
-              :value="category._id"
-              :disabled="category.disabled"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Властивості" prop="properties">
-          <!-- Table of selected properties -->
-          <draggable tag="ul" :list="category.properties" handle=".property-handle" class="properties">
-            <li v-for="property in category.properties" :key="property._id" :class="property.type">
-              <div class="property-info">
+      <el-form :model="category" :rules="validation" ref="category" label-width="150px">
+        <el-tabs value="general">
+          <el-tab-pane label="Загальні" name="general">
+            <el-form-item label="Зображення" prop="image">
+              <image-uploader v-model="category.image"/>
+            </el-form-item>
+            <el-form-item label="Назва" prop="name">
+              <el-input v-model="category.name" @input="handlerOnNameChange"></el-input>
+            </el-form-item>
+            <el-form-item label="Символьний код" prop="url">
+              <el-input v-model="category.url">
+                <i slot="suffix" v-if="isTranslitLock" @click="translitToggle" class="el-input__icon el-icon-lock input-lock"></i>
+                <i slot="suffix" v-else @click="translitToggle" class="el-input__icon el-icon-unlock input-unlock"></i>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="Активна" prop="active">
+              <el-switch v-model="category.active"></el-switch>
+            </el-form-item>
+            <el-form-item label="Належить до" prop="parent">
+              <el-select v-model="category.parent" filterable placeholder="Корінева категорія">
+                <el-option
+                  v-for="category in categories"
+                  :key="category._id"
+                  :label="category.name"
+                  :value="category._id"
+                  :disabled="category.disabled"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-tab-pane>
+          <el-tab-pane label="Властивості" name="properties">
+            <el-form-item label="Властивості" prop="properties">
+              <!-- Table of selected properties -->
+              <draggable tag="ul" :list="category.properties" handle=".property-handle" class="properties">
+                <li v-for="property in category.properties" :key="property._id" :class="property.type">
+                  <div class="property-info">
                 <span class="property-handle">
                   <font-awesome-icon :icon="['fas', 'ellipsis-v']"/>
                 </span>
-                <span v-if="property.type === 'property'" class="property-name">
+                    <span v-if="property.type === 'property'" class="property-name">
                   {{ property.name }}
                 </span>
-                <span v-else-if="property.type === 'divider'" class="property-name">
+                    <span v-else-if="property.type === 'divider'" class="property-name">
                   <el-input size="small" v-model="property.name"></el-input>
                 </span>
+                  </div>
+                  <div>
+                    <el-button size="mini" type="danger" plain @click="deletePropertyFromList(property)">Видалити</el-button>
+                  </div>
+                </li>
+              </draggable>
+              <!-- Add property to list block -->
+              <div class="mt-2">
+                <el-select v-model="selectedPropertyId" filterable placeholder="Оберіть властивість">
+                  <el-option
+                    v-for="property in propertiesList"
+                    :key="property.index"
+                    :label="property.name"
+                    :value="property._id"
+                    :disabled="property.disabled"
+                  >
+                  </el-option>
+                </el-select>
+                <el-button type="primary" @click="addPropertyToList" plain>
+                  Додати властивість
+                </el-button>
+                <el-button type="success" @click="addDividerToList" plain>
+                  Додати розділювач
+                </el-button>
               </div>
-              <div>
-                <el-button size="mini" type="danger" plain @click="deletePropertyFromList(property)">Видалити</el-button>
-              </div>
-            </li>
-          </draggable>
-          <!-- Add property to list block -->
-          <div class="mt-2">
-            <el-select v-model="selectedPropertyId" filterable placeholder="Оберіть властивість">
-              <el-option
-                v-for="property in propertiesList"
-                :key="property.index"
-                :label="property.name"
-                :value="property._id"
-                :disabled="property.disabled"
-              >
-              </el-option>
-            </el-select>
-            <el-button type="primary" @click="addPropertyToList" plain>
-              Додати властивість
-            </el-button>
-            <el-button type="success" @click="addDividerToList" plain>
-              Додати розділювач
-            </el-button>
-          </div>
-        </el-form-item>
+            </el-form-item>
+          </el-tab-pane>
+        </el-tabs>
       </el-form>
     </template>
     <template slot="footer">
@@ -105,8 +110,11 @@ export default {
   data() {
     return {
       loading: false,
+      dialogVisible: false,
+      dialogImageUrl: '',
       category: {
         _id: '',
+        image: '',
         name: '',
         url: '',
         active: true,
