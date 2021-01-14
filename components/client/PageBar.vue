@@ -52,11 +52,19 @@ export default {
   &-light {
     background-color: #f6f9fc;
     color: $gray-dark;
+
+    .title {
+      color: $gray-dark;;
+    }
   }
 
   &-dark {
     background-color: $gray-dark;
     color: $white;
+
+    .title {
+      color: $white;
+    }
   }
 }
 
