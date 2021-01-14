@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-bar :title="title" :breadcrumbs="breadcrumbs" theme="dark" size="large"></page-bar>
+    <page-bar :title="title" :breadcrumbs="breadcrumbs" :theme="theme" size="large"></page-bar>
     <div class="container-xxl">
       <div class="main row">
         <div :class="['col', leftAside ? 'order-lg-2' : 'order-lg-1']">
@@ -28,6 +28,10 @@ export default {
     title: {
       type: String,
       required: true
+    },
+    theme: {
+      type: String,
+      default: 'dark'
     },
     breadcrumbs: {
       type: Array,

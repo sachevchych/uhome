@@ -25,15 +25,18 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.createUser = async (req, res) => {
-  const candidate = await User.findOne({login: req.body.login})
+  const candidate = await User.findOne({login: req.body.email })
 
   if (candidate) {
-    res.status(409).json({message: 'Такий логін вже існує'})
+    res.status(409).json({message: 'Така електронна адреса вже існує вже існує'})
   } else {
     const salt = bcrypt.genSaltSync(10)
     const user = new User({
-      login: req.body.login,
-      password: bcrypt.hashSync(req.body.password, salt)
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password, salt),
+      name: req.body.name,
+      phone: req.body.phone,
+      login: req.body.email
     })
 
     await user.save()
