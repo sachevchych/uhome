@@ -1,8 +1,5 @@
 const mongoose = require('mongoose')
 const Product = require('../models/product.model')
-const path = require('path');
-const fs = require('fs')
-const sharp = require('sharp')
 
 module.exports.create = async (req, res) => {
   try {
@@ -125,42 +122,6 @@ module.exports.addView = async (req, res) => {
     res.status(500).json(e)
   }
 }
-module.exports.uploadImage = (req, res) => {
-  if (req.file) {
-    const directoryPath = './static/images/products/'
-    const imageExtension = path.extname(req.file.filename)
-    const imageName = path.basename(req.file.filename, imageExtension);
-
-    sharp(directoryPath + req.file.filename)
-      .webp()
-      .toFile(directoryPath + imageName + '.webp')
-      .then(function(info) {
-        console.log(info)
-      })
-      .catch(function(err) {
-        console.log(err)
-      })
-      .finally(() => {
-        res.status(201).json({
-          name: req.file.filename,
-          size: req.file.size,
-          url: '/images/products/' + req.file.filename,
-          webp: '/images/products/' + imageName + '.webp'
-        })
-      })
-  } else {
-    res.status(500).json('File not found')
-  }
-}
-
-module.exports.removeImage = (req, res) => {
-  try {
-    fs.unlinkSync('./static/images/products/' + req.params.fileName)
-    res.json({message: 'File has been deleted'})
-  } catch (e) {
-    res.status(500).json(e)
-  }
-}
 
 module.exports.getProducts = async (req, res) => {
   try {
@@ -178,3 +139,40 @@ module.exports.getProductDetailed = async (req, res) => {
     res.status(500).json(e)
   }
 }
+
+// module.exports.uploadImage = (req, res) => {
+//   if (req.file) {
+//     const directoryPath = './static/images/products/'
+//     const imageExtension = path.extname(req.file.filename)
+//     const imageName = path.basename(req.file.filename, imageExtension);
+//
+//     sharp(directoryPath + req.file.filename)
+//       .webp()
+//       .toFile(directoryPath + imageName + '.webp')
+//       .then(function(info) {
+//         console.log(info)
+//       })
+//       .catch(function(err) {
+//         console.log(err)
+//       })
+//       .finally(() => {
+//         res.status(201).json({
+//           name: req.file.filename,
+//           size: req.file.size,
+//           url: '/images/products/' + req.file.filename,
+//           webp: '/images/products/' + imageName + '.webp'
+//         })
+//       })
+//   } else {
+//     res.status(500).json('File not found')
+//   }
+// }
+
+// module.exports.removeImage = (req, res) => {
+//   try {
+//     fs.unlinkSync('./static/images/products/' + req.params.fileName)
+//     res.json({message: 'File has been deleted'})
+//   } catch (e) {
+//     res.status(500).json(e)
+//   }
+// }

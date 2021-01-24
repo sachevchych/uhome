@@ -110,7 +110,6 @@ export default {
           uploadPreset: 'products',
         })
 
-        console.log(instance)
         this.images.push(instance)
       } catch (e) {
         this.$message.error(`Не вдалося завантажити файл ${file.name}.`)
@@ -118,7 +117,6 @@ export default {
     },
     async remove(file) {
       try {
-        // await this.$store.dispatch('product/removeImage', file.name)
         this.images = this.images.filter(image => image.public_id !== file.public_id)
 
         if (this.isImagesEmpty) {
@@ -138,15 +136,6 @@ export default {
           return false
       }
     },
-    // convertFileSize(size) {
-    //   if (size > 1024 * 1024) {
-    //     return (size / (1024 * 1024)).toFixed(0) + ' MB'
-    //   } else if (size > 1024) {
-    //     return (size / 1024).toFixed(0) + ' KB'
-    //   } else {
-    //     return size + ' B'
-    //   }
-    // },
     dragover(event) {
       event.stopPropagation()
       event.preventDefault()

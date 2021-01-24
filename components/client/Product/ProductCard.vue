@@ -2,11 +2,12 @@
   <div class="card">
     <div class="card-img px-3 pt-3">
       <nuxt-link :to="`/product/${product.url}/`">
-        <picture>
+        <picture v-if="product.images.length">
           <source :srcset="product.images[0].webp" type="image/webp">
           <source :srcset="product.images[0].url" type="image/jpeg">
           <img :src="product.images[0].url" :alt="product.model">
         </picture>
+        <img v-else src="/img/no_photo.png" alt="Фотогрфія до товару відстуня">
       </nuxt-link>
     </div>
     <div class="card-body px-3 py-2">
@@ -29,7 +30,7 @@ import AddToCartButton from "@/components/client/Product/AddToCartButton";
 export default {
   components: {AddToCartButton},
   props: {
-    'product': Object
+    product: Object
   }
 }
 </script>
