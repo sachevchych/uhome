@@ -58,9 +58,9 @@ export default {
     baseURL: process.env.APP_API || 'http://localhost:3000'
   },
   cloudinary: {
-    cloudName: process.env.CLOUDNAME,
-    apiKey: process.env.API_KEY,
-    apiSecret: process.env.API_SECRET,
+    cloudName: process.env.CLD_CLOUDNAME,
+    apiKey: process.env.CLD_API_KEY,
+    apiSecret: process.env.CLD_API_SECRET,
     useComponent: true
   },
   build: {

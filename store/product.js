@@ -59,9 +59,9 @@ export const actions = {
       throw e
     }
   },
-  async removeImage({commit}, fileName) {
+  async removeImage({commit}, public_id) {
     try {
-      return await this.$axios.$delete(`/api/products/image/${fileName}`)
+      return await this.$axios.$delete(`/api/products/image/${public_id}`)
     } catch (e) {
       commit('setError', e, {root: true})
       throw e
