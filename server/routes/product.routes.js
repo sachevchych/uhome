@@ -36,20 +36,6 @@ router.delete(
   ctr.remove
 )
 
-// Images
-router.post(
-  '/image',
-  // passport.authenticate('jwt', {session: false}),
-  upload.single('image'),
-  ctr.uploadImage
-)
-
-router.delete(
-  '/image/:fileName',
-  // passport.authenticate('jwt', {session: false}),
-  ctr.removeImage
-)
-
 // Public
 // /api/products/
 router.get('/', ctr.getProducts)
