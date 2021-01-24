@@ -31,7 +31,7 @@
     <div class="dashboard" v-show="display.dashboard">
       <draggable tag="ul" v-if="!isImagesEmpty" v-bind="dragOptions" v-model="images" handle=".preview-handle">
         <transition-group type="transition">
-          <li v-for="image in images" :key="image.name">
+          <li v-for="image in images" :key="image.public_id">
             <div class="preview">
               <div class="preview-handle">
                 <i class="el-icon-rank"></i>
@@ -40,8 +40,8 @@
                 <el-image style="height: 100%; width: 100%" :src="image.url" fit="scale-down"></el-image>
               </div>
               <div class="info">
-                <span>{{ image.name }}</span>
-                <small>{{ image.size }}</small>
+                <span>{{ image.etag }}</span>
+                <small>{{ image.bytes }}</small>
               </div>
             </div>
             <div class="action">
@@ -97,19 +97,29 @@ export default {
     },
     async upload(file) {
       try {
-        const imageData = await this.$store.dispatch('product/uploadImage', file)
-        this.images.push({
-          ...imageData,
-          size: this.convertFileSize(imageData.size)
+        const readData = (f) =>  new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(f);
+        });
+
+        const data = await readData(file);
+
+        const instance = await this.$cloudinary.upload(data, {
+          folder: 'products',
+          uploadPreset: 'products',
         })
+
+        console.log(instance)
+        this.images.push(instance)
       } catch (e) {
         this.$message.error(`Не вдалося завантажити файл ${file.name}.`)
       }
     },
     async remove(file) {
       try {
-        await this.$store.dispatch('product/removeImage', file.name)
-        this.images = this.images.filter(image => image.name !== file.name)
+        // await this.$store.dispatch('product/removeImage', file.name)
+        this.images = this.images.filter(image => image.public_id !== file.public_id)
 
         if (this.isImagesEmpty) {
           this.displayDropZone(true)
@@ -128,15 +138,15 @@ export default {
           return false
       }
     },
-    convertFileSize(size) {
-      if (size > 1024 * 1024) {
-        return (size / (1024 * 1024)).toFixed(0) + ' MB'
-      } else if (size > 1024) {
-        return (size / 1024).toFixed(0) + ' KB'
-      } else {
-        return size + ' B'
-      }
-    },
+    // convertFileSize(size) {
+    //   if (size > 1024 * 1024) {
+    //     return (size / (1024 * 1024)).toFixed(0) + ' MB'
+    //   } else if (size > 1024) {
+    //     return (size / 1024).toFixed(0) + ' KB'
+    //   } else {
+    //     return size + ' B'
+    //   }
+    // },
     dragover(event) {
       event.stopPropagation()
       event.preventDefault()
