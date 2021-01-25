@@ -2,7 +2,7 @@ import redirectSSL from 'redirect-ssl'
 
 export default {
   head: {
-    title: 'uhome',
+    title: 'uHome',
     meta: [
       {charset: 'utf-8'},
       {name: 'viewport', content: 'width=device-width, initial-scale=1'},
@@ -25,12 +25,13 @@ export default {
   ],
   components: true,
   buildModules: [
-    '@nuxtjs/fontawesome'
+    '@nuxtjs/fontawesome',
   ],
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/cloudinary',
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    '@nuxt/image'
   ],
   styleResources: {
     scss: [
@@ -47,6 +48,9 @@ export default {
       regular: ['faStar'],
       brands: ['faInstagram', 'faFacebookSquare']
     }
+  },
+  image: {
+
   },
   serverMiddleware: [
     redirectSSL.create({

@@ -11,7 +11,7 @@
               <font-awesome-icon :icon="['fas', 'bars']" class="mobile-menu-icon"/> Меню
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-for="link in links" :key="link.link" class="mobile-menu-item">
+              <el-dropdown-item v-for="(link, index) in links" :key="index" class="mobile-menu-item">
                 <nuxt-link :to="link.link" class="mobile-menu-link">
                   {{ link.label }}
                 </nuxt-link>

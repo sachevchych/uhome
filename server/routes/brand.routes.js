@@ -6,31 +6,31 @@ const router = Router()
 // /api/brand
 router.post(
   '/',
-  // passport.authenticate('jwt', {session: false}),
+  passport.authenticate('jwt', {session: false}),
   create
 )
 
 router.get(
   '/',
-  // passport.authenticate('jwt', {session: false}),
+  passport.authenticate('jwt', {session: false}),
   getAll
 )
 //
 router.get(
   '/:id',
-  // passport.authenticate('jwt', {session: false}),
+  passport.authenticate('jwt', {session: false}),
   getById
 )
 
 router.put(
   '/:id',
-  // passport.authenticate('jwt', {session: false}),
+  passport.authenticate('jwt', {session: false}),
   update
 )
 
 router.delete(
   '/:id',
-  // passport.authenticate('jwt', {session: false}),
+  passport.authenticate('jwt', {session: false}),
   remove
 )
 

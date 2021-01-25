@@ -4,7 +4,8 @@
       <span class="uploader-header-label">Завантаження зображень</span>
       <div v-show="!isImagesEmpty">
         <el-button v-show="display.dashboard" size="mini" plain round @click="displayDropZone(true)">Додати</el-button>
-        <el-button v-show="display.uploadZone" size="mini" type="warning" plain round @click="displayDropZone(false)">Закрити
+        <el-button v-show="display.uploadZone" size="mini" type="warning" plain round @click="displayDropZone(false)">
+          Закрити
         </el-button>
       </div>
     </div>
@@ -31,7 +32,7 @@
     <div class="dashboard" v-show="display.dashboard">
       <draggable tag="ul" v-if="!isImagesEmpty" v-bind="dragOptions" v-model="images" handle=".preview-handle">
         <transition-group type="transition">
-          <li v-for="image in images" :key="image.public_id">
+          <li v-for="image in images" :key="image.name">
             <div class="preview">
               <div class="preview-handle">
                 <i class="el-icon-rank"></i>
@@ -40,8 +41,8 @@
                 <el-image style="height: 100%; width: 100%" :src="image.url" fit="scale-down"></el-image>
               </div>
               <div class="info">
-                <span>{{ image.etag }}</span>
-                <small>{{ image.bytes }}</small>
+                <span>{{ image.name }}</span>
+                <small>{{ image.size }}</small>
               </div>
             </div>
             <div class="action">
@@ -97,27 +98,17 @@ export default {
     },
     async upload(file) {
       try {
-        const readData = (f) =>  new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result);
-          reader.readAsDataURL(f);
-        });
-
-        const data = await readData(file);
-
-        const instance = await this.$cloudinary.upload(data, {
-          folder: 'products',
-          uploadPreset: 'products',
-        })
-
-        this.images.push(instance)
+        const imageData = await this.$store.dispatch('admin/upload/uploadProductImage', file)
+        this.images.push({url: `/img/products/${imageData.name}`, ...imageData})
       } catch (e) {
         this.$message.error(`Не вдалося завантажити файл ${file.name}.`)
       }
     },
     async remove(file) {
       try {
-        this.images = this.images.filter(image => image.public_id !== file.public_id)
+        const response = await this.$store.dispatch('admin/upload/removeProductImage', file.name)
+        this.$message(response)
+        this.images = this.images.filter(image => image.name !== file.name)
 
         if (this.isImagesEmpty) {
           this.displayDropZone(true)
@@ -177,7 +168,7 @@ export default {
       }
     },
     isImagesEmpty() {
-      return this.images.length <= 0;
+      return !this.images.length;
     }
   }
 }

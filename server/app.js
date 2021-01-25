@@ -12,6 +12,7 @@ const categoryRoutes = require('./routes/category.routes')
 const brandRoutes = require('./routes/brand.routes')
 const reviewRoutes = require('./routes/review.routes')
 const orderRoutes = require('./routes/order.routes')
+const uploadRoutes = require('./routes/upload.routes')
 const keys = require('./keys/index')
 const app = express()
 
@@ -34,6 +35,7 @@ app.use('/category', categoryRoutes)
 app.use('/brand', brandRoutes)
 app.use('/review', reviewRoutes)
 app.use('/order', orderRoutes)
+app.use('/upload', uploadRoutes)
 
 
 module.exports = app

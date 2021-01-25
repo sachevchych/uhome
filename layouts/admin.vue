@@ -19,6 +19,7 @@ import Aside from "@/components/admin/Aside/Aside";
 import Header from "@/components/admin/Header/HeaderPanel";
 
 export default {
+  name: 'Admin',
   components: {Header, Aside},
   computed: {
     error() {

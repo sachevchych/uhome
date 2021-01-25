@@ -2,24 +2,17 @@
   <div class="product-gallery d-flex flex-column flex-sm-row-reverse mb-3">
     <div class="preview p-1 ml-sm-2">
       <div :class="active === index ? 'active-true' : 'active-false'" v-for="(image, index) in images">
-        <picture>
-          <source :srcset="image.webp" type="image/webp">
-          <source :srcset="image.url" type="image/jpeg">
-          <img :src="image.url" :alt="image.name">
-        </picture>
+        <nuxt-image class="preview-img" :src="image.url" :alt="image.name"/>
       </div>
     </div>
-    <div class="gallery-list d-flex flex-wrap justify-content-center align-items-center flex-sm-nowrap flex-sm-column justify-content-sm-start">
+    <div
+      class="gallery-list d-flex flex-wrap justify-content-center align-items-center flex-sm-nowrap flex-sm-column justify-content-sm-start">
       <div
         v-for="(image, index) in images"
         @click="handleThumbnailClick(index)"
         :class="active === index ? 'thumbnail thumbnail-active m-1' : 'thumbnail m-1'"
       >
-        <picture>
-          <source :srcset="image.webp" type="image/webp">
-          <source :srcset="image.url" type="image/jpeg">
-          <img :src="image.url" :alt="image.name">
-        </picture>
+        <nuxt-image class="thumbnail-img" :src="image.url" :alt="image.name"/>
       </div>
     </div>
   </div>
@@ -78,11 +71,10 @@ export default {
       opacity: 1;
     }
 
-    picture, source, img {
-      overflow: hidden;
-      height: 100%;
-      width: 100%;
-      object-fit: contain;
+    &-img {
+      height: 60px;
+      width: 60px;
+      object-fit: scale-down !important;
     }
   }
 }
@@ -112,11 +104,12 @@ export default {
     transition: all 0.2s ease-in-out;
   }
 
-  img {
-    width: 100%;
-    max-height: 500px;
-    object-fit: scale-down;
-  }
+  //
+  //&-img {
+  //  width: 100%;
+  //  max-height: 500px;
+  //  object-fit: scale-down;
+  //}
 }
 
 </style>
