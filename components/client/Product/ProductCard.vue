@@ -2,10 +2,11 @@
   <div class="card">
     <div class="card-img px-3 pt-3">
       <nuxt-link :to="`/product/${product.url}/`">
-        <nuxt-picture
+        <nuxt-img
+          class="card-img-wrapper"
           :src="`/img/products/${product.images[0].name}`"
-          height="500"
           fit="contain"
+          height="300"
           :alt="product.model"
         />
       </nuxt-link>
@@ -55,7 +56,18 @@ export default {
 }
 
 .card-img {
+  height: 322px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
+  &-wrapper {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 
 .card-body {

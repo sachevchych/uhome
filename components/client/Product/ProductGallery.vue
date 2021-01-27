@@ -2,11 +2,11 @@
   <div class="product-gallery d-flex flex-column flex-sm-row-reverse mb-3">
     <div class="preview p-1 ml-sm-2">
       <div :class="active === index ? 'active-true' : 'active-false'" v-for="(image, index) in images">
-        <nuxt-picture
+        <nuxt-img
           class="preview-img-wrapper"
           :src="image.url"
           fit="contain"
-          height="636"
+          height="600"
           :alt="image.name"
         />
       </div>
@@ -103,6 +103,9 @@ export default {
     top: 0;
     left: 0;
     opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .active-true {
@@ -114,12 +117,16 @@ export default {
     top: 0;
     left: 0;
     transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &-img-wrapper {
+    width: auto;
     height: auto;
-    max-height: 636px;
-    width: 100%;
+    max-width: 100%;
+    max-height: 600px;
   }
 }
 
