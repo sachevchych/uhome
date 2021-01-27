@@ -3,6 +3,7 @@ const consola = require('consola')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const passport = require('passport')
+const fs = require('fs')
 const jwtStrategy = require('./middleware/passport-strategy')
 const authRoutes = require('./routes/auth.routes')
 const blogRoutes = require('./routes/blog.routs')
@@ -25,6 +26,16 @@ passport.use(jwtStrategy)
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
+
+// directories validation
+fs.stat('static/img/products', function(err) {
+  if (err) {
+    consola.info('Directory for store will be created')
+    fs.mkdirSync('static/img/products');
+  } else {
+    consola.success('Directory for store product images exist')
+  }
+});
 
 // /api/...
 app.use('/auth', authRoutes)
