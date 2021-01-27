@@ -3,7 +3,7 @@ const consola = require('consola')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const passport = require('passport')
-const passportStrategy = require('./middleware/passport-strategy')
+const jwtStrategy = require('./middleware/passport-strategy')
 const authRoutes = require('./routes/auth.routes')
 const blogRoutes = require('./routes/blog.routs')
 const productsRoutes = require('./routes/product.routes')
@@ -21,7 +21,7 @@ mongoose.connect(keys.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: tru
   .catch(error => console.error(error))
 
 app.use(passport.initialize())
-passport.use(passportStrategy)
+passport.use(jwtStrategy)
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())

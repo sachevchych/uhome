@@ -2,9 +2,7 @@
   <div class="container-xxl">
     <div class="header">
       <div class="d-flex align-items-center justify-content-between">
-        <nuxt-link to="/" class="logo">
-          <img src="~/assets/images/logo_dark.svg" alt="logo">
-        </nuxt-link>
+        <Logo/>
         <div class="mobile-menu d-md-none">
           <el-dropdown trigger="click">
             <span class="mobile-menu-btn">

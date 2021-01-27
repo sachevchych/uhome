@@ -1,5 +1,6 @@
 <template>
   <div class="aside">
+    <Logo class="aside-logo" :dark="true"/>
     <el-menu
       router
       :default-active="$route.path"
@@ -40,11 +41,20 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<script>
+export default {
 
+}
+</script>
+
+<style lang="scss" scoped>
 .aside {
   background-color: #242939;
   height: 100%;
+
+  &-logo {
+    padding: .75rem;
+  }
 }
 
 .aside-menu {
@@ -75,10 +85,4 @@ i {
 .is-active > i {
   color: $main-color !important;
 }
-
-
 </style>
-
-<script>
-export default {}
-</script>

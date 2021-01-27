@@ -49,11 +49,9 @@
       </div>
     </div>
     <div class="container-xxl copyright-group">
-      <div class="d-flex align-items-end">
-        <nuxt-link to="/" class="logo">
-            <img src="~/assets/images/logo_light.svg" alt="logo">
-        </nuxt-link>
-        <span>© uHome, 2020. Всі права захищено.</span>
+      <div class="company">
+        <Logo :dark="true"/>
+        <span class="mt-2 d-block">© uHome, 2020. Всі права захищено.</span>
       </div>
       <div class="payments">
 

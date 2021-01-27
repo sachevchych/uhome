@@ -83,19 +83,19 @@ export default {
   },
   computed: {
     rating5() {
-      return (this.rating.stars[5] / this.rating.amount) * 100
+      return (this.rating.stars[5] / this.rating.amount) * 100 || 0
     },
     rating4() {
-      return (this.rating.stars[4] / this.rating.amount) * 100
+      return (this.rating.stars[4] / this.rating.amount) * 100 || 0
     },
     rating3() {
-      return (this.rating.stars[3] / this.rating.amount) * 100
+      return (this.rating.stars[3] / this.rating.amount) * 100 || 0
     },
     rating2() {
-      return (this.rating.stars[2] / this.rating.amount) * 100
+      return (this.rating.stars[2] / this.rating.amount) * 100 || 0
     },
     rating1() {
-      return (this.rating.stars[1] / this.rating.amount) * 100
+      return (this.rating.stars[1] / this.rating.amount) * 100 || 0
     },
   }
 }

@@ -2,8 +2,12 @@
   <div class="card">
     <div class="card-img px-3 pt-3">
       <nuxt-link :to="`/product/${product.url}/`">
-        <nuxt-image v-if="product.images.length" :src="`/img/products/${product.images[0].name}`" :alt="product.model"/>
-        <img v-else src="/img/no_photo.png" alt="Фотогрфія до товару відстуня">
+        <nuxt-picture
+          :src="`/img/products/${product.images[0].name}`"
+          height="500"
+          fit="contain"
+          :alt="product.model"
+        />
       </nuxt-link>
     </div>
     <div class="card-body px-3 py-2">
@@ -23,6 +27,7 @@
 
 <script>
 import AddToCartButton from "@/components/client/Product/AddToCartButton";
+
 export default {
   components: {AddToCartButton},
   props: {
@@ -39,7 +44,7 @@ export default {
   background-color: #ffffff;
 
   &:hover {
-    box-shadow: 0 0.3rem 1.525rem -0.375rem rgba(0,0,0,0.2);
+    box-shadow: 0 0.3rem 1.525rem -0.375rem rgba(0, 0, 0, 0.2);
     border-radius: .5rem .5rem 0 0;
 
     .card-actions {
@@ -50,11 +55,7 @@ export default {
 }
 
 .card-img {
-  img {
-    height: 190px;
-    width: 100%;
-    object-fit: scale-down;
-  }
+
 }
 
 .card-body {
@@ -67,10 +68,12 @@ export default {
     transition: color 0.25s ease-in-out;
     color: #373f50;
     text-decoration: none;
+
     h3 {
       margin: 0;
       font-size: .875rem
     }
+
     :hover {
       color: $main-color;
     }

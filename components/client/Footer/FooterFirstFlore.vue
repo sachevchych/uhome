@@ -7,7 +7,9 @@
             <h3 class="widget-title">Каталог товарів</h3>
             <ul class="widget-list">
               <li class="widget-list-item" v-for="category in categories">
-                <el-link :href="`/catalog/${category.url}/`" :underline="false" class="widget-list-link">{{ category.name }}</el-link>
+                <el-link :href="`/catalog/${category.url}/`" :underline="false" class="widget-list-link">
+                  {{ category.name }}
+                </el-link>
               </li>
             </ul>
           </div>

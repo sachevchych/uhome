@@ -2,7 +2,13 @@
   <div class="product-gallery d-flex flex-column flex-sm-row-reverse mb-3">
     <div class="preview p-1 ml-sm-2">
       <div :class="active === index ? 'active-true' : 'active-false'" v-for="(image, index) in images">
-        <nuxt-image class="preview-img" :src="image.url" :alt="image.name"/>
+        <nuxt-picture
+          class="preview-img-wrapper"
+          :src="image.url"
+          fit="contain"
+          height="636"
+          :alt="image.name"
+        />
       </div>
     </div>
     <div
@@ -12,7 +18,13 @@
         @click="handleThumbnailClick(index)"
         :class="active === index ? 'thumbnail thumbnail-active m-1' : 'thumbnail m-1'"
       >
-        <nuxt-image class="thumbnail-img" :src="image.url" :alt="image.name"/>
+        <nuxt-img
+          class="thumbnail-img-wrapper"
+          :src="image.url"
+          :alt="image.name"
+          fit="contain"
+          width="68"
+        />
       </div>
     </div>
   </div>
@@ -46,11 +58,10 @@ export default {
 }
 
 .gallery-list {
-
   .thumbnail {
     float: left;
-    width: 5rem;
-    height: 5rem;
+    width: 80px;
+    height: 80px;
     transition: all 0.2s ease-in-out;
     border: 1px solid #e3e9ef;
     border-radius: .3125rem;
@@ -59,7 +70,7 @@ export default {
     justify-content: center;
     align-items: center;
     background-color: #ffffff;
-    padding: 0.2rem;
+    padding: 6px;
     cursor: pointer;
 
     &:hover {
@@ -71,10 +82,11 @@ export default {
       opacity: 1;
     }
 
-    &-img {
-      height: 60px;
-      width: 60px;
-      object-fit: scale-down !important;
+    &-img-wrapper {
+      width: auto;
+      height: auto;
+      max-height: 68px;
+      max-width: 68px;
     }
   }
 }
@@ -104,12 +116,11 @@ export default {
     transition: all 0.2s ease-in-out;
   }
 
-  //
-  //&-img {
-  //  width: 100%;
-  //  max-height: 500px;
-  //  object-fit: scale-down;
-  //}
+  &-img-wrapper {
+    height: auto;
+    max-height: 636px;
+    width: 100%;
+  }
 }
 
 </style>
