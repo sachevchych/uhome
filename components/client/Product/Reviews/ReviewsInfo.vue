@@ -3,7 +3,7 @@
     <h3 class="my-2" v-if="rating.amount">Оцінка: {{ (rating.total / rating.amount).toFixed(1) }}</h3>
     <h3 class="my-2" v-else>Без оцінки</h3>
     <product-rating :rating="rating.total / rating.amount"/>
-    <p class="pt-2 font-size-sm text-muted">{{ recommend }} з {{ rating.amount }} ({{ percentage }}%)<br>Покупців рекомендують цей товар</p>
+    <p v-show="rating.amount" class="pt-2 font-size-sm text-muted">{{ recommend }} з {{ rating.amount }} ({{ percentage }}%)<br>Покупців рекомендують цей товар</p>
   </div>
 </template>
 

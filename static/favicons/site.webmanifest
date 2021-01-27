@@ -1,0 +1,20 @@
+{
+    "name": "uHome",
+    "short_name": "uHome",
+    "icons": [
+        {
+            "src": "/favicons/ /android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicons/ /android-chrome-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#f6f9fc",
+    "background_color": "#f6f9fc",
+    "start_url": "https://uhome.com.ua",
+    "display": "standalone"
+}

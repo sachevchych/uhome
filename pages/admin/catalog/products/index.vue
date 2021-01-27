@@ -7,12 +7,13 @@
       <el-table :data="products">
         <el-table-column label="Фото" width="80px">
           <template slot-scope="{row: {images}}">
-            <el-image
-              :src="images.length ? images[0].url : ''"
-              fit="scale-down"
-              style="width: 45px; height: 45px"
+            <nuxt-img
+              :src="images.length ? images[0].url : '/img/no_photo.png'"
+              fit="contain"
+              width="45"
+              height="45"
             >
-            </el-image>
+            </nuxt-img>
           </template>
         </el-table-column>
         <el-table-column label="Модель" prop="model" min-width="150px"/>
